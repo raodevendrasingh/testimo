@@ -1,14 +1,32 @@
 import mongoose, {Schema, Document} from "mongoose";
 
-export interface Message extends Document{
+export interface Feedback extends Document{
     content: string,
-    createdAt: Date
+    rating: number,
+    name: string,
+    jobTitle: string,
+    imageUrl: string,
+    createdAt: Date,
 }
 
-const MessageSchema: Schema<Message> = new Schema({
+const FeedbackSchema: Schema<Feedback> = new Schema({
     content: {
         type: String,
         required: true,
+    },
+    rating: {
+        type: Number,
+        required: true,
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    jobTitle: {
+        type: String,
+    },
+    imageUrl: {
+        type: String,
     },
     createdAt: {
         type: Date,
@@ -17,7 +35,6 @@ const MessageSchema: Schema<Message> = new Schema({
     }
 })
 
-
 export interface User extends Document{
     username: string,
     email: string,
@@ -25,8 +42,8 @@ export interface User extends Document{
     verifyCode: string,
     verifyCodeExpiry: Date,
     isVerified: boolean,
-    isAcceptingMessages: boolean,
-    messages: Message[]
+    isAcceptingFeedback: boolean,
+    feedback: Feedback[]
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -40,7 +57,7 @@ const UserSchema: Schema<User> = new Schema({
         type: String,
         required: [true, 'Email is required'],
         unique: true,
-        match: [/\S+@\S+\.\S+/, 'Email is invalid'],
+        match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Enter a valid email'],
     },
     password: {
         type: String,
@@ -58,11 +75,11 @@ const UserSchema: Schema<User> = new Schema({
         type: Boolean,
         default: false
     },
-    isAcceptingMessages: {
+    isAcceptingFeedback: {
         type: Boolean,
         default: true
     },
-    messages: [MessageSchema]
+    feedback: [FeedbackSchema]
 })
 
-const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>('User', UserSchema);
+export const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>('User', UserSchema);

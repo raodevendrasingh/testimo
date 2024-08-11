@@ -8,7 +8,7 @@ const connection: ConnectionObject = {};
 
 async function dbConnect(): Promise<void> {
 	if (connection.isConnected) {
-		console.log("Aready connected to databse");
+		console.log("Aready connected to database");
 		return;
 	}
 	try {
