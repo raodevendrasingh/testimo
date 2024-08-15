@@ -40,12 +40,21 @@ export async function GET(request: Request) {
 			);
 		}
 
-        return Response.json(
-            {
-                sucess: true,
-                feedback: user[0].feedback
-            },
-            { status: 200 }
-        );
-	} catch (error) {}
+		return Response.json(
+			{
+				sucess: true,
+				feedback: user[0].feedback,
+			},
+			{ status: 200 }
+		);
+	} catch (error) {
+		console.error("An Unexpected error occured\n", error);
+		return Response.json(
+			{
+				sucess: false,
+				message: "User fetching feedback!",
+			},
+			{ status: 500 }
+		);
+	}
 }
