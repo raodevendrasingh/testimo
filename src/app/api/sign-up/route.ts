@@ -8,10 +8,12 @@ export async function POST(request: Request) {
 
     try {
         const { username, email, password } = await request.json();
+
         const existingUserVerifiedbyUsername = await UserModel.findOne({
             username,
             isVerified: true
-        })
+        });
+
         if (existingUserVerifiedbyUsername) {
             return Response.json({
                 success: false,
@@ -21,16 +23,16 @@ export async function POST(request: Request) {
             })
         }
 
-        const existingUserbyEmail = await UserModel.findOne({ email })
+        const existingUserbyEmail = await UserModel.findOne({ email });
 
-        const verifyCode = Math.floor(100000 + Math.random() * 900000).toString()
+        const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
         if (existingUserbyEmail) {
-            if(existingUserbyEmail.isVerified){
+            if (existingUserbyEmail.isVerified) {
                 return Response.json({
                     success: false,
                     message: "Email Already exists!"
                 }, { status: 400 })
-            } else{
+            } else {
                 const hashedPassword = await bcrypt.hash(password, 10)
 
                 existingUserbyEmail.password = hashedPassword;
@@ -66,14 +68,14 @@ export async function POST(request: Request) {
         if (!emailResponse.success) {
             return Response.json({
                 success: false,
-                message: emailResponse.message
+                message: emailResponse.message,
             }, { status: 500 })
         }
 
         return Response.json({
             success: true,
-            message: "User registered sucessfully! Email verification pending."
-        }, { status: 201 })
+            message: "User registered sucessfully! Email verification pending.",
+        }, { status: 201 });
 
 
     } catch (error) {
@@ -81,7 +83,6 @@ export async function POST(request: Request) {
         return Response.json({
             success: false,
             message: 'Failed to sign up'
-        },
-            { status: 500 })
+        }, { status: 500 })
     }
 }
