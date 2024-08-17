@@ -1,5 +1,5 @@
-import Image from "next/image";
-
 export default function Home() {
-	return <div>hello dev</div>;
+	return (
+        <div className="p-5 font-serif text-3xl">feedbloom | home page</div>
+    )
 }

@@ -96,20 +96,17 @@ const SignUpPage = (): JSX.Element => {
 
 	return (
 		<div className="flex justify-center items-center min-h-screen bg-gray-100">
-			<div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+			<div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-md">
 				<div className="text-center">
-					<h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-						Join FeedBloom
+					<h1 className="text-4xl font-bold tracking-tight mb-6 font-serif lg:text-5xl text-left">
+						sign up.
 					</h1>
-					<p className="mb-4">
-						Sign Up to start collecting feedback seamlessly
-					</p>
 				</div>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 						<FormField
-							control={form.control}
 							name="username"
+							control={form.control}
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Username</FormLabel>
@@ -140,8 +137,8 @@ const SignUpPage = (): JSX.Element => {
 							)}
 						/>
 						<FormField
-							control={form.control}
 							name="email"
+							control={form.control}
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Email</FormLabel>
@@ -153,8 +150,8 @@ const SignUpPage = (): JSX.Element => {
 							)}
 						/>
 						<FormField
-							control={form.control}
 							name="password"
+							control={form.control}
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Password</FormLabel>
@@ -165,7 +162,11 @@ const SignUpPage = (): JSX.Element => {
 								</FormItem>
 							)}
 						/>
-						<Button type="submit" disabled={isSubmitting} className="w-full rounded-lg">
+						<Button
+							type="submit"
+							disabled={isSubmitting}
+							className="w-full rounded-lg"
+						>
 							{isSubmitting ? (
 								<>
 									<Loader className="mr-2 size-4 animate-spin" /> Please Wait..
@@ -176,7 +177,7 @@ const SignUpPage = (): JSX.Element => {
 						</Button>
 					</form>
 				</Form>
-				<div className="text-center mt-4">
+				<div className="text-center mt-4 text-base">
 					<p>
 						Already have an account?{" "}
 						<Link

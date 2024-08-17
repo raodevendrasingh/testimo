@@ -2,9 +2,8 @@
 
 import { useToast } from "@/components/ui/use-toast";
 import { verifySchema } from "@/schemas/verifySchema";
-import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "Zod";
@@ -24,8 +23,11 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { Loader } from "lucide-react";
 
 const VerificationPage = () => {
+	const [isVerifying, setIsVerifying] = useState<boolean>(false);
 	const router = useRouter();
 	const params = useParams<{ username: string }>();
 	const { toast } = useToast();
@@ -37,8 +39,8 @@ const VerificationPage = () => {
 	const onSubmit: SubmitHandler<z.infer<typeof verifySchema>> = async (
 		data
 	) => {
-		console.log(data);
 		try {
+			setIsVerifying(true);
 			const response = await axios.post("/api/verify-code", {
 				username: params.username,
 				code: data.code,
@@ -46,60 +48,70 @@ const VerificationPage = () => {
 			toast({
 				title: "Success",
 				description: response.data.message,
-                variant: "success"
+				variant: "success",
 			});
+			setIsVerifying(false);
 			router.replace("/sign-in");
 		} catch (error) {
-			console.error("Incorrect Verifyication Code: ", error);
-			const axiosError = error as AxiosError<ApiResponse>;
-
+			// console.error("Incorrect Verification Code: ", error);
 			toast({
 				title: "Verification Failed",
 				description: "Incorrect Verification Code",
 				variant: "destructive",
 			});
+		} finally {
+			setIsVerifying(false);
 		}
 	};
 
 	return (
 		<div className="flex justify-center items-center min-h-screen bg-gray-100">
-			<div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+			<div className="w-full max-w-xl p-8 space-y-8 bg-white rounded-lg shadow-md">
 				<div className="text-center">
-					<h1 className="text-4xl font-extrabold tracking-tight mb-6">
+					<h1 className="text-4xl font-bold tracking-tight mb-6 font-serif lg:text-5xl">
 						Verify your account
 					</h1>
+
 					<p className="mb-4">
-						Enter the verification code received in your mail
+						Enter the six-digit verification code received in your mail
 					</p>
 				</div>
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
-						className="w-2/3 mx-auto space-y-6"
+						className="w-2/3 mx-auto space-y-8"
 					>
-						<FormField
-							control={form.control}
-							name="code"
-							render={({ field }) => (
-								<FormItem className="ml-2">
-									<FormControl >
-										<InputOTP maxLength={6} {...field}>
-											<InputOTPGroup>
-												<InputOTPSlot index={0} />
-												<InputOTPSlot index={1} />
-												<InputOTPSlot index={2} />
-												<InputOTPSlot index={3} />
-												<InputOTPSlot index={4} />
-												<InputOTPSlot index={5} />
-											</InputOTPGroup>
-										</InputOTP>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
+						<div className="flex justify-center">
+							<FormField
+								control={form.control}
+								name="code"
+								render={({ field }) => (
+									<FormItem className="">
+										<FormControl>
+											<InputOTP maxLength={6} {...field}>
+												<InputOTPGroup>
+													<InputOTPSlot index={0} />
+													<InputOTPSlot index={1} />
+													<InputOTPSlot index={2} />
+													<InputOTPSlot index={3} />
+													<InputOTPSlot index={4} />
+													<InputOTPSlot index={5} />
+												</InputOTPGroup>
+											</InputOTP>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<Button type="submit" disabled={isVerifying} className="w-full">
+							{isVerifying ? (
+								<>
+									<Loader className="mr-2 size-4 animate-spin" /> Verifying...
+								</>
+							) : (
+								"Verify"
 							)}
-						/>
-						<Button type="submit" className="w-full">
-							Verify
 						</Button>
 					</form>
 				</Form>
