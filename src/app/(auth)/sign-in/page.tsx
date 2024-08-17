@@ -27,43 +27,47 @@ const SignInPage = (): JSX.Element => {
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof signInSchema>>({
-		resolver: zodResolver(signInSchema)
+		resolver: zodResolver(signInSchema),
+		defaultValues: {
+			identifier: "",
+			password: "",
+		},
 	});
 
-	const onSubmit: SubmitHandler<z.infer<typeof signInSchema>> = async (
-		data
-	) => {
-		try {
-			setIsSubmitting(true);
-			const result = await signIn("credentials", {
-				redirect: false,
-				identifier: data.identifier,
-				password: data.password,
-			});
+	const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+		setIsSubmitting(true);
+		const result = await signIn("credentials", {
+			redirect: false,
+			identifier: data.identifier,
+			password: data.password,
+		});
 
-			if (result?.error) {
+		if (result?.error) {
+			if (result.error === "CredentialsSignin") {
 				toast({
-					title: "Login failed",
-					description: "Incorrect credentials",
+					title: "Login Failed",
+					description: "Incorrect username or password",
+					variant: "destructive",
+				});
+			} else {
+				toast({
+					title: "Error",
+					description: result.error,
 					variant: "destructive",
 				});
 			}
-            if (result?.url) {
-				toast({
-					title: "Success",
-					description: "You are now signed in!",
-					variant: "success",
-				});
-				router.replace("/dashboard");
-			}
-		} catch (error) {
-			toast({
-				title: "Error",
-				description: "An unexpected error occurred",
-				variant: "destructive",
-			});
-		} finally {
-			setIsSubmitting(false);
+		}
+
+		toast({
+			title: "Success",
+			description: "You are now logged in!",
+			variant: "success",
+		});
+
+		setIsSubmitting(false);
+        
+		if (result?.url) {
+			router.replace("/dashboard");
 		}
 	};
 
