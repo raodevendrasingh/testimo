@@ -25,7 +25,6 @@ export async function GET(request: Request) {
 
 	try {
 		const user = await UserModel.aggregate([
-			// Match the user by their ID
 			{ $match: { _id: userId } },
 			{
 				$lookup: {
