@@ -1,3 +1,5 @@
+import { HomeNav } from "@/components/HomeNav";
+
 export default async function CoreLayout({
 	children,
 }: {
@@ -5,6 +7,7 @@ export default async function CoreLayout({
 }) {
 	return (
 		<div className="flex flex-col min-h-screen">
+            <HomeNav/>
 			{children}
 		</div>
 	);

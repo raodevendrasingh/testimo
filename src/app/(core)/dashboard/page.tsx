@@ -1,38 +1,30 @@
 "use client";
 
+import { User } from "next-auth";
 import { useSession, signIn, signOut } from "next-auth/react";
+import Image from "next/image";
+import emptyLogo from "@/assets/emptyLogo.png";
 
 const DashboardPage = () => {
 	const { data: session } = useSession();
-	if (session) {
-		return (
-			<>
-				<div className="p-5">
-					<span className="font-serif text-3xl">feedbloom | Dashboard</span>
-					<br />
-					Signed in as <span className="italic ">{session.user.email}</span> <br />
-					<button
-						onClick={() => signOut()}
-						className="px-3 py-2 bg-zinc-800 rounded-lg text-white"
-					>
-						Sign out
-					</button>
-				</div>
-			</>
-		);
-	}
+
+	const user = session?.user as User;
+
 	return (
 		<>
-			<div className="p-5">
-				<span className="font-serif text-3xl">feedbloom | Dashboard</span>
-				Not signed in
-				<br />
-				<button
-					onClick={() => signIn()}
-					className="px-3 py-2 bg-zinc-800 rounded-lg text-white"
-				>
-					Sign in
-				</button>
+			<div className="w-full bg-gray-100 border-b h-44 px-5 md:px-12 lg:px-28">
+				<div className="flex justify-between items-center h-full">
+					<div className="flex items-center gap-5">
+						<div>
+							<Image src={emptyLogo} alt="" width={112} />
+						</div>
+						<div className="flex flex-col gap-2">
+							<div className="text-4xl md:text-5xl">{user?.username || user?.email}</div>
+                            <div className="text-base">Lorem ipsum dolor sit amet.</div>
+						</div>
+					</div>
+					<div className="p-3">Toggle</div>
+				</div>
 			</div>
 		</>
 	);
