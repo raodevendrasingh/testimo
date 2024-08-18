@@ -9,9 +9,9 @@ export async function GET(request: Request) {
 
 	const session = await getServerSession(authOptions);
 
-	const user: User = session?.user as User;
+	const _user: User = session?.user as User;
 
-	if (!session || !session.user) {
+	if (!session || !_user) {
 		return new Response(
 			JSON.stringify({
 				success: false,
@@ -21,20 +21,40 @@ export async function GET(request: Request) {
 		);
 	}
 
-	const userId = new mongoose.Types.ObjectId(user._id);
+	const userId = new mongoose.Types.ObjectId(_user._id);
 
 	try {
 		const user = await UserModel.aggregate([
-			{ $match: { id: userId } },
-			{ $unwind: "$feedback" },
+			// Match the user by their ID
+			{ $match: { _id: userId } },
+			{
+				$lookup: {
+					from: "feedback",
+					localField: "_id",
+					foreignField: "userId",
+					as: "feedback",
+				},
+			},
+			{ $unwind: { path: "$feedback", preserveNullAndEmptyArrays: true } },
 			{ $sort: { "feedback.createdAt": -1 } },
 			{ $group: { _id: "$_id", feedback: { $push: "$feedback" } } },
-		]);
+		]).exec();
+
 		if (!user || user.length === 0) {
 			return new Response(
 				JSON.stringify({
 					success: false,
 					message: "User not found",
+				}),
+				{ status: 404 }
+			);
+		}
+
+		if (user[0].feedback.length === 0) {
+			return new Response(
+				JSON.stringify({
+					success: false,
+					message: "No feedback data available",
 				}),
 				{ status: 404 }
 			);
