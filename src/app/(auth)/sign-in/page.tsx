@@ -28,52 +28,46 @@ const SignInPage = (): JSX.Element => {
 
 	const form = useForm<z.infer<typeof signInSchema>>({
 		resolver: zodResolver(signInSchema),
-		defaultValues: {
-			identifier: "",
-			password: "",
-		},
+		// defaultValues: {
+		// 	identifier: "",
+		// 	password: "",
+		// },
 	});
 
-	const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-		setIsSubmitting(true);
-		const result = await signIn("credentials", {
-			redirect: false,
-			identifier: data.identifier,
-			password: data.password,
-		});
+	const onSubmit: SubmitHandler<z.infer<typeof signInSchema>> = async (
+		data
+	) => {
+		try {
+			setIsSubmitting(true);
+			const result = await signIn("credentials", {
+				redirect: false,
+				identifier: data.identifier,
+				password: data.password,
+			});
 
-		if (result?.error) {
-			if (result.error === "CredentialsSignin") {
-				toast({
-					title: "Login Failed",
-					description: "Incorrect username or password",
-					variant: "destructive",
-				});
-			} else {
-				toast({
-					title: "Error",
-					description: result.error,
-					variant: "destructive",
-				});
+			toast({
+				title: "Success",
+				description: "You are now logged in!",
+				variant: "success",
+			});
+
+			setIsSubmitting(false);
+
+			if (result?.url) {
+				router.replace("/dashboard");
 			}
-		}
-
-		toast({
-			title: "Success",
-			description: "You are now logged in!",
-			variant: "success",
-		});
-
-		setIsSubmitting(false);
-        
-		if (result?.url) {
-			router.replace("/dashboard");
+		} catch (error) {
+			toast({
+				title: "Login Failed",
+				description: "Incorrect username or password",
+				variant: "destructive",
+			});
 		}
 	};
 
 	return (
-		<div className="flex justify-center items-center min-h-screen bg-gray-100">
-			<div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-md">
+		<div className="flex justify-center items-center h-screen bg-gray-100">
+			<div className="w-full max-w-md p-8 m-3 space-y-6 bg-white rounded-xl shadow-md">
 				<div className="text-center">
 					<h1 className="text-4xl font-bold tracking-tight mb-6 font-serif lg:text-5xl text-left">
 						sign in.

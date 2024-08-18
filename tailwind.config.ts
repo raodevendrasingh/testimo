@@ -1,5 +1,9 @@
 import type { Config } from "tailwindcss";
 
+const {
+	default: flattenColorPalette,
+} = require("tailwindcss/lib/util/flattenColorPalette");
+
 const config = {
 	darkMode: ["class"],
 	content: [
@@ -71,15 +75,56 @@ const config = {
 					"0%,70%,100%": { opacity: "1" },
 					"20%,50%": { opacity: "0" },
 				},
+				aurora: {
+					from: {
+						backgroundPosition: "50% 50%, 50% 50%",
+					},
+					to: {
+						backgroundPosition: "350% 50%, 350% 50%",
+					},
+				},
+				"spin-around": {
+					"0%": {
+						transform: "translateZ(0) rotate(0)",
+					},
+					"15%, 35%": {
+						transform: "translateZ(0) rotate(90deg)",
+					},
+					"65%, 85%": {
+						transform: "translateZ(0) rotate(270deg)",
+					},
+					"100%": {
+						transform: "translateZ(0) rotate(360deg)",
+					},
+				},
+				slide: {
+					to: {
+						transform: "translate(calc(100cqw - 100%), 0)",
+					},
+				},
 			},
 			animation: {
 				"accordion-down": "accordion-down 0.2s ease-out",
 				"accordion-up": "accordion-up 0.2s ease-out",
 				"caret-blink": "caret-blink 1.25s ease-out infinite",
+				aurora: "aurora 60s linear infinite",
+				"spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
+				slide: "slide var(--speed) ease-in-out infinite alternate",
 			},
 		},
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [require("tailwindcss-animate"), addVariablesForColors],
 } satisfies Config;
+
+export function addVariablesForColors({ addBase, theme }: any) {
+	let allColors = flattenColorPalette(theme("colors"));
+	let newVars = Object.fromEntries(
+		Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+	);
+
+	addBase({
+		":root": newVars,
+	});
+}
 
 export default config;

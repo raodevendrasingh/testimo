@@ -95,8 +95,8 @@ const SignUpPage = (): JSX.Element => {
 	};
 
 	return (
-		<div className="flex justify-center items-center min-h-screen bg-gray-100">
-			<div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-md">
+		<div className="flex justify-center items-center h-screen bg-gray-100">
+			<div className="w-full max-w-md p-8 m-3 space-y-6 bg-white rounded-xl shadow-md">
 				<div className="text-center">
 					<h1 className="text-4xl font-bold tracking-tight mb-6 font-serif lg:text-5xl text-left">
 						sign up.
