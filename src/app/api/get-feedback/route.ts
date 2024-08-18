@@ -12,11 +12,11 @@ export async function GET(request: Request) {
 	const user: User = session?.user as User;
 
 	if (!session || !session.user) {
-		return Response.json(
-			{
-				sucess: false,
+		return new Response(
+			JSON.stringify({
+				success: false,
 				message: "User is not logged in",
-			},
+			}),
 			{ status: 401 }
 		);
 	}
@@ -28,32 +28,32 @@ export async function GET(request: Request) {
 			{ $match: { id: userId } },
 			{ $unwind: "$feedback" },
 			{ $sort: { "feedback.createdAt": -1 } },
-			{ $group: { _id: "$_id", feedback: { $push: "feedback" } } },
+			{ $group: { _id: "$_id", feedback: { $push: "$feedback" } } },
 		]);
 		if (!user || user.length === 0) {
-			return Response.json(
-				{
-					sucess: false,
+			return new Response(
+				JSON.stringify({
+					success: false,
 					message: "User not found",
-				},
+				}),
 				{ status: 404 }
 			);
 		}
 
-		return Response.json(
-			{
-				sucess: true,
+		return new Response(
+			JSON.stringify({
+				success: true,
 				feedback: user[0].feedback,
-			},
+			}),
 			{ status: 200 }
 		);
 	} catch (error) {
-		console.error("An Unexpected error occured\n", error);
-		return Response.json(
-			{
-				sucess: false,
-				message: "User fetching feedback!",
-			},
+		console.error("An Unexpected error occurred\n", error);
+		return new Response(
+			JSON.stringify({
+				success: false,
+				message: "Error fetching feedback!",
+			}),
 			{ status: 500 }
 		);
 	}
