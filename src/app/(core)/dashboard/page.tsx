@@ -3,7 +3,7 @@
 import { User } from "next-auth";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import emptyLogo from "@/assets/emptyLogo.png";
+import emptyLogo from "@/assets/placeholder/emptyLogo.png";
 import { Switch } from "@/components/ui/switch";
 import { useCallback, useEffect, useState } from "react";
 import { Feedback } from "@/models/User";

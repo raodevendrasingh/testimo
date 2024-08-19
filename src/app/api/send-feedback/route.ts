@@ -45,7 +45,7 @@ export async function POST(request: Request) {
 				sucess: true,
 				message: "Feedback is sent successfully!",
 			},
-			{ status: 403 }
+			{ status: 200 }
 		);
 	} catch (error) {
 		console.error("Error sending feedback\n", error);
