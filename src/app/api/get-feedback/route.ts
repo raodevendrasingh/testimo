@@ -24,22 +24,12 @@ export async function GET(request: Request) {
 	const userId = new mongoose.Types.ObjectId(_user._id);
 
 	try {
-		const user = await UserModel.aggregate([
-			{ $match: { _id: userId } },
-			{
-				$lookup: {
-					from: "feedback",
-					localField: "_id",
-					foreignField: "userId",
-					as: "feedback",
-				},
-			},
-			{ $unwind: { path: "$feedback", preserveNullAndEmptyArrays: true } },
-			{ $sort: { "feedback.createdAt": -1 } },
-			{ $group: { _id: "$_id", feedback: { $push: "$feedback" } } },
-		]).exec();
+		const user = await UserModel.findById(userId)
+			.select("feedback")
+			.lean()
+			.exec();
 
-		if (!user || user.length === 0) {
+		if (!user) {
 			return new Response(
 				JSON.stringify({
 					success: false,
@@ -49,7 +39,7 @@ export async function GET(request: Request) {
 			);
 		}
 
-		if (user[0].feedback.length === 0) {
+		if (!user.feedback || user.feedback.length === 0) {
 			return new Response(
 				JSON.stringify({
 					success: false,
@@ -62,7 +52,7 @@ export async function GET(request: Request) {
 		return new Response(
 			JSON.stringify({
 				success: true,
-				feedback: user[0].feedback,
+				feedback: user.feedback,
 			}),
 			{ status: 200 }
 		);
