@@ -1,12 +1,4 @@
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
-
-import {
 	AlertDialog,
 	AlertDialogAction,
 	AlertDialogCancel,
@@ -21,28 +13,21 @@ import {
 import {
 	Archive,
 	ArrowRightFromLine,
-	ArrowUpCircle,
-	CheckCircle2,
-	Circle,
-	HelpCircle,
 	LucideIcon,
 	PartyPopper,
 	Trash2,
-	XCircle,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
-import { Button } from "./ui/button";
+import { Button } from "../../../components/ui/button";
 import { X } from "lucide-react";
 import { Feedback } from "@/models/User";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 import { cn } from "@/lib/utils";
 import {
 	Command,
-	CommandEmpty,
 	CommandGroup,
-	CommandInput,
 	CommandItem,
 	CommandList,
 } from "@/components/ui/command";
@@ -52,7 +37,6 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
-import { Separator } from "./ui/separator";
 import { timesAgo } from "@/helpers/ConvertTimeStamp";
 
 type Status = {
@@ -182,7 +166,7 @@ export const FeedbackCard = ({
 						</div>
 					</div>
 
-					<div className="flex flex-grow justify-center items-center w-64 mx-auto xs:w-[30%] sm:w-[20%] p-1 md:mt-0">
+					<div className="flex flex-grow justify-center items-start sm:items-center w-64 mx-auto xs:w-[30%] sm:w-[20%] p-1 md:mt-0">
 						<Popover open={open} onOpenChange={setOpen}>
 							<PopoverTrigger asChild>
 								<Button
@@ -243,7 +227,6 @@ export const FeedbackCard = ({
 					</div>
 				</div>
 			</div>
-			{/* <Separator /> */}
 		</>
 	);
 };

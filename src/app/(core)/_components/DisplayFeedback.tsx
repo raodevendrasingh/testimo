@@ -1,4 +1,4 @@
-import { FeedbackCard } from "@/components/FeedbackCard";
+import { FeedbackCard } from "@/app/(core)/_components/FeedbackCard";
 import { useFetchFeedback } from "@/hooks/useFetchFeedback";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";

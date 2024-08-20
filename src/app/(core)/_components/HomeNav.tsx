@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { LogOutIcon } from "lucide-react";
 
 export const HomeNav = (): JSX.Element => {
-	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	return (
 		<header className="w-full text-zinc-800 bg-white z-20 sticky border-b top-0">

@@ -8,11 +8,13 @@ import { Switch } from "@/components/ui/switch";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Copy, Loader, RefreshCcw } from "lucide-react";
-import { Chip } from "@/components/Chips";
+import { Chip } from "@/app/(core)/_components/Chips";
 import { useFetchFeedback } from "@/hooks/useFetchFeedback";
 import { useFetchAcceptFeedback } from "@/hooks/useFetchAcceptFeedback";
 import { copyToClipboard } from "@/helpers/CopytoClipboard";
 import { DisplayFeedback } from "../_components/DisplayFeedback";
+import { ArchivedFeedback } from "../_components/ArchivedFeedback";
+import { FeedbackInsights } from "../_components/FeedbackInsights";
 
 const tabsData = [
 	{
@@ -21,11 +23,11 @@ const tabsData = [
 	},
 	{
 		title: "Archived",
-		content: "Archived",
+		content: <ArchivedFeedback/>,
 	},
 	{
 		title: "Insights",
-		content: "Insights",
+		content: <FeedbackInsights/>,
 	},
 ];
 

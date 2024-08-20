@@ -1,4 +1,4 @@
-import { HomeNav } from "@/components/HomeNav";
+import { HomeNav } from "@/app/(core)/_components/HomeNav";
 
 export default async function CoreLayout({
 	children,
