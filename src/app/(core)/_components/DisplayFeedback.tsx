@@ -4,33 +4,39 @@ import { useEffect } from "react";
 import { Loader } from "lucide-react";
 
 export const DisplayFeedback = () => {
-	const { feedback, setFeedback, isLoading, fetchFeedback } = useFetchFeedback();
+	const { feedback, setFeedback, isLoading, fetchFeedback } =
+		useFetchFeedback();
 
 	useEffect(() => {
 		fetchFeedback();
 	}, [fetchFeedback]);
 
 	const handleDeleteFeedback = (feedbackId: string) => {
-        setFeedback(feedback.filter((message) => message._id !== feedbackId));
+		setFeedback(feedback.filter((message) => message._id !== feedbackId));
 	};
-
 
 	return (
 		<div className="flex flex-col max-w-7xl mx-auto w-full flex-grow">
-			<div className="flex  items-center gap-3">
+			<div className="flex flex-col items-center gap-3 p-3">
 				{isLoading ? (
 					<span className="flex items-center gap-2">
-						<Loader className="animate-spin size-4 text-gay-600" />
+						<Loader className="animate-spin size-4 text-gray-600" />
 						<p>Loading</p>
 					</span>
 				) : feedback.length > 0 ? (
-					feedback.map((message) => (
-						<FeedbackCard
-							key={message._id}
-							feedback={message}
-							onFeedbackDelete={handleDeleteFeedback}
-						/>
-					))
+					feedback
+						.sort(
+							(a, b) =>
+								new Date(b.createdAt).getTime() -
+								new Date(a.createdAt).getTime()
+						)
+						.map((message) => (
+							<FeedbackCard
+								key={message._id}
+								feedback={message}
+								onFeedbackDelete={handleDeleteFeedback}
+							/>
+						))
 				) : (
 					<p>No Feedbacks received yet.</p>
 				)}

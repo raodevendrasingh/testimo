@@ -166,7 +166,7 @@ const DashboardPage = () => {
 				</main>
 			</div>
 			{/* Tab content */}
-			<main className="flex-grow mx-auto w-full md:w-[80%]">
+			<main className="flex-grow mx-auto w-full">
 				<div>{tabsData[selected].content}</div>
 			</main>
 		</div>
