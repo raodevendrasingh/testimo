@@ -3,11 +3,12 @@
 import { User } from "next-auth";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import emptyLogo from "@/assets/placeholder/emptyLogo.png";
 import { Switch } from "@/components/ui/switch";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Copy, Loader, RefreshCcw } from "lucide-react";
+import { ArrowUpRight, Copy, Loader, RefreshCcw } from "lucide-react";
 import { Chip } from "@/app/(core)/_components/Chips";
 import { useFetchFeedback } from "@/hooks/useFetchFeedback";
 import { useFetchAcceptFeedback } from "@/hooks/useFetchAcceptFeedback";
@@ -23,11 +24,11 @@ const tabsData = [
 	},
 	{
 		title: "Archived",
-		content: <ArchivedFeedback/>,
+		content: <ArchivedFeedback />,
 	},
 	{
 		title: "Insights",
-		content: <FeedbackInsights/>,
+		content: <FeedbackInsights />,
 	},
 ];
 
@@ -57,7 +58,7 @@ const DashboardPage = () => {
 
 	useEffect(() => {
 		const baseUrl = `${window.location.protocol}//${window.location.host}`;
-		setProfileUrl(`${baseUrl}/g/${username}`);
+		setProfileUrl(`${baseUrl}/g/${username}/review`);
 	}, [username]);
 
 	useEffect(() => {
@@ -75,7 +76,7 @@ const DashboardPage = () => {
 
 	if (isFetchingUser) {
 		return (
-			<div className="flex items-center gap-3 p-3">
+			<div className="w-full h-screen flex justify-center items-center gap-3 bg-gray-50 p-3">
 				<Loader className="size-4 animate-spin" />
 				Fetching Session Info
 			</div>
@@ -88,65 +89,71 @@ const DashboardPage = () => {
 
 	return (
 		<div className="w-full min-h-screen">
-			<div className="flex flex-col m-3 bg-white shadow border rounded-2xl px-5 md:px-12 lg:px-28 pt-8 ">
+			<div className="flex flex-col bg-white border-b px-5 md:px-12 lg:px-28 pt-5 ">
 				{/* User info and controls */}
-				<div className="flex justify-between items-start">
+				<div className="flex flex-col sm:flex-row justify-between gap-2 items-center sm:items-start ">
 					{/* user info */}
 					<div className="flex flex-col gap-2 h-full">
-						<div className="flex items-center gap-5">
-							<div className="flex">
-								<Image src={emptyLogo} alt="" width={100} priority={true} />
+						<div className="flex items-center justify-start gap-3 sm:gap-5">
+							<div className="flex size-28 bg-gray-300 animate-pulse rounded-lg items-center justify-center">
+								{/* <Image src={emptyLogo} alt="" width={100} priority={true} /> */}
 							</div>
-							<div className="flex flex-col gap-2">
+							<div className="flex flex-col gap-1">
 								<div className="text-4xl md:text-5xl">
 									{user?.username || user?.email}
 								</div>
 								<div className="text-base">Lorem ipsum dolor sit amet.</div>
+								<Link href="#">
+									<div className="flex justify-center items-center gap-2 px-3 py-1 rounded-full border bg-white">
+										<span className="text-sm"> yourwebsite.com</span>
+										<ArrowUpRight className="size-5 text-gray-700" />
+									</div>
+								</Link>
 							</div>
-						</div>
-						<div>
-							<span> &lt;your-website&gt;</span>
 						</div>
 					</div>
 					{/* fetch controls */}
-					<div className="flex flex-col gap-3 ">
-						<div className="flex items-center gap-2 border px-2 py-2.5 rounded-lg bg-white">
+					<div className="flex flex-row-reverse w-full sm:w-44 sm:flex-col gap-2">
+						<div className="flex w-1/3 sm:w-auto items-center justify-around gap-2 border px-2 py-2.5 rounded-lg bg-white">
+							<span
+								className={`text-sm font-medium hidden sm:inline-block ${
+									isAcceptingFeedback ? "text-green-500" : "text-rose-600"
+								}`}
+							>
+								Feedback
+							</span>
 							<Switch
 								checked={isAcceptingFeedback}
 								onCheckedChange={handleSwitchChange}
 								disabled={isSwitchLoading}
 							/>
-
-							<span
-								className={`text-sm font-medium ${
-									isAcceptingFeedback ? "text-green-500" : "text-rose-600"
-								}`}
-							>
-								Accept Feedback
-							</span>
 						</div>
 						<Button
-							className="flex items-center justify-center gap-2"
+							className="flex w-1/3 items-center justify-around sm:w-auto gap-2"
 							variant="outline"
 							onClick={(e) => {
 								e.preventDefault();
 								fetchFeedback(true);
 							}}
 						>
-							<span className="font-medium text-sm">Refresh</span>
+							<span className="font-medium text-sm hidden sm:inline-block">
+								Refresh
+							</span>
 							{isLoading ? (
-								<Loader className="size-3 animate-spin" />
+								<Loader className="size-4 animate-spin" />
 							) : (
-								<RefreshCcw className="size-3" />
+								<RefreshCcw className="size-4" />
 							)}
 						</Button>
-						<div className="flex items-center justify-around border rounded-lg bg-white p-2">
-							<span className="font-medium text-sm">Feedback URL</span>
+						<div className="flex w-1/3 sm:w-auto items-center justify-around border rounded-lg bg-white p-2">
+							<span className="font-medium text-sm hidden sm:inline-block">
+								Feedback URL
+							</span>
 							<button
 								onClick={() => copyToClipboard(profileUrl)}
-								className="p-1.5 rounded-lg text-sm bg-gray-100"
+								className="p-1 rounded-lg text-sm bg-gray-100"
 							>
-								<Copy className="size-3 text-gray-700" />
+								<Copy className="size-4 text-gray-700" />
 							</button>
 						</div>
 					</div>
@@ -154,7 +161,7 @@ const DashboardPage = () => {
 
 				{/* Tabs */}
 				<main className="sticky top-[64px] overflow-hidden z-10">
-					<div className="px-4 py-3 flex  items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
+					<div className="px-5 py-3 flex  items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
 						{tabsData.map((tab, idx) => (
 							<Chip
 								key={idx}

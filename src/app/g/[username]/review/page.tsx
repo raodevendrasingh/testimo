@@ -122,7 +122,6 @@ export default function SendMessage() {
 	const content = watch("content");
 
 	const isFirstScreenValid = rating > 0 && content.trim() !== "";
-	// const isFirstScreenValid =		watch("rating") > 0 && watch("content").trim() !== "";
 
 	return (
 		<>
