@@ -5,23 +5,19 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import emptyLogo from "@/assets/placeholder/emptyLogo.png";
 import { Switch } from "@/components/ui/switch";
-import { useCallback, useEffect, useState } from "react";
-import { Feedback } from "@/models/User";
-import { toast } from "sonner";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { acceptFeedbackSchema } from "@/schemas/acceptFeedbackSchema";
-import axios, { AxiosError } from "axios";
-import { ApiResponse } from "@/types/ApiResponse";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Copy, Loader, RefreshCcw } from "lucide-react";
-import { FeedbackCard } from "@/components/FeedbackCard";
 import { Chip } from "@/components/Chips";
+import { useFetchFeedback } from "@/hooks/useFetchFeedback";
+import { useFetchAcceptFeedback } from "@/hooks/useFetchAcceptFeedback";
+import { copyToClipboard } from "@/helpers/CopytoClipboard";
+import { DisplayFeedback } from "../_components/DisplayFeedback";
 
 const tabsData = [
 	{
 		title: "Feedbacks",
-		content: "Feedback",
+		content: <DisplayFeedback />,
 	},
 	{
 		title: "Archived",
@@ -36,141 +32,97 @@ const tabsData = [
 const DashboardPage = () => {
 	const { data: session } = useSession();
 	const [selected, setSelected] = useState(0);
-    const [profileUrl, setProfileUrl] = useState<string>('')
-	const [feedback, setFeedback] = useState<Feedback[]>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [isSwitchLoading, setIsSwitchLoading] = useState<boolean>(false);
+	const [profileUrl, setProfileUrl] = useState<string>("");
+	const [showLoginMessage, setShowLoginMessage] = useState(false);
+	const [isFetchingUser, setIsFetchingUser] = useState(true);
 
 	const user = session?.user as User;
 	const username = user?.username;
 
-	const form = useForm({
-		resolver: zodResolver(acceptFeedbackSchema),
-	});
-
-	const { register, watch, setValue } = form;
-
-	const acceptFeedback = watch("acceptFeedback");
-
-	const handleDeleteFeedback = (feedbackId: string) => {
-		setFeedback(feedback.filter((feedback) => feedback._id !== feedbackId));
-	};
-
-	const fetchAcceptFeedback = useCallback(async () => {
-		setIsSwitchLoading(true);
-		try {
-			const response = await axios.get<ApiResponse>("/api/accept-feedback");
-			setValue("acceptFeedback", response.data.isAcceptingFeedback);
-		} catch (error) {
-			const axiosError = error as AxiosError<ApiResponse>;
-			toast.error("Error", {
-				description:
-					axiosError.response?.data.message ||
-					"Failed to fetch feedback settings",
-			});
-		} finally {
-			setIsSwitchLoading(false);
-		}
-	}, [setValue]);
-
-	const fetchFeedback = useCallback(
-		async (refresh: boolean = false) => {
-			setIsLoading(true);
-			setIsSwitchLoading(false);
-			try {
-				const response = await axios.get<ApiResponse>("/api/get-feedback");
-				setFeedback(response.data.feedback || []);
-				if (refresh) {
-					toast.success("Feedbacks Refreshed", {
-						description: "Showing latest feedbacks",
-					});
-				}
-			} catch (error) {
-				const axiosError = error as AxiosError<ApiResponse>;
-				toast.error("Error", {
-					description:
-						axiosError.response?.data.message || "Failed to fetch feedback",
-				});
-			} finally {
-				setIsLoading(false);
-				setIsSwitchLoading(false);
-			}
-		},
-		[setIsLoading, setFeedback]
-	);
+	const { feedback, isLoading, fetchFeedback } = useFetchFeedback();
+	const {
+		isAcceptingFeedback,
+		isSwitchLoading,
+		fetchAcceptFeedback,
+		handleSwitchChange,
+	} = useFetchAcceptFeedback();
 
 	useEffect(() => {
 		if (!session || !session.user) return;
 		fetchFeedback();
 		fetchAcceptFeedback();
-	}, [session, setValue, fetchAcceptFeedback, fetchFeedback]);
+	}, [session, fetchFeedback, fetchAcceptFeedback]);
 
-	const handleSwitchChange = async () => {
-		try {
-			const response = await axios.post<ApiResponse>("/api/accept-feedback", {
-				acceptFeedback: !acceptFeedback,
-			});
-			setValue("acceptFeedback", !acceptFeedback);
-			toast.error(response.data.message);
-		} catch (error) {
-			const axiosError = error as AxiosError<ApiResponse>;
-			toast.error("Error", {
-				description:
-					axiosError.response?.data.message || "Failed to fetch feedback",
-			});
+	useEffect(() => {
+		const baseUrl = `${window.location.protocol}//${window.location.host}`;
+		setProfileUrl(`${baseUrl}/g/${username}`);
+	}, [username]);
+
+	useEffect(() => {
+		if (!session || !session.user) {
+			const timer = setTimeout(() => {
+				setShowLoginMessage(true);
+				setIsFetchingUser(false);
+			}, 10000);
+
+			return () => clearTimeout(timer);
+		} else {
+			setIsFetchingUser(false);
 		}
-	};
+	}, [session]);
 
-	// const baseUrl = `${window.location.protocol}//${window.location.host}`;
-	// const profileUrl = `${baseUrl}/g/${username}`;
+	if (isFetchingUser) {
+		return (
+			<div className="flex items-center gap-3 p-3">
+				<Loader className="size-4 animate-spin" />
+				Fetching Session Info
+			</div>
+		);
+	}
 
-    useEffect(() => {
-        const baseUrl = `${window.location.protocol}//${window.location.host}`;
-        setProfileUrl(`${baseUrl}/g/${username}`);
-      }, [username]);
-    
-
-	const copyToClipboard = () => {
-		navigator.clipboard.writeText(profileUrl);
-		toast.success("Profile URL copied to clipboard!");
-	};
-
-	if (!session || !session.user) {
-		return <div>Please Login</div>;
+	if (showLoginMessage) {
+		return <div className="flex items-center gap-3 p-3">Please Login</div>;
 	}
 
 	return (
 		<div className="w-full min-h-screen">
-			<div className="flex flex-col gap-3 bg-white shadow border-b rounded-b-2xl px-5 md:px-12 lg:px-28 pt-12">
-				<div className="flex justify-between items-center">
-					<div className="flex items-center gap-5">
-						<div>
-							<Image src={emptyLogo} alt="" width={112} />
-						</div>
-						<div className="flex flex-col gap-2">
-							<div className="text-4xl md:text-5xl">
-								{user?.username || user?.email}
+			<div className="flex flex-col m-3 bg-white shadow border rounded-2xl px-5 md:px-12 lg:px-28 pt-8 ">
+				{/* User info and controls */}
+				<div className="flex justify-between items-start">
+					{/* user info */}
+					<div className="flex flex-col gap-2 h-full">
+						<div className="flex items-center gap-5">
+							<div className="flex">
+								<Image src={emptyLogo} alt="" width={100} priority={true} />
 							</div>
-							<div className="text-base">Lorem ipsum dolor sit amet.</div>
+							<div className="flex flex-col gap-2">
+								<div className="text-4xl md:text-5xl">
+									{user?.username || user?.email}
+								</div>
+								<div className="text-base">Lorem ipsum dolor sit amet.</div>
+							</div>
+						</div>
+						<div>
+							<span> &lt;your-website&gt;</span>
 						</div>
 					</div>
+					{/* fetch controls */}
 					<div className="flex flex-col gap-3 ">
 						<div className="flex items-center gap-2 border px-2 py-2.5 rounded-lg bg-white">
 							<Switch
-								{...register("acceptMessages")}
-								checked={acceptFeedback}
+								checked={isAcceptingFeedback}
 								onCheckedChange={handleSwitchChange}
 								disabled={isSwitchLoading}
 							/>
+
 							<span
-								className={`text-sm font-medium  ${
-									acceptFeedback ? "text-green-500" : "text-rose-600"
+								className={`text-sm font-medium ${
+									isAcceptingFeedback ? "text-green-500" : "text-rose-600"
 								}`}
 							>
 								Accept Feedback
 							</span>
 						</div>
-
 						<Button
 							className="flex items-center justify-center gap-2"
 							variant="outline"
@@ -179,33 +131,28 @@ const DashboardPage = () => {
 								fetchFeedback(true);
 							}}
 						>
-							<span className="font-redium text-sm">Refresh</span>
+							<span className="font-medium text-sm">Refresh</span>
 							{isLoading ? (
 								<Loader className="size-3 animate-spin" />
 							) : (
 								<RefreshCcw className="size-3" />
 							)}
 						</Button>
+						<div className="flex items-center justify-around border rounded-lg bg-white p-2">
+							<span className="font-medium text-sm">Feedback URL</span>
+							<button
+								onClick={() => copyToClipboard(profileUrl)}
+								className="p-1.5 rounded-lg text-sm bg-gray-100"
+							>
+								<Copy className="size-3 text-gray-700" />
+							</button>
+						</div>
 					</div>
 				</div>
-				<div className="mb-2 max-w-sm ">
-					<div className="flex items-center border rounded-lg bg-gray-50 p-1.5">
-						<input
-							type="text"
-							value={profileUrl}
-							disabled
-							className="w-full mr-2 px-2"
-						/>
-						<button
-							onClick={copyToClipboard}
-							className="p-1.5 border rounded-lg text-sm"
-						>
-							<Copy className="size-4 text-gray-600" />
-						</button>
-					</div>
-				</div>
+
+				{/* Tabs */}
 				<main className="sticky top-[64px] overflow-hidden z-10">
-					<div className="px-4 py-3 flex justify-center items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
+					<div className="px-4 py-3 flex  items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
 						{tabsData.map((tab, idx) => (
 							<Chip
 								key={idx}
@@ -218,21 +165,10 @@ const DashboardPage = () => {
 					</div>
 				</main>
 			</div>
-			<div className="flex flex-col max-w-7xl mx-auto bg-rose-200 w-full flex-grow">
-				<div className="flex flex-col items-center gap-3">
-					{feedback.length > 0 ? (
-						feedback.map((message: Feedback, index: any) => (
-							<FeedbackCard
-								key={message._id}
-								feedback={message}
-								onFeedbackDelete={handleDeleteFeedback}
-							/>
-						))
-					) : (
-						<p>No Feedbacks received yet.</p>
-					)}
-				</div>
-			</div>
+			{/* Tab content */}
+			<main className="flex-grow mx-auto w-full md:w-[80%]">
+				<div>{tabsData[selected].content}</div>
+			</main>
 		</div>
 	);
 };
