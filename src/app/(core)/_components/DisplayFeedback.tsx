@@ -4,14 +4,14 @@ import { useEffect } from "react";
 import { Loader } from "lucide-react";
 
 export const DisplayFeedback = () => {
-	const { feedback, isLoading, fetchFeedback } = useFetchFeedback();
+	const { feedback, setFeedback, isLoading, fetchFeedback } = useFetchFeedback();
 
 	useEffect(() => {
 		fetchFeedback();
 	}, [fetchFeedback]);
 
 	const handleDeleteFeedback = (feedbackId: string) => {
-		// Implement delete logic here
+        setFeedback(feedback.filter((message) => message._id !== feedbackId));
 	};
 
 

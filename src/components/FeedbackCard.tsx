@@ -17,12 +17,12 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { toast } from "sonner";
+import { useToast } from "@/components/ui/use-toast";
 
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
 import { Feedback } from "@/models/User";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 
 type FeedbackCardProps = {
@@ -34,12 +34,26 @@ export const FeedbackCard = ({
 	feedback,
 	onFeedbackDelete,
 }: FeedbackCardProps) => {
+	const { toast } = useToast();
+
 	const handleDeleteConfirm = async () => {
-		const url = `/api/delete-message/${feedback._id}`;
-		const response = await axios.delete<ApiResponse>(url);
-		toast("Feedback has been deleted.");
+		try {
+			const response = await axios.delete<ApiResponse>(
+				`/api/delete-feedback/${feedback._id}`
+			);
+			toast({
+				title: response.data.message,
+			});
+			onFeedbackDelete(feedback._id);
+		} catch (error) {
+			const axiosError = error as AxiosError<ApiResponse>;
+			toast({
+				title: "Error",
+				description: "Failed to delete message",
+				variant: "destructive",
+			});
+		}
 	};
-    onFeedbackDelete(feedback._id)
 	return (
 		<Card>
 			<CardHeader>

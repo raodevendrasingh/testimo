@@ -32,5 +32,5 @@ export const useFetchFeedback = () => {
 	}, []);
 	// console.log(feedback);
 
-	return { feedback, isLoading, fetchFeedback };
+	return { feedback, isLoading, setFeedback, fetchFeedback };
 };
