@@ -79,6 +79,7 @@ export const FeedbackCard = ({
 	const { toast } = useToast();
 	const [open, setOpen] = useState(false);
 	const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
+	const [isAlertOpen, setIsAlertOpen] = useState(false);
 
 	const handleDeleteConfirm = async () => {
 		try {
@@ -96,33 +97,7 @@ export const FeedbackCard = ({
 				variant: "destructive",
 			});
 		}
-	};
-
-	const handleDiscardStatus = () => {
-		return (
-			<AlertDialog>
-				<AlertDialogTrigger asChild>
-					<Button variant="destructive">
-						<X className="size-5" />
-					</Button>
-				</AlertDialogTrigger>
-				<AlertDialogContent>
-					<AlertDialogHeader>
-						<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-						<AlertDialogDescription>
-							This action cannot be undone. This will permanently delete this
-							feedback and remove it from our servers.
-						</AlertDialogDescription>
-					</AlertDialogHeader>
-					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<AlertDialogAction onClick={handleDeleteConfirm}>
-							Delete
-						</AlertDialogAction>
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialog>
-		);
+		setIsAlertOpen(false);
 	};
 
 	return (
@@ -200,6 +175,9 @@ export const FeedbackCard = ({
 															) || null
 														);
 														setOpen(false);
+														if (value === "discard") {
+															setIsAlertOpen(true);
+														}
 													}}
 												>
 													<status.icon
@@ -210,13 +188,7 @@ export const FeedbackCard = ({
 																: "opacity-60"
 														)}
 													/>
-													{status.label === "Discard" ? (
-														<button onClick={handleDiscardStatus}>
-															{status.label}
-														</button>
-													) : (
-														status.label
-													)}
+													{status.label}
 												</CommandItem>
 											))}
 										</CommandGroup>
@@ -227,6 +199,25 @@ export const FeedbackCard = ({
 					</div>
 				</div>
 			</div>
+			<AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+						<AlertDialogDescription>
+							This action cannot be undone. This will permanently delete this
+							feedback and remove it from our servers.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel onClick={() => setIsAlertOpen(false)}>
+							Cancel
+						</AlertDialogCancel>
+						<AlertDialogAction onClick={handleDeleteConfirm}>
+							Delete
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 		</>
 	);
 };
