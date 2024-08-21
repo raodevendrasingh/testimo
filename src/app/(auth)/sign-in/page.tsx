@@ -3,10 +3,9 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import * as z from "Zod";
+import * as z from "zod";
 import {
 	Form,
 	FormControl,
@@ -20,18 +19,14 @@ import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
 import { signInSchema } from "@/schemas/signInSchema";
 import { signIn } from "next-auth/react";
+import { toast } from "sonner";
 
 const SignInPage = (): JSX.Element => {
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-	const { toast } = useToast();
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof signInSchema>>({
-		resolver: zodResolver(signInSchema),
-		// defaultValues: {
-		// 	identifier: "",
-		// 	password: "",
-		// },
+		resolver: zodResolver(signInSchema)
 	});
 
 	const onSubmit: SubmitHandler<z.infer<typeof signInSchema>> = async (
@@ -45,10 +40,8 @@ const SignInPage = (): JSX.Element => {
 				password: data.password,
 			});
 
-			toast({
-				title: "Success",
+			toast.success("Success", {
 				description: "You are now logged in!",
-				variant: "success",
 			});
 
 			setIsSubmitting(false);
@@ -57,10 +50,8 @@ const SignInPage = (): JSX.Element => {
 				router.replace("/dashboard");
 			}
 		} catch (error) {
-			toast({
-				title: "Login Failed",
+			toast.error("Failed", {
 				description: "Incorrect username or password",
-				variant: "destructive",
 			});
 		}
 	};
@@ -104,7 +95,7 @@ const SignInPage = (): JSX.Element => {
 						<Button type="submit" disabled={isSubmitting} className="w-full">
 							{isSubmitting ? (
 								<>
-									<Loader className="mr-2 size-4 animate-spin" /> Signing In..
+									<Loader className="mr-2 size-4 animate-spin" /> Loading
 								</>
 							) : (
 								"Sign In"

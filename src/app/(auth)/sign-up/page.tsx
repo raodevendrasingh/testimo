@@ -4,11 +4,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDebounceCallback } from "usehooks-ts";
-import { useToast } from "@/components/ui/use-toast";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import * as z from "Zod";
+import * as z from "zod";
 import axios, { AxiosError } from "axios";
 import { signUpSchema } from "@/schemas/signUpSchema";
 
@@ -25,6 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
+import { toast } from "sonner";
 
 const SignUpPage = (): JSX.Element => {
 	const [username, setUsername] = useState<string>("");
@@ -32,7 +32,6 @@ const SignUpPage = (): JSX.Element => {
 	const [isCheckingUsername, setIsCheckingUsername] = useState<boolean>(false);
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-	const { toast } = useToast();
 	const router = useRouter();
 
 	const debounced = useDebounceCallback(setUsername, 500);
@@ -77,18 +76,14 @@ const SignUpPage = (): JSX.Element => {
 		try {
 			const response = await axios.post<ApiResponse>("/api/sign-up", data);
 			console.log("API Response:", response.data);
-			toast({ title: "Success", description: response.data.message });
+			toast("Success", { description: response.data.message });
 			router.replace(`/verify/${data.username}`);
 		} catch (error) {
 			console.error("Signup Failed: ", error);
 			const axiosError = error as AxiosError<ApiResponse>;
 			let errorMsg =
 				axiosError.response?.data.message || "An unknown error occurred";
-			toast({
-				title: "Sign Up Failed",
-				description: errorMsg,
-				variant: "destructive",
-			});
+			toast.error("Sign Up Failed", { description: errorMsg });
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -169,7 +164,7 @@ const SignUpPage = (): JSX.Element => {
 						>
 							{isSubmitting ? (
 								<>
-									<Loader className="mr-2 size-4 animate-spin" /> Please Wait..
+									<Loader className="mr-2 size-4 animate-spin" /> Loading
 								</>
 							) : (
 								"Sign Up"

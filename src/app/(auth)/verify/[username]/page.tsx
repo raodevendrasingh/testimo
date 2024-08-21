@@ -1,12 +1,11 @@
 "use client";
 
-import { useToast } from "@/components/ui/use-toast";
 import { verifySchema } from "@/schemas/verifySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
-import * as z from "Zod";
+import * as z from "zod";
 
 import {
 	InputOTP,
@@ -25,12 +24,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Loader } from "lucide-react";
+import { toast } from "sonner";
 
 const VerificationPage = () => {
 	const [isVerifying, setIsVerifying] = useState<boolean>(false);
 	const router = useRouter();
 	const params = useParams<{ username: string }>();
-	const { toast } = useToast();
 
 	const form = useForm<z.infer<typeof verifySchema>>({
 		resolver: zodResolver(verifySchema),
@@ -45,19 +44,15 @@ const VerificationPage = () => {
 				username: params.username,
 				code: data.code,
 			});
-			toast({
-				title: "Success",
+			toast.success("Success", {
 				description: response.data.message,
-				variant: "success",
 			});
 			setIsVerifying(false);
 			router.replace("/sign-in");
 		} catch (error) {
 			// console.error("Incorrect Verification Code: ", error);
-			toast({
-				title: "Verification Failed",
+			toast.error("Verification Failed", {
 				description: "Incorrect Verification Code",
-				variant: "destructive",
 			});
 		} finally {
 			setIsVerifying(false);
@@ -107,7 +102,7 @@ const VerificationPage = () => {
 						<Button type="submit" disabled={isVerifying} className="w-full">
 							{isVerifying ? (
 								<>
-									<Loader className="mr-2 size-4 animate-spin" /> Verifying...
+									<Loader className="mr-2 size-4 animate-spin" /> Loading
 								</>
 							) : (
 								"Verify"

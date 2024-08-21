@@ -17,8 +17,7 @@ import {
 	Trash2,
 } from "lucide-react";
 
-import { Button } from "../../../components/ui/button";
-import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Feedback } from "@/models/User";
 import axios from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
@@ -87,7 +86,7 @@ export const FeedbackCard = ({
 			const response = await axios.delete<ApiResponse>(
 				`/api/delete-feedback/${feedback._id}`
 			);
-			toast(response.data.message);
+			toast.success(response.data.message);
 			onFeedbackDelete(feedback._id);
 		} catch (error) {
 			toast.error("Error", {

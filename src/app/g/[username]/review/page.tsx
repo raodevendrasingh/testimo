@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, UseFormReturn, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { ArrowLeft, ArrowRight, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Rating } from "react-simple-star-rating";
@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import * as z from "Zod";
+import * as z from "zod";
 import { ApiResponse } from "@/types/ApiResponse";
 import Link from "next/link";
 import { useParams } from "next/navigation";
