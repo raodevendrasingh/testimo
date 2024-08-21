@@ -7,7 +7,6 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
 import {
@@ -17,7 +16,6 @@ import {
 	PartyPopper,
 	Trash2,
 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
 
 import { Button } from "../../../components/ui/button";
 import { X } from "lucide-react";
@@ -38,6 +36,9 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 import { timesAgo } from "@/helpers/ConvertTimeStamp";
+import { useActionUpdate } from "@/hooks/useActionUpdate";
+import { toast } from "sonner";
+import { capitalize } from "@/helpers/CapitalizeFirstChar";
 
 type Status = {
 	value: string;
@@ -46,22 +47,22 @@ type Status = {
 };
 const statuses: Status[] = [
 	{
-		value: "approve",
+		value: "approved",
 		label: "Approve",
 		icon: PartyPopper,
 	},
 	{
-		value: "archive",
+		value: "archived",
 		label: "Archive",
 		icon: Archive,
 	},
 	{
-		value: "export",
+		value: "exported",
 		label: "Export",
 		icon: ArrowRightFromLine,
 	},
 	{
-		value: "discard",
+		value: "discarded",
 		label: "Discard",
 		icon: Trash2,
 	},
@@ -76,29 +77,42 @@ export const FeedbackCard = ({
 	feedback,
 	onFeedbackDelete,
 }: FeedbackCardProps) => {
-	const { toast } = useToast();
 	const [open, setOpen] = useState(false);
 	const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
 	const [isAlertOpen, setIsAlertOpen] = useState(false);
+	const { actionUpdate, loading, error } = useActionUpdate();
 
 	const handleDeleteConfirm = async () => {
 		try {
 			const response = await axios.delete<ApiResponse>(
 				`/api/delete-feedback/${feedback._id}`
 			);
-			toast({
-				title: response.data.message,
-			});
+			toast(response.data.message);
 			onFeedbackDelete(feedback._id);
 		} catch (error) {
-			toast({
-				title: "Error",
+			toast.error("Error", {
 				description: "Failed to delete message",
-				variant: "destructive",
 			});
 		}
 		setIsAlertOpen(false);
 	};
+
+	const handleActionSelect = async (value: string) => {
+		setSelectedStatus(
+			statuses.find((status) => status.value === value) || null
+		);
+		setOpen(false);
+
+		if (value === "discarded") {
+			setIsAlertOpen(true);
+		} else {
+			await actionUpdate(feedback._id, value);
+		}
+	};
+
+	const matchingStatus = statuses.find(
+		(status) => status.value === feedback.action
+	);
 
 	return (
 		<>
@@ -156,7 +170,18 @@ export const FeedbackCard = ({
 												(selectedStatus.label.endsWith("e") ? "d" : "ed")}
 										</>
 									) : (
-										<>Select Action</>
+										<>
+											{feedback.action === "default" ? (
+												"Select Action"
+											) : matchingStatus ? (
+												<>
+													<matchingStatus.icon className="mr-2 h-4 w-4 shrink-0" />
+													{capitalize(matchingStatus.value)}
+												</>
+											) : (
+												capitalize(feedback.action)
+											)}
+										</>
 									)}
 								</Button>
 							</PopoverTrigger>
@@ -168,17 +193,7 @@ export const FeedbackCard = ({
 												<CommandItem
 													key={status.value}
 													value={status.value}
-													onSelect={(value) => {
-														setSelectedStatus(
-															statuses.find(
-																(priority) => priority.value === value
-															) || null
-														);
-														setOpen(false);
-														if (value === "discard") {
-															setIsAlertOpen(true);
-														}
-													}}
+													onSelect={handleActionSelect}
 												>
 													<status.icon
 														className={cn(
