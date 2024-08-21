@@ -4,7 +4,7 @@ import { UserModel, Feedback } from "@/models/User";
 export async function POST(request: Request) {
 	await dbConnect();
 
-	const { username, content, rating, name, jobTitle, imageUrl } =
+	const { username, action, content, rating, name, jobTitle, imageUrl } =
 		await request.json();
 
 	try {
@@ -30,6 +30,7 @@ export async function POST(request: Request) {
 		}
 
 		const newFeedback = {
+			action: "default",
 			content,
 			rating,
 			name,
@@ -44,6 +45,7 @@ export async function POST(request: Request) {
 			{
 				sucess: true,
 				message: "Feedback is sent successfully!",
+				feedback: newFeedback,
 			},
 			{ status: 200 }
 		);

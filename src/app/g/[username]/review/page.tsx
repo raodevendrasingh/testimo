@@ -16,7 +16,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import * as z from "Zod";
 import { ApiResponse } from "@/types/ApiResponse";
 import Link from "next/link";
@@ -42,6 +42,7 @@ export default function SendMessage() {
 	const form = useForm<z.infer<typeof feedbackSchema>>({
 		resolver: zodResolver(feedbackSchema),
 		defaultValues: {
+			action: "default",
 			rating: 0,
 			content: "",
 			name: "",
@@ -89,29 +90,20 @@ export default function SendMessage() {
 	) => {
 		setIsLoading(true);
 
-		const feedbackData = { ...data, username: username };
-		feedbackData.username = username;
-
-		console.log("Feedback data:", feedbackData);
+		const feedbackData = { ...data, username: username, action: "default" };
 
 		try {
 			const response = await axios.post<ApiResponse>(
 				"/api/send-feedback",
 				feedbackData
 			);
-			console.log("Feedback data with username:", feedbackData);
-
-			console.log(response.data);
-			toast({
-				title: response.data.message,
-			});
+            console.log(response.data);
+			toast.success(response.data.message);
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
-			toast({
-				title: "Error",
+			toast.error("Error", {
 				description:
 					axiosError.response?.data.message ?? "Failed to send message",
-				variant: "destructive",
 			});
 		} finally {
 			setIsLoading(false);

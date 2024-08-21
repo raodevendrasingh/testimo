@@ -1,6 +1,7 @@
 import mongoose, {Schema, Document} from "mongoose";
 
 export interface Feedback extends Document{
+    action: string;
     content: string,
     rating: number,
     name: string,
@@ -10,6 +11,11 @@ export interface Feedback extends Document{
 }
 
 const FeedbackSchema: Schema<Feedback> = new Schema({
+    action: {
+        type: String,
+        default: "default",
+        required: true,
+    },
     content: {
         type: String,
         required: true,
