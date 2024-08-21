@@ -24,19 +24,13 @@ export const DisplayFeedback = () => {
 						<p>Loading</p>
 					</span>
 				) : feedback.length > 0 ? (
-					feedback
-						.sort(
-							(a, b) =>
-								new Date(b.createdAt).getTime() -
-								new Date(a.createdAt).getTime()
-						)
-						.map((message) => (
-							<FeedbackCard
-								key={message._id}
-								feedback={message}
-								onFeedbackDelete={handleDeleteFeedback}
-							/>
-						))
+					feedback.map((message) => (
+						<FeedbackCard
+							key={message._id}
+							feedback={message}
+							onFeedbackDelete={handleDeleteFeedback}
+						/>
+					))
 				) : (
 					<p>No Feedbacks received yet.</p>
 				)}

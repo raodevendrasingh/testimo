@@ -1,8 +1,8 @@
-import { getServerSession, User } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/options";
 import dbConnect from "@/lib/dbConnect";
 import { UserModel } from "@/models/User";
 import mongoose from "mongoose";
+import { getServerSession, User } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/options";
 
 export async function GET(request: Request) {
 	await dbConnect();
@@ -24,22 +24,15 @@ export async function GET(request: Request) {
 	const userId = new mongoose.Types.ObjectId(_user._id);
 
 	try {
-		const user = await UserModel.findById(userId)
-			.select("feedback")
-			.lean()
-			.exec();
+		const userFeedback = await UserModel.aggregate([
+			{ $match: { _id: userId } },
+			{ $unwind: "$feedback" },
+			{ $sort: { "feedback.createdAt": -1 } },
+			{ $group: { _id: "$_id", feedback: { $push: "$feedback" } } },
+			{ $project: { feedback: 1 } }, // Do not exclude _id
+		]);
 
-		if (!user) {
-			return new Response(
-				JSON.stringify({
-					success: false,
-					message: "User not found",
-				}),
-				{ status: 404 }
-			);
-		}
-
-		if (!user.feedback || user.feedback.length === 0) {
+		if (!userFeedback || userFeedback.length === 0) {
 			return new Response(
 				JSON.stringify({
 					success: false,
@@ -52,7 +45,7 @@ export async function GET(request: Request) {
 		return new Response(
 			JSON.stringify({
 				success: true,
-				feedback: user.feedback,
+				feedback: userFeedback[0].feedback,
 			}),
 			{ status: 200 }
 		);
