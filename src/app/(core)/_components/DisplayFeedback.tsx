@@ -15,6 +15,17 @@ export const DisplayFeedback = () => {
 		setFeedback(feedback.filter((message) => message._id !== feedbackId));
 	};
 
+	const actionsToExclude = ["archived"];
+
+	const filterFeedback = (
+		feedback: any[],
+		actionsToExclude: string | any[]
+	) => {
+		return feedback.filter(
+			(message) => !actionsToExclude.includes(message.action)
+		);
+	};
+
 	return (
 		<div className="flex flex-col max-w-7xl mx-auto w-full flex-grow">
 			<div className="flex flex-col items-center gap-3 p-3">
@@ -24,7 +35,7 @@ export const DisplayFeedback = () => {
 						<p>Loading</p>
 					</span>
 				) : feedback.length > 0 ? (
-					feedback.map((message) => (
+					filterFeedback(feedback, actionsToExclude).map((message) => (
 						<FeedbackCard
 							key={message._id}
 							feedback={message}
