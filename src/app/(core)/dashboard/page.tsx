@@ -8,7 +8,7 @@ import emptyLogo from "@/assets/placeholder/emptyLogo.png";
 import { Switch } from "@/components/ui/switch";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowUpRight, Copy, Loader, RefreshCcw } from "lucide-react";
+import { ArrowUpRight, Copy, Loader, Pencil, RefreshCcw } from "lucide-react";
 import { Chip } from "@/app/(core)/_components/Chips";
 import { useFetchFeedback } from "@/hooks/useFetchFeedback";
 import { useFetchAcceptFeedback } from "@/hooks/useFetchAcceptFeedback";
@@ -16,6 +16,7 @@ import { copyToClipboard } from "@/helpers/CopytoClipboard";
 import { DisplayFeedback } from "../_components/DisplayFeedback";
 import { ArchivedFeedback } from "../_components/ArchivedFeedback";
 import { FeedbackInsights } from "../_components/FeedbackInsights";
+import { UserDetailModal } from "../_components/UserDetailModal";
 
 const tabsData = [
 	{
@@ -38,6 +39,13 @@ const DashboardPage = () => {
 	const [profileUrl, setProfileUrl] = useState<string>("");
 	const [showLoginMessage, setShowLoginMessage] = useState(false);
 	const [isFetchingUser, setIsFetchingUser] = useState(true);
+	const [showUserDetailModal, setShowUserDetailModal] =
+		useState<boolean>(false);
+	const [refresh, setRefresh] = useState(false);
+
+	const handleRefresh = () => {
+		setRefresh(!refresh);
+	};
 
 	const user = session?.user as User;
 	const username = user?.username;
@@ -76,7 +84,7 @@ const DashboardPage = () => {
 
 	if (isFetchingUser) {
 		return (
-			<div className="w-full h-screen flex justify-center items-center gap-3 bg-gray-50 p-3">
+			<div className="w-full h-screen flex justify-center items-center gap-3 bg-gray-50 p-3 z-50">
 				<Loader className="size-4 animate-spin" />
 				Fetching Session Info
 			</div>
@@ -89,9 +97,9 @@ const DashboardPage = () => {
 
 	return (
 		<div className="w-full min-h-screen">
-			<div className="flex flex-col bg-white border-b px-5 md:px-12 lg:px-28 pt-5 ">
+			<div className="flex flex-col bg-white border-b px-5 md:px-12 lg:px-28 pt-10">
 				{/* User info and controls */}
-				<div className="flex flex-col sm:flex-row justify-between gap-2 items-center sm:items-start ">
+				<div className="flex flex-col sm:flex-row justify-between gap-2 items-center sm:items-start">
 					{/* user info */}
 					<div className="flex flex-col gap-2 h-full">
 						<div className="flex items-center justify-start gap-3 sm:gap-5">
@@ -110,6 +118,21 @@ const DashboardPage = () => {
 									</div>
 								</Link>
 							</div>
+						</div>
+						<div className="relative bottom-32 left-[300px] xs:left-80 sm:left-96 size-8 flex justify-center items-center">
+							<button
+								type="button"
+								onClick={() => setShowUserDetailModal(true)}
+								className="flex justify-center items-center size-8 hover:bg-gray-100 rounded-full "
+							>
+								<Pencil className="size-4 hover:bg-gray-100 " />
+							</button>
+							{showUserDetailModal && (
+								<UserDetailModal
+									setShowUserDetailModal={setShowUserDetailModal}
+									onSave={handleRefresh}
+								/>
+							)}
 						</div>
 					</div>
 					{/* fetch controls */}

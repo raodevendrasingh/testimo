@@ -37,7 +37,7 @@ const FeedbackSchema: Schema<Feedback> = new Schema({
 	},
 	imageUrl: {
 		type: String,
-        match: urlMatcher,
+		match: urlMatcher,
 	},
 	createdAt: {
 		type: Date,
@@ -50,6 +50,7 @@ export interface Socials extends Document {
 	linkedin?: string;
 	twitter?: string;
 	instagram?: string;
+	
 }
 
 const SocialSchema: Schema<Socials> = new Schema({
@@ -78,6 +79,7 @@ export interface User extends Document {
 	verifyCodeExpiry: Date;
 	isVerified: boolean;
 	isAcceptingFeedback: boolean;
+    companysite?: string;
 	socials: Socials[];
 	feedback: Feedback[];
 }
@@ -95,7 +97,7 @@ const UserSchema: Schema<User> = new Schema({
 	},
 	imageUrl: {
 		type: String,
-        match: urlMatcher,
+		match: urlMatcher,
 	},
 	tagline: {
 		type: String,
