@@ -1,3 +1,5 @@
-# Anonymous Message App
+# critiqly
 
-### Tech Stack : Next, Tailwind, Shadcn
+### Tech Stack : NextJS, Tailwind, Shadcn, Next-Auth, MongoDB
+
+NextJS app to collect user Feedback / Testimonials by providing them with your unique review link
