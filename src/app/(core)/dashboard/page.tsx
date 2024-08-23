@@ -86,7 +86,7 @@ const DashboardPage = () => {
 
 	useEffect(() => {
 		const baseUrl = `${window.location.protocol}//${window.location.host}`;
-		setProfileUrl(`${baseUrl}/g/${username}/review`);
+		setProfileUrl(`${baseUrl}/i/${username}/review`);
 	}, [username]);
 
 	useEffect(() => {

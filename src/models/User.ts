@@ -30,7 +30,6 @@ const FeedbackSchema: Schema<Feedback> = new Schema({
 	},
 	name: {
 		type: String,
-		required: true,
 	},
 	jobTitle: {
 		type: String,
