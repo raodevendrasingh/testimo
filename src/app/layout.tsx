@@ -7,8 +7,8 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "Feedback App",
-	description: "",
+	title: "Critiqly",
+	description: "Collecting Testimonials and Endorsements made easy",
 };
 
 export default function RootLayout({

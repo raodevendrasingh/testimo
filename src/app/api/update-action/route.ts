@@ -54,7 +54,7 @@ export async function POST(request: Request) {
 			{ status: 200 }
 		);
 	} catch (error) {
-		console.error("Failed to update feedback action!\n", error);
+		// console.error("Failed to update feedback action!\n", error);
 		return Response.json(
 			{
 				sucess: false,

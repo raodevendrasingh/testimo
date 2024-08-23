@@ -46,7 +46,7 @@ export async function DELETE(
 			{ status: 200 }
 		);
 	} catch (error) {
-        console.error('An Error occured while deleting feedback', error);
+        // console.error('An Error occured while deleting feedback', error);
 		return new Response(
 			JSON.stringify({
 				success: false,

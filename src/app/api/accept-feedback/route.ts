@@ -49,7 +49,7 @@ export async function POST(request: Request) {
 			{ status: 200 }
 		);
 	} catch (error) {
-		console.error("Failed to update status to accept feedback!\n", error);
+		// console.error("Failed to update status to accept feedback!\n", error);
 		return Response.json(
 			{
 				sucess: false,

@@ -50,7 +50,7 @@ export async function POST(request: Request) {
 			{ status: 200 }
 		);
 	} catch (error) {
-		console.error("Error sending feedback\n", error);
+		// console.error("Error sending feedback\n", error);
 		return Response.json(
 			{
 				sucess: false,

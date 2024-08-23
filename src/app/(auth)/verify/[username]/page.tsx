@@ -50,7 +50,6 @@ const VerificationPage = () => {
 			setIsVerifying(false);
 			router.replace("/sign-in");
 		} catch (error) {
-			// console.error("Incorrect Verification Code: ", error);
 			toast.error("Verification Failed", {
 				description: "Incorrect Verification Code",
 			});

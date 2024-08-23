@@ -69,8 +69,6 @@
 }
 
 /* Global CSS for Rating Component */
-/* Override default styles for react-simple-star-rating */
-/* Target the main wrapper */
 .style-module_starRatingWrap__q-lJC {
 	display: inline-block !important;
 	white-space: nowrap !important;

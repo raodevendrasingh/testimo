@@ -29,7 +29,7 @@ export async function GET(request: Request) {
 			{ $unwind: "$feedback" },
 			{ $sort: { "feedback.createdAt": -1 } },
 			{ $group: { _id: "$_id", feedback: { $push: "$feedback" } } },
-			{ $project: { feedback: 1 } }, // Do not exclude _id
+			{ $project: { feedback: 1 } },
 		]);
 
 		if (!userFeedback || userFeedback.length === 0) {
@@ -50,7 +50,7 @@ export async function GET(request: Request) {
 			{ status: 200 }
 		);
 	} catch (error) {
-		console.error("An Unexpected error occurred\n", error);
+		// console.error("An Unexpected error occurred\n", error);
 		return new Response(
 			JSON.stringify({
 				success: false,

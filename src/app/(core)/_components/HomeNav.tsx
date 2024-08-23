@@ -8,7 +8,7 @@ export const HomeNav = (): JSX.Element => {
 
 	return (
 		<header className="w-full text-zinc-800 bg-white z-20 sticky border-b top-0">
-			<div className="container mx-auto px-4 py-3">
+			<div className="container mx-auto px-4 py-2.5">
 				<div className="flex items-center justify-between">
 					<div className="flex gap-2 items-center">
 						<Link href="/" className="flex items-center space-x-2">

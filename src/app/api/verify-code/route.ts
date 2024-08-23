@@ -53,7 +53,7 @@ export async function POST(request: Request) {
 			);
 		}
 	} catch (error) {
-		console.error("Error verifying code!\n", error);
+		// console.error("Error verifying code!\n", error);
 		return Response.json(
 			{
 				sucess: false,

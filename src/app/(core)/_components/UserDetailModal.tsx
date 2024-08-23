@@ -29,7 +29,7 @@ export const UserDetailModal: React.FC<{
 	onSave: () => void;
 	setShowUserDetailModal: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ setShowUserDetailModal, onSave }) => {
-    const { data: session } = useSession();
+	const { data: session } = useSession();
 	const [currentScreen, setCurrentScreen] = useState(0);
 	const [slideDirection, setSlideDirection] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +55,6 @@ export const UserDetailModal: React.FC<{
 		handleSubmit,
 		formState: { errors, isValid, touchedFields },
 		watch,
-		trigger,
 		setValue,
 	} = form;
 
@@ -64,9 +63,8 @@ export const UserDetailModal: React.FC<{
 
 	const isFirstScreenValid = name.length >= 3 && tagline.length >= 5;
 
-    const user = session?.user as User;
+	const user = session?.user as User;
 	const username = user?.username;
-    // console.log(username);
 
 	const handleNext = (e: React.MouseEvent) => {
 		e.preventDefault();
@@ -102,16 +100,14 @@ export const UserDetailModal: React.FC<{
 
 	const onSubmit = async (data: any) => {
 		setIsLoading(true);
-		const formData = { ...data, username:username}
-        console.log(formData);
+		const formData = { ...data, username: username };
 
 		try {
 			const response = await axios.post("/api/add-user-details", formData);
-			console.log("API Response:", response.data);
 			toast.success(response.data.message);
+            setShowUserDetailModal(false);
 			onSave();
 		} catch (error) {
-			console.error("API Error:", error);
 			if (axios.isAxiosError(error) && error.response?.status === 404) {
 				toast.error("Error: API endpoint not found (404)");
 			} else {
@@ -241,7 +237,7 @@ const UserDetailScreen: React.FC<{
 	return (
 		<div className="flex flex-col gap-2">
 			<FormLabel>Profile Picture</FormLabel>
-			<div className="w-full border h-24 border-dashed rounded-lg p-2 flex justify-center items-center border-gray-400 bg-gray-50">
+			<div className="w-full border h-24 border-dashed rounded-lg p-2 flex justify-center items-center border-gray-400 bg-sky-50">
 				<CldUploadWidget
 					options={{
 						sources: ["local"],
@@ -289,8 +285,12 @@ const UserDetailScreen: React.FC<{
 				>
 					{({ open }) => (
 						<button
-							onClick={() => open()}
-							className="flex justify-center hover:bg-sky-50 items-center text-gray-600 gap-3 p-8 w-full"
+							type="button"
+							onClick={(e) => {
+								e.preventDefault();
+								open();
+							}}
+							className="flex justify-center items-center text-gray-600 gap-3 p-8 w-full"
 						>
 							{publicId ? (
 								<>

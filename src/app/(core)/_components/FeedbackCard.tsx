@@ -120,7 +120,16 @@ export const FeedbackCard = ({
 
 	return (
 		<>
-			<div className="flex flex-col xs:flex-row items-start justify-start mx-5 p-2 gap-1 w-full rounded-md h-full bg-zinc-50">
+			<div
+				className={cn(
+					"flex flex-col xs:flex-row items-start justify-start mx-5 p-2 gap-1 w-full rounded-md h-full",
+					{
+						"bg-red-50": feedback.action === "default",
+						"bg-zinc-50": feedback.action !== "default",
+					}
+				)}
+			>
+				{" "}
 				{/* display picture */}
 				<div className="p-1 flex justify-center h-full w-full xs:w-[20%]">
 					{feedback.imageUrl ? (

@@ -25,7 +25,6 @@ export const useFetchUserDetail = () => {
 			setIsUserLoading(false);
 		}
 	}, []);
-	// console.log(userDetail);
 
 	return { userDetail, isUserLoading, setUserDetail, fetchUserData };
 };

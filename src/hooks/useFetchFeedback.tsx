@@ -16,9 +16,7 @@ export const useFetchFeedback = () => {
 			const response = await axios.get<ApiResponse>("/api/get-feedback");
 			setFeedback(response.data.feedback || []);
 			if (refresh) {
-				toast.success("Feedbacks Refreshed", {
-					description: "Showing latest feedbacks",
-				});
+				toast("Feedback Refreshed");
 			}
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
@@ -30,7 +28,6 @@ export const useFetchFeedback = () => {
 			setIsLoading(false);
 		}
 	}, []);
-	// console.log(feedback);
 
 	return { feedback, isLoading, setFeedback, fetchFeedback };
 };

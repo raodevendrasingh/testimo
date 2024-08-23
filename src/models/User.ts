@@ -90,7 +90,6 @@ const UserSchema: Schema<User> = new Schema({
 	},
 	name: {
 		type: String,
-		required: [true, "Name is Required"],
 	},
 	imageUrl: {
 		type: String,

@@ -43,7 +43,7 @@ export const DisplayFeedback = () => {
 						/>
 					))
 				) : (
-					<p>No Feedbacks received yet.</p>
+					<p className="py-5">No Feedbacks Received</p>
 				)}
 			</div>
 		</div>

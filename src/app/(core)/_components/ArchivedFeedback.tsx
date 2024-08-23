@@ -28,13 +28,13 @@ export const ArchivedFeedback = () => {
 						.filter((message) => message.action === "archived") 
 						.map((message) => (
 							<FeedbackCard
-								key={message._id}
+								key={message._id as string}
 								feedback={message}
 								onFeedbackDelete={handleDeleteFeedback}
 							/>
 						))
 				) : (
-					<p>No Feedbacks received yet.</p>
+					<p className="py-5">No Archived Feedbacks</p>
 				)}
 			</div>
 		</div>

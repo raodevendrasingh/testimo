@@ -58,7 +58,7 @@ export async function GET(request: Request) {
 			{ status: 200 }
 		);
 	} catch (error) {
-		console.error("An Unexpected error occurred\n", error);
+		// console.error("An Unexpected error occurred\n", error);
 		return new Response(
 			JSON.stringify({
 				success: false,
