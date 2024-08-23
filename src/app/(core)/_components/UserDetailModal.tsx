@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { AnimatePresence, motion } from "framer-motion";
@@ -56,11 +56,6 @@ export const UserDetailModal: React.FC<{
 		setValue,
 	} = form;
 
-	// const name = watch("name");
-	// const tagline = watch("tagline");
-
-	// const isFirstScreenValid = name.length >= 3 && (tagline?.length ?? 0) >= 3;
-
 	const name = watch("name");
 	const tagline = watch("tagline");
 
@@ -100,7 +95,7 @@ export const UserDetailModal: React.FC<{
 
 	const onSubmit = async (data: any) => {
 		setIsLoading(true);
-		console.log("Form data:", data);
+		// console.log("Form data:", data);
 
 		try {
 			const response = await axios.post("/api/add-user-detail", data);
@@ -238,8 +233,43 @@ const UserDetailScreen: React.FC<{
 	return (
 		<div className="flex flex-col gap-2">
 			<FormLabel>Profile Picture</FormLabel>
-			<div className="w-full border h-24 border-dashed rounded-lg p-2 flex justify-center items-center border-gray-400 bg-sky-50">
+			<div className="w-full border h-24 border-dashed rounded-lg p-2 flex justify-center items-center border-gray-400 bg-gray-50">
 				<CldUploadWidget
+					options={{
+						sources: ["local"],
+						multiple: false,
+						maxFiles: 1,
+						cropping: true,
+						croppingAspectRatio: 1,
+						showSkipCropButton: false,
+						clientAllowedFormats: ["jpg", "jpeg", "png"],
+						minImageWidth: 300,
+						minImageHeight: 300,
+						maxImageFileSize: 1050000,
+						styles: {
+							palette: {
+								window: "#FFFFFF",
+								windowBorder: "#90A0B3",
+								tabIcon: "#141414",
+								menuIcons: "#5A616A",
+								textDark: "#000000",
+								textLight: "#FFFFFF",
+								link: "#141414",
+								action: "#FF620C",
+								error: "#F44235",
+								inProgress: "#0078FF",
+								complete: "#20B832",
+								sourceBg: "#FFFFFF",
+							},
+							fonts: {
+								default: null,
+								"'Poppins', sans-serif": {
+									url: "https://fonts.googleapis.com/css?family=Poppins",
+									active: true,
+								},
+							},
+						},
+					}}
 					uploadPreset={process.env.NEXT_PUBLIC_UPLOAD_PRESET}
 					onSuccess={(results: CloudinaryUploadWidgetResults) => {
 						if (typeof results.info === "object" && results.info !== null) {
@@ -252,7 +282,7 @@ const UserDetailScreen: React.FC<{
 					{({ open }) => (
 						<button
 							onClick={() => open()}
-							className="flex justify-center items-center text-gray-600 gap-3"
+							className="flex justify-center hover:bg-sky-50 items-center text-gray-600 gap-3 p-8 w-full"
 						>
 							{publicId ? (
 								<>
