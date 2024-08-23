@@ -20,6 +20,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
+import { useSession } from "next-auth/react";
+import { User } from "next-auth";
 
 const screens = ["Update Details", "Add Social Links"];
 
@@ -27,6 +29,7 @@ export const UserDetailModal: React.FC<{
 	onSave: () => void;
 	setShowUserDetailModal: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ setShowUserDetailModal, onSave }) => {
+    const { data: session } = useSession();
 	const [currentScreen, setCurrentScreen] = useState(0);
 	const [slideDirection, setSlideDirection] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
@@ -60,6 +63,10 @@ export const UserDetailModal: React.FC<{
 	const tagline = watch("tagline");
 
 	const isFirstScreenValid = name.length >= 3 && tagline.length >= 5;
+
+    const user = session?.user as User;
+	const username = user?.username;
+    // console.log(username);
 
 	const handleNext = (e: React.MouseEvent) => {
 		e.preventDefault();
@@ -95,10 +102,11 @@ export const UserDetailModal: React.FC<{
 
 	const onSubmit = async (data: any) => {
 		setIsLoading(true);
-		// console.log("Form data:", data);
+		const formData = { ...data, username:username}
+        console.log(formData);
 
 		try {
-			const response = await axios.post("/api/add-user-detail", data);
+			const response = await axios.post("/api/add-user-details", formData);
 			console.log("API Response:", response.data);
 			toast.success("User details updated successfully");
 			onSave();
