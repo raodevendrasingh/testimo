@@ -33,11 +33,16 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+
 import { useState } from "react";
 import { timesAgo } from "@/helpers/ConvertTimeStamp";
 import { useActionUpdate } from "@/hooks/useActionUpdate";
 import { toast } from "sonner";
 import { capitalize } from "@/helpers/CapitalizeFirstChar";
+import { CldImage } from "next-cloudinary";
+
+import emptyUser from "@/assets/placeholder/emptyUser.png";
+import Image from "next/image";
 
 type Status = {
 	value: string;
@@ -87,7 +92,7 @@ export const FeedbackCard = ({
 				`/api/delete-feedback/${feedback._id}`
 			);
 			toast.success(response.data.message);
-			onFeedbackDelete(feedback._id);
+			onFeedbackDelete(feedback._id as string);
 		} catch (error) {
 			toast.error("Error", {
 				description: "Failed to delete message",
@@ -105,7 +110,7 @@ export const FeedbackCard = ({
 		if (value === "discarded") {
 			setIsAlertOpen(true);
 		} else {
-			await actionUpdate(feedback._id, value);
+			await actionUpdate(feedback._id as string, value);
 		}
 	};
 
@@ -118,7 +123,23 @@ export const FeedbackCard = ({
 			<div className="flex flex-col xs:flex-row items-start justify-start mx-5 p-2 gap-1 w-full rounded-md h-full bg-zinc-50">
 				{/* display picture */}
 				<div className="p-1 flex justify-center h-full w-full xs:w-[20%]">
-					<div className="size-16 rounded-md bg-gradient-to-br from-teal-300 to-green-400" />
+					{feedback.imageUrl ? (
+						<CldImage
+							src={feedback.imageUrl as string}
+							alt="pfp"
+							width={80}
+							height={80}
+							className="rounded-lg"
+						/>
+					) : (
+						<Image
+							src={emptyUser}
+							alt="pfp"
+							width={80}
+							height={80}
+							className="rounded-lg"
+						/>
+					)}
 				</div>
 				<div className="flex flex-col-reverse xs:flex-row gap-2 w-full">
 					{/* content */}
@@ -126,14 +147,18 @@ export const FeedbackCard = ({
 						<div className="flex flex-col h-full justify-center items-center xs:justify-start xs:items-start">
 							<div className="flex flex-col justify-center xs:items-start items-center">
 								<div className="flex flex-col-reverse xs:flex-row justify-center items-center xs:items-start xs:justify-start  gap-2 ">
-									<div className="flex flex-col justify-center items-center xs:items-start xs:justify-startxs:items-start xs:justify-start ">
-										<span className="text-base font-semibold">
-											{feedback.name}
-										</span>
-										<span className="text-xs font-medium text-gray-600">
-											{feedback.jobTitle}
-										</span>
-									</div>
+									{feedback.name ||
+										(feedback.jobTitle && (
+											<div className="flex flex-col justify-center items-center xs:items-start xs:justify-startxs:items-start xs:justify-start ">
+												<span className="text-base font-semibold">
+													{feedback.name}
+												</span>
+												<span className="text-xs font-medium text-gray-600">
+													{feedback.jobTitle}
+												</span>
+											</div>
+										))}
+
 									<span className="text-yellow-300 text-base">
 										{Array.from({ length: feedback.rating }).map((_, index) => (
 											<span key={index} className="text-xl">

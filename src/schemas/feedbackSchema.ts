@@ -8,7 +8,7 @@ export const feedbackSchema = z.object({
 	rating: z.number().min(1, { message: "Select at least one star" }),
 	name: z
 		.string()
-		.min(5, { message: "Name must be at least 5 characters" })
+		.min(4, { message: "Name must be at least 4 characters" })
 		.max(30, { message: "Name must not exceed 30 characters" })
         .optional(),
 	jobTitle: z
