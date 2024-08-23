@@ -42,7 +42,6 @@ export async function POST(request: Request) {
 			JSON.stringify({
 				success: true,
 				message: "User details updated successfully!",
-				data: user,
 			}),
 			{ status: 200 }
 		);

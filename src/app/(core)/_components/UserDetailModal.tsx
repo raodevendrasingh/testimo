@@ -108,7 +108,7 @@ export const UserDetailModal: React.FC<{
 		try {
 			const response = await axios.post("/api/add-user-details", formData);
 			console.log("API Response:", response.data);
-			toast.success("User details updated successfully");
+			toast.success(response.data.message);
 			onSave();
 		} catch (error) {
 			console.error("API Error:", error);
