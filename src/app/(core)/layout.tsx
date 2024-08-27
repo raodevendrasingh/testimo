@@ -6,9 +6,9 @@ export default async function CoreLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<div className="flex flex-col min-h-screen">
+		<main className="flex flex-col">
             <HomeNav/>
 			{children}
-		</div>
+		</main>
 	);
 }
