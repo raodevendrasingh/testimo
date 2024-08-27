@@ -11,18 +11,21 @@ import {
 	Rows3,
 	ChartArea,
 	FolderInput,
+	LayoutTemplate,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import TestimonialPage from "../dashboard/testimonials/page";
 import ArchivesPage from "../dashboard/archives/page";
 import InsightsPage from "../dashboard/insights/page";
 import ExportsPage from "../dashboard/exports/page";
+import CustomizePage from "../dashboard/customized/page";
 
 type Tabs = {
 	title: string;
 	href: string;
 	icon: LucideIcon;
 	content: ReactNode;
+	disabled?: boolean;
 };
 
 export const tabsData: Tabs[] = [
@@ -39,22 +42,30 @@ export const tabsData: Tabs[] = [
 		content: <TestimonialPage />,
 	},
 	{
-		title: "Archives",
-		href: "/archives",
-		icon: Archive,
-		content: <ArchivesPage />,
-	},
-	{
 		title: "Exports",
 		href: "/exports",
 		icon: FolderInput,
 		content: <ExportsPage />,
 	},
 	{
+		title: "Archives",
+		href: "/archives",
+		icon: Archive,
+		content: <ArchivesPage />,
+	},
+	{
+		title: "Customize Page",
+		href: "/customize-page",
+		icon: LayoutTemplate,
+		content: <CustomizePage />,
+		disabled: true,
+	},
+	{
 		title: "Insights",
 		href: "/insights",
 		icon: ChartArea,
 		content: <InsightsPage />,
+		disabled: true,
 	},
 ];
 
@@ -66,14 +77,18 @@ type SidebarProps = {
 const Sidebar: React.FC<SidebarProps> = ({ selectedTab, setSelectedTab }) => {
 	return (
 		<div>
-			<main className="absolute w-56 flex flex-col justify-between left-20 h-[calc(100vh-58px)] z-10 border-r">
-				<div className="py-3 flex flex-col justify-start gap-2 ">
+			<main className="absolute w-56 lg:flex flex-col hidden justify-between left-20 h-[calc(100vh-58px)] z-10 border-r">
+				<aside className="py-3 flex flex-col justify-start gap-2 ">
 					{tabsData.map((tab, idx) => (
 						<ul key={idx} className="flex flex-col justify-start gap-1 w-full ">
 							<li className="px-3">
 								<button
-									onClick={() => setSelectedTab(idx)}
-									className="flex w-44 items-center gap-3 rounded-md py-2 px-4 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-slate-700"
+									onClick={() => !tab.disabled && setSelectedTab(idx)}
+									className={cn(
+										"flex w-48 items-center gap-3 rounded-md py-2.5 px-4 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-slate-700",
+										tab.disabled && "cursor-not-allowed opacity-50"
+									)}
+									disabled={tab.disabled}
 								>
 									<span className="w-1/5">
 										<tab.icon
@@ -90,7 +105,7 @@ const Sidebar: React.FC<SidebarProps> = ({ selectedTab, setSelectedTab }) => {
 							</li>
 						</ul>
 					))}
-				</div>
+				</aside>
 				<div className="m-3 p-3 h-44 w-48 select-none border rounded-xl flex flex-col items-center gap-3 justify-start relative">
 					<div className="w-full flex flex-col items-center justify-start gap-3">
 						<div className="font-semibold text-base text-left w-full text-slate-800">
@@ -113,7 +128,6 @@ const Sidebar: React.FC<SidebarProps> = ({ selectedTab, setSelectedTab }) => {
 						</Link>
 					</div>
 				</div>
-				
 			</main>
 		</div>
 	);
