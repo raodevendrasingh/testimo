@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import { FeedbackCard } from "@/app/(core)/_components/FeedbackCard";
@@ -28,10 +28,13 @@ const TestimonialPage = () => {
 			(message) => !actionsToExclude.includes(message.action)
 		);
 	};
+
+	const filteredFeedback = filterFeedback(feedback, actionsToExclude);
+
 	return (
 		<div className="w-full mx-auto scrollbar-hide">
 			<div className="max-w-6xl mx-auto lg:ml-72 w-full ">
-				<div className="max-w-5xl h-[calc(100vh-58px)] mx-auto p-3 w-full pr-16 border-r">
+				<div className="max-w-5xl h-[calc(100vh-58px)] mx-auto p-3 w-full pr-16 border-r overflow-y-auto">
 					<div className="flex flex-col max-w-7xl mx-auto w-full flex-grow">
 						<div className="flex flex-col items-center gap-3 p-3">
 							{isLoading ? (
@@ -39,8 +42,8 @@ const TestimonialPage = () => {
 									<Loader className="animate-spin size-4 text-gray-600" />
 									<p>Loading</p>
 								</span>
-							) : feedback.length > 0 ? (
-								filterFeedback(feedback, actionsToExclude).map((message) => (
+							) : filteredFeedback.length > 0 ? (
+								filteredFeedback.map((message) => (
 									<FeedbackCard
 										key={message._id}
 										feedback={message}
@@ -48,7 +51,7 @@ const TestimonialPage = () => {
 									/>
 								))
 							) : (
-								<p className="py-5">No Feedbacks Received</p>
+								<p className="py-5">No Testimonials Available</p>
 							)}
 						</div>
 					</div>

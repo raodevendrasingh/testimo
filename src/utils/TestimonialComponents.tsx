@@ -26,7 +26,7 @@ const CopyableTitle = ({
 	return (
 		<div className="flex items-center justify-start gap-2 w-full">
 			<span className="text-lg font-medium font-sans p-1">{title}</span>
-			<button onClick={copyToClipboard} className="">
+			<button onClick={copyToClipboard} className="pt-0.5">
 				{copied ? (
 					<ClipboardCheck className="size-4 text-green-500" />
 				) : (

@@ -77,7 +77,7 @@ type SidebarProps = {
 const Sidebar: React.FC<SidebarProps> = ({ selectedTab, setSelectedTab }) => {
 	return (
 		<div>
-			<main className="absolute w-56 lg:flex flex-col hidden justify-between left-20 h-[calc(100vh-58px)] z-10 border-r">
+			<main className="absolute w-56 lg:flex flex-col hidden justify-between left-20 h-[calc(100vh-58px)] z-10 border-x">
 				<aside className="py-3 flex flex-col justify-start gap-2 ">
 					{tabsData.map((tab, idx) => (
 						<ul key={idx} className="flex flex-col justify-start gap-1 w-full ">
@@ -85,7 +85,7 @@ const Sidebar: React.FC<SidebarProps> = ({ selectedTab, setSelectedTab }) => {
 								<button
 									onClick={() => !tab.disabled && setSelectedTab(idx)}
 									className={cn(
-										"flex w-48 items-center gap-3 rounded-md py-2.5 px-4 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-slate-700",
+										"flex w-48 items-center rounded-md py-2 px-3 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-slate-700",
 										tab.disabled && "cursor-not-allowed opacity-50"
 									)}
 									disabled={tab.disabled}
