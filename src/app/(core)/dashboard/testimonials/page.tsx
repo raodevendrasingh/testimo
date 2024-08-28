@@ -51,7 +51,7 @@ const TestimonialPage = () => {
 								<p className="py-5">No Feedbacks Received</p>
 							)}
 						</div>
-					</div>{" "}
+					</div>
 				</div>
 			</div>
 		</div>

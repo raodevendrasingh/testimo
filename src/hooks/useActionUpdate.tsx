@@ -16,7 +16,10 @@ export const useActionUpdate = () => {
 				feedbackId,
 				action,
 			});
-			toast.success(response.data.message);
+
+			if (action !== "exported") {
+				toast.success(response.data.message);
+			}
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 			toast.error("Error", {

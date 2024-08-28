@@ -1,21 +1,8 @@
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { CopyBlock, atomOneDark } from "react-code-blocks";
 
-import {
-	Archive,
-	ArrowRightFromLine,
-	LucideIcon,
-	PartyPopper,
-	Trash2,
-} from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import { ChevronDown, Code, Eye } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Feedback } from "@/models/User";
@@ -43,34 +30,20 @@ import { CldImage } from "next-cloudinary";
 
 import emptyUser from "@/assets/placeholder/emptyUser.png";
 import Image from "next/image";
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog";
+import { Stars } from "../../../components/ui/Stars";
 
-type Status = {
-	value: string;
-	label: string;
-	icon: LucideIcon;
-};
-const statuses: Status[] = [
-	{
-		value: "approved",
-		label: "Approve",
-		icon: PartyPopper,
-	},
-	{
-		value: "archived",
-		label: "Archive",
-		icon: Archive,
-	},
-	{
-		value: "exported",
-		label: "Export",
-		icon: ArrowRightFromLine,
-	},
-	{
-		value: "discarded",
-		label: "Discard",
-		icon: Trash2,
-	},
-];
+import { Framework, languages, Status, statuses } from "@/lib/selectOptions";
+import { DeleteDialog } from "@/utils/DeleteDialogBox";
+import { ExportDialog } from "@/utils/ExportCodeDialog";
 
 type FeedbackCardProps = {
 	feedback: Feedback;
@@ -81,9 +54,11 @@ export const FeedbackCard = ({
 	feedback,
 	onFeedbackDelete,
 }: FeedbackCardProps) => {
+	// for action selection
 	const [open, setOpen] = useState(false);
 	const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
-	const [isAlertOpen, setIsAlertOpen] = useState(false);
+	const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
+	const [isExportAlertOpen, setIsExportAlertOpen] = useState(false);
 	const { actionUpdate, loading, error } = useActionUpdate();
 
 	const handleDeleteConfirm = async () => {
@@ -98,7 +73,7 @@ export const FeedbackCard = ({
 				description: "Failed to delete message",
 			});
 		}
-		setIsAlertOpen(false);
+		setIsDeleteAlertOpen(false);
 	};
 
 	const handleActionSelect = async (value: string) => {
@@ -108,7 +83,10 @@ export const FeedbackCard = ({
 		setOpen(false);
 
 		if (value === "discarded") {
-			setIsAlertOpen(true);
+			setIsDeleteAlertOpen(true);
+		} else if (value === "exported") {
+			setIsExportAlertOpen(true);
+			await actionUpdate(feedback._id as string, value);
 		} else {
 			await actionUpdate(feedback._id as string, value);
 		}
@@ -129,7 +107,6 @@ export const FeedbackCard = ({
 					}
 				)}
 			>
-				{" "}
 				{/* display picture */}
 				<div className="p-1 flex justify-center h-full w-full xs:w-[20%]">
 					{feedback.imageUrl ? (
@@ -168,13 +145,7 @@ export const FeedbackCard = ({
 											</div>
 										))}
 
-									<span className="text-yellow-300 text-base">
-										{Array.from({ length: feedback.rating }).map((_, index) => (
-											<span key={index} className="text-xl">
-												&#9733;
-											</span>
-										))}
-									</span>
+									<Stars rating={feedback.rating} />
 								</div>
 								<div>
 									<span className="text-xs font-light text-gray-500">
@@ -218,7 +189,7 @@ export const FeedbackCard = ({
 									)}
 								</Button>
 							</PopoverTrigger>
-							<PopoverContent className="p-0" align="start">
+							<PopoverContent className="p-0" width="144px" align="start">
 								<Command>
 									<CommandList>
 										<CommandGroup>
@@ -226,6 +197,7 @@ export const FeedbackCard = ({
 												<CommandItem
 													key={status.value}
 													value={status.value}
+													className="text-sm"
 													onSelect={handleActionSelect}
 												>
 													<status.icon
@@ -247,25 +219,18 @@ export const FeedbackCard = ({
 					</div>
 				</div>
 			</div>
-			<AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
-				<AlertDialogContent>
-					<AlertDialogHeader>
-						<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-						<AlertDialogDescription>
-							This action cannot be undone. This will permanently delete this
-							feedback and remove it from our servers.
-						</AlertDialogDescription>
-					</AlertDialogHeader>
-					<AlertDialogFooter>
-						<AlertDialogCancel onClick={() => setIsAlertOpen(false)}>
-							Cancel
-						</AlertDialogCancel>
-						<AlertDialogAction onClick={handleDeleteConfirm}>
-							Delete
-						</AlertDialogAction>
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialog>
+
+			<DeleteDialog
+				isOpen={isDeleteAlertOpen}
+				onOpenChange={setIsDeleteAlertOpen}
+				onConfirm={handleDeleteConfirm}
+			/>
+
+			<ExportDialog
+				isOpen={isExportAlertOpen}
+				onOpenChange={setIsExportAlertOpen}
+				feedback={feedback}
+			/>
 		</>
 	);
 };
