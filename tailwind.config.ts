@@ -25,6 +25,16 @@ const config = {
 			screens: {
 				xs: "450px",
 			},
+			mono: [
+				"Consolas",
+				"ui-monospace",
+				"SFMono-Regular",
+				"Menlo",
+				"Monaco",
+				'"Liberation Mono"',
+				'"Courier New"',
+				"monospace",
+			],
 			colors: {
 				border: "hsl(var(--border))",
 				input: "hsl(var(--input))",

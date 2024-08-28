@@ -24,10 +24,7 @@ import { ChevronDown, Code, Eye } from "lucide-react";
 import { Framework, languages } from "@/lib/selectOptions";
 import { Feedback } from "@/models/User";
 import { useState } from "react";
-import {
-	TestimonialCard,
-	CardToCode,
-} from "@/utils/TestimonialComponents";
+import { TestimonialCard, CardToCode } from "@/utils/TestimonialComponents";
 
 type ExportDialogProps = {
 	isOpen: boolean;
@@ -45,7 +42,7 @@ export const ExportDialog = ({
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
-			<DialogContent className="flex flex-col justify-start items-center w-[800px] h-[90%]">
+			<DialogContent className="flex flex-col justify-start items-center h-[90%]">
 				<DialogHeader className="flex flex-col justify-start w-full">
 					<DialogTitle>Export Testimonial</DialogTitle>
 					<DialogDescription>
@@ -135,12 +132,10 @@ export const ExportDialog = ({
 						</TabsContent>
 						<TabsContent
 							value="code"
-							className="w-full h-full rounded-lg overflow-x-hidden  "
+							className="w-full h-full rounded-lg overflow-x-hidden"
 						>
 							<div className="w-full h-80">
-								<pre className="text-sm font-mono w-full">
-									{CardToCode({ feedback: feedback })}
-								</pre>
+								{CardToCode({ feedback: feedback })}
 							</div>
 						</TabsContent>
 					</div>

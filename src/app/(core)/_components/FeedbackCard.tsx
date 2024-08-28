@@ -1,13 +1,8 @@
-import { CopyBlock, atomOneDark } from "react-code-blocks";
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import { ChevronDown, Code, Eye } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import { Feedback } from "@/models/User";
 import axios from "axios";
+import { Feedback } from "@/models/User";
+import { CldImage } from "next-cloudinary";
 import { ApiResponse } from "@/types/ApiResponse";
+
 import { cn } from "@/lib/utils";
 import {
 	Command,
@@ -21,27 +16,19 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { timesAgo } from "@/helpers/ConvertTimeStamp";
 import { useActionUpdate } from "@/hooks/useActionUpdate";
 import { toast } from "sonner";
 import { capitalize } from "@/helpers/CapitalizeFirstChar";
-import { CldImage } from "next-cloudinary";
 
 import emptyUser from "@/assets/placeholder/emptyUser.png";
 import Image from "next/image";
-import {
-	Dialog,
-	DialogClose,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@/components/ui/dialog";
-import { Stars } from "../../../components/ui/Stars";
 
-import { Framework, languages, Status, statuses } from "@/lib/selectOptions";
+import { Stars } from "@/components/ui/Stars";
+
+import { Status, statuses } from "@/lib/selectOptions";
 import { DeleteDialog } from "@/utils/DeleteDialogBox";
 import { ExportDialog } from "@/utils/ExportCodeDialog";
 
@@ -54,7 +41,6 @@ export const FeedbackCard = ({
 	feedback,
 	onFeedbackDelete,
 }: FeedbackCardProps) => {
-	// for action selection
 	const [open, setOpen] = useState(false);
 	const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
 	const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
