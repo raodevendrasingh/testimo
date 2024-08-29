@@ -2,7 +2,7 @@
 
 import { Feedback } from "@/models/User";
 import { Stars } from "@/components/ui/Stars";
-import SyntaxHighlighter from "@/components/SyntaxHighlighter";
+import SyntaxHighlighter from "@/utils/SyntaxHighlighter";
 import { Clipboard, ClipboardCheck } from "lucide-react";
 import { useState } from "react";
 
