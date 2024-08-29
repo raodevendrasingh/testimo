@@ -1,10 +1,10 @@
-import { Feedback, User } from "@/models/User";
+import { Testimonial, User } from "@/models/User";
 
 
 export interface ApiResponse {
     user?: Array<User>,
     success: boolean,
     message: string,
-    isAcceptingFeedback?: boolean,
-    feedback?: Array<Feedback>
+    isAcceptingTestimonials?: boolean,
+    testimonial?: Array<Testimonial>
 }

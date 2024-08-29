@@ -53,8 +53,8 @@ export async function POST(request: Request) {
                 verifyCode,
                 verifyCodeExpiry: expiryDate,
                 isVerified: false,
-                isAcceptingFeedback: true,
-                feedback: []
+                isAcceptingTestimonials: true,
+                testimonial: []
             })
 
             await newUser.save();

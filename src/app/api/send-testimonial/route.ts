@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
-import { UserModel, Feedback } from "@/models/User";
+import { UserModel, Testimonial } from "@/models/User";
 
 export async function POST(request: Request) {
 	await dbConnect();
@@ -19,17 +19,17 @@ export async function POST(request: Request) {
 			);
 		}
 
-		if (!user.isAcceptingFeedback) {
+		if (!user.isAcceptingTestimonials) {
 			return Response.json(
 				{
 					sucess: false,
-					message: "User is not accepting feedback currently!",
+					message: "User is not accepting testimonials currently!",
 				},
 				{ status: 403 }
 			);
 		}
 
-		const newFeedback = {
+		const newTestimonial = {
 			action: "default",
 			content,
 			rating,
@@ -38,23 +38,23 @@ export async function POST(request: Request) {
 			imageUrl,
 			createdAt: new Date(),
 		};
-		user.feedback.push(newFeedback as Feedback);
+		user.testimonial.push(newTestimonial as Testimonial);
 		await user.save();
 
 		return Response.json(
 			{
 				sucess: true,
-				message: "Feedback is sent successfully!",
-				feedback: newFeedback,
+				message: "Testimonial is sent successfully!",
+				testimonial: newTestimonial,
 			},
 			{ status: 200 }
 		);
 	} catch (error) {
-		// console.error("Error sending feedback\n", error);
+		// console.error("Error sending testimonial\n", error);
 		return Response.json(
 			{
 				sucess: false,
-				message: "Error sending feedback. Try Again!",
+				message: "Error sending testimonial. Try Again!",
 			},
 			{ status: 500 }
 		);

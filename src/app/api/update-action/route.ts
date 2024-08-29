@@ -26,8 +26,8 @@ export async function POST(request: Request) {
 
 	try {
 		const updatedUser = await UserModel.findOneAndUpdate(
-			{ _id: userId, "feedback._id": feedbackId },
-			{ $set: { "feedback.$.action": action } },
+			{ _id: userId, "testimonial._id": feedbackId },
+			{ $set: { "testimonial.$.action": action } },
 			{ new: true }
 		);
 
@@ -35,30 +35,30 @@ export async function POST(request: Request) {
 			return Response.json(
 				{
 					success: false,
-					message: "User or feedback not found",
+					message: "User or testimonial not found",
 				},
 				{ status: 404 }
 			);
 		}
 
-		const updatedFeedback = updatedUser.feedback.find(
+		const updatedFeedback = updatedUser.testimonial.find(
 			(fb) => fb._id.toString() === feedbackId
 		);
 
 		return Response.json(
 			{
 				success: true,
-				message: `Feedback ${action}!`,
+				message: `Testimonial ${action}!`,
 				updatedFeedback,
 			},
 			{ status: 200 }
 		);
 	} catch (error) {
-		// console.error("Failed to update feedback action!\n", error);
+		// console.error("Failed to update testimonial action!\n", error);
 		return Response.json(
 			{
 				sucess: false,
-				message: "Failed to update feedback action!",
+				message: "Failed to update testimonial action!",
 			},
 			{ status: 500 }
 		);

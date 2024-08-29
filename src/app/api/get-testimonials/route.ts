@@ -24,19 +24,19 @@ export async function GET(request: Request) {
 	const userId = new mongoose.Types.ObjectId(_user._id);
 
 	try {
-		const userFeedback = await UserModel.aggregate([
+		const userTestimonials = await UserModel.aggregate([
 			{ $match: { _id: userId } },
-			{ $unwind: "$feedback" },
-			{ $sort: { "feedback.createdAt": -1 } },
-			{ $group: { _id: "$_id", feedback: { $push: "$feedback" } } },
-			{ $project: { feedback: 1 } },
+			{ $unwind: "$testimonial" },
+			{ $sort: { "testimonial.createdAt": -1 } },
+			{ $group: { _id: "$_id", testimonial: { $push: "$testimonial" } } },
+			{ $project: { testimonial: 1 } },
 		]);
 
-		if (!userFeedback || userFeedback.length === 0) {
+		if (!userTestimonials || userTestimonials.length === 0) {
 			return new Response(
 				JSON.stringify({
 					success: false,
-					message: "No feedback data available",
+					message: "No testimonial data available",
 				}),
 				{ status: 404 }
 			);
@@ -45,7 +45,7 @@ export async function GET(request: Request) {
 		return new Response(
 			JSON.stringify({
 				success: true,
-				feedback: userFeedback[0].feedback,
+				testimonial: userTestimonials[0].testimonial,
 			}),
 			{ status: 200 }
 		);
@@ -54,7 +54,7 @@ export async function GET(request: Request) {
 		return new Response(
 			JSON.stringify({
 				success: false,
-				message: "Error fetching feedback!",
+				message: "Error fetching testimonial!",
 			}),
 			{ status: 500 }
 		);

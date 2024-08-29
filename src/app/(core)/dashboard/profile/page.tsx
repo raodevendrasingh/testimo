@@ -65,8 +65,8 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import emptyLogo from "@/assets/placeholder/emptyLogo.png";
 
-import { useFetchFeedback } from "@/hooks/useFetchFeedback";
-import { useFetchAcceptFeedback } from "@/hooks/useFetchAcceptFeedback";
+import { useFetchTestimonials } from "@/hooks/useFetchTestimonials";
+import { useFetchAcceptTestimonials } from "@/hooks/useFetchAcceptTestimonials";
 import { copyToClipboard } from "@/helpers/CopytoClipboard";
 import { UserDetailModal } from "../../_components/UserDetailModal";
 import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
@@ -74,6 +74,7 @@ import { ExtractDomain } from "@/helpers/ExtractDomainName";
 import { capitalize } from "@/helpers/CapitalizeFirstChar";
 import { Separator } from "@/components/ui/separator";
 import { ProfileSkeleton } from "@/components/ProfileSkeleton";
+import PulseRingLoader from "@/components/ui/PulseRingLoader";
 
 const ProfilePage = () => {
 	const { data: session } = useSession();
@@ -91,21 +92,21 @@ const ProfilePage = () => {
 	const user = session?.user as User;
 	const username = user?.username;
 
-	const { feedback, isLoading, fetchFeedback } = useFetchFeedback();
+	const { testimonial, isLoading, fetchTestimonials } = useFetchTestimonials();
 	const {
-		isAcceptingFeedback,
+		isAcceptingTestimonials,
 		isSwitchLoading,
-		fetchAcceptFeedback,
+		fetchAcceptTestimonial,
 		handleSwitchChange,
-	} = useFetchAcceptFeedback();
+	} = useFetchAcceptTestimonials();
 
 	const { userDetail, isUserLoading, fetchUserData } = useFetchUserDetail();
 
 	useEffect(() => {
 		if (!session || !session.user) return;
-		fetchFeedback();
-		fetchAcceptFeedback();
-	}, [session, fetchFeedback, fetchAcceptFeedback]);
+		fetchTestimonials();
+		fetchAcceptTestimonial();
+	}, [session, fetchTestimonials, fetchAcceptTestimonial]);
 
 	useEffect(() => {
 		if (session?.user) {
@@ -115,7 +116,7 @@ const ProfilePage = () => {
 
 	useEffect(() => {
 		const baseUrl = `${window.location.protocol}//${window.location.host}`;
-		setProfileUrl(`${baseUrl}/i/${username}/review`);
+		setProfileUrl(`${baseUrl}/i/${username}`);
 	}, [username]);
 
 	useEffect(() => {
@@ -133,23 +134,22 @@ const ProfilePage = () => {
 
 	if (isFetchingUser) {
 		return (
-			<div className="w-full h-[calc(100vh-58px)] flex justify-center items-center gap-3 bg-gray-50 p-3 z-50">
-				<Loader className="size-4 animate-spin" />
-				Fetching Session Info
+			<div className="w-full h-[calc(100vh-58px)] pl-44 flex justify-center items-center gap-3 p-3 z-50">
+				<PulseRingLoader />
 			</div>
 		);
 	}
 
 	if (showLoginMessage) {
 		return (
-			<div className="flex items-center justify-center h-[calc(100vh-58px)] w-full gap-3 p-3 font-mono">
+			<div className="flex items-center justify-center pl-44 h-[calc(100vh-58px)] w-full gap-3 p-3">
 				<a href="/dashboard">
 					<Button
 						className="flex items-center justify-center gap-2"
 						variant="outline"
 					>
-						<RotateCw />
-						Reload
+						<RotateCw className="size-5" />
+						<span className="text-base font-medium">Reload</span>
 					</Button>
 				</a>
 			</div>
@@ -318,13 +318,13 @@ const ProfilePage = () => {
 							>
 								<span
 									className={`text-sm font-medium hidden sm:inline-block ${
-										isAcceptingFeedback ? "text-green-500" : "text-rose-600"
+										isAcceptingTestimonials ? "text-green-500" : "text-rose-600"
 									}`}
 								>
-									Feedback
+									Testimonial
 								</span>
 								<Switch
-									checked={isAcceptingFeedback}
+									checked={isAcceptingTestimonials}
 									onCheckedChange={handleSwitchChange}
 									disabled={isSwitchLoading}
 								/>
@@ -334,7 +334,7 @@ const ProfilePage = () => {
 								variant="outline"
 								onClick={(e) => {
 									e.preventDefault();
-									fetchFeedback(true);
+									fetchTestimonials(true);
 								}}
 							>
 								<span className="font-medium text-sm hidden sm:inline-block">

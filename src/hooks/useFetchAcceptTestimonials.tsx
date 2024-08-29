@@ -3,22 +3,22 @@ import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 import { toast } from "sonner";
 
-export const useFetchAcceptFeedback = () => {
-	const [isAcceptingFeedback, setIsAcceptingFeedback] =
+export const useFetchAcceptTestimonials = () => {
+	const [isAcceptingTestimonials, setIsAcceptingFeedback] =
 		useState<boolean>(false);
 	const [isSwitchLoading, setIsSwitchLoading] = useState<boolean>(false);
 
-	const fetchAcceptFeedback = useCallback(async () => {
+	const fetchAcceptTestimonial = useCallback(async () => {
 		setIsSwitchLoading(true);
 		try {
-			const response = await axios.get<ApiResponse>("/api/accept-feedback");
-			setIsAcceptingFeedback(response.data.isAcceptingFeedback || false);
+			const response = await axios.get<ApiResponse>("/api/accept-testimonials");
+			setIsAcceptingFeedback(response.data.isAcceptingTestimonials || false);
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 			toast.error("Error", {
 				description:
 					axiosError.response?.data.message ||
-					"Failed to fetch feedback settings",
+					"Failed to fetch testimonial settings",
 			});
 		} finally {
 			setIsSwitchLoading(false);
@@ -28,17 +28,17 @@ export const useFetchAcceptFeedback = () => {
 	const handleSwitchChange = async () => {
 		setIsSwitchLoading(true);
 		try {
-			const response = await axios.post<ApiResponse>("/api/accept-feedback", {
-				acceptFeedback: !isAcceptingFeedback,
+			const response = await axios.post<ApiResponse>("/api/accept-testimonials", {
+				acceptFeedback: !isAcceptingTestimonials,
 			});
-			setIsAcceptingFeedback(!isAcceptingFeedback);
+			setIsAcceptingFeedback(!isAcceptingTestimonials);
 			toast.success(response.data.message);
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 			toast.error("Error", {
 				description:
 					axiosError.response?.data.message ||
-					"Failed to update feedback settings",
+					"Failed to update testimonial settings",
 			});
 		} finally {
 			setIsSwitchLoading(false);
@@ -46,9 +46,9 @@ export const useFetchAcceptFeedback = () => {
 	};
 
 	return {
-		isAcceptingFeedback,
+		isAcceptingTestimonials,
 		isSwitchLoading,
-		fetchAcceptFeedback,
+		fetchAcceptTestimonial,
 		handleSwitchChange,
 	};
 };

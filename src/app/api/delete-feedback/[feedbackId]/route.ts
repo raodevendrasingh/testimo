@@ -27,13 +27,13 @@ export async function DELETE(
 	try {
 		const updateResult = await UserModel.updateOne(
 			{ _id: _user._id },
-			{ $pull: { feedback: { _id: feedbackId } } }
+			{ $pull: { testimonial: { _id: feedbackId } } }
 		);
 		if (updateResult.modifiedCount === 0) {
 			return new Response(
 				JSON.stringify({
 					success: false,
-					message: "Feedback doesn't exist!",
+					message: "Testimonial doesn't exist!",
 				}),
 				{ status: 404 }
 			);
@@ -41,16 +41,16 @@ export async function DELETE(
 		return new Response(
 			JSON.stringify({
 				success: true,
-				message: "Feedback deleted!",
+				message: "Testimonial deleted!",
 			}),
 			{ status: 200 }
 		);
 	} catch (error) {
-        // console.error('An Error occured while deleting feedback', error);
+        // console.error('An Error occured while deleting testimonial', error);
 		return new Response(
 			JSON.stringify({
 				success: false,
-				message: "An Error occured while deleting feedback",
+				message: "An Error occured while deleting testimonial",
 			}),
 			{ status: 500 }
 		);

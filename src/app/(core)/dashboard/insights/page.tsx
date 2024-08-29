@@ -8,7 +8,7 @@ const InsightsPage = () => {
 							<div className="flex flex-col sm:flex-row items-center justify-center gap-3">
 								<span className="text-2xl sm:text-3xl font-serif italic">
 									{" "}
-									&lt;Feedback Insights/&gt;{" "}
+									&lt;Testimonial Insights/&gt;{" "}
 								</span>
 								<span className="text-2xl">will be coming soon</span>
 							</div>

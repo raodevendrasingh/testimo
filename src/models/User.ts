@@ -4,7 +4,7 @@ const urlMatcher = [
 	/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
 	"Enter a valid URL",
 ];
-export interface Feedback extends Document {
+export interface Testimonial extends Document {
 	action: string;
 	content: string;
 	rating: number;
@@ -14,7 +14,7 @@ export interface Feedback extends Document {
 	createdAt: Date;
 }
 
-const FeedbackSchema: Schema<Feedback> = new Schema({
+const TestimonialSchema: Schema<Testimonial> = new Schema({
 	action: {
 		type: String,
 		default: "default",
@@ -75,10 +75,10 @@ export interface User extends Document {
 	verifyCode: string;
 	verifyCodeExpiry: Date;
 	isVerified: boolean;
-	isAcceptingFeedback: boolean;
+	isAcceptingTestimonials: boolean;
 	companysite?: string;
 	socials: Socials[];
-	feedback: Feedback[];
+	testimonial: Testimonial[];
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -122,7 +122,7 @@ const UserSchema: Schema<User> = new Schema({
 		type: Boolean,
 		default: false,
 	},
-	isAcceptingFeedback: {
+	isAcceptingTestimonials: {
 		type: Boolean,
 		default: true,
 	},
@@ -131,7 +131,7 @@ const UserSchema: Schema<User> = new Schema({
 		match: urlMatcher,
 	},
 	socials: SocialSchema,
-	feedback: [FeedbackSchema],
+	testimonial: [TestimonialSchema],
 });
 
 export const UserModel =

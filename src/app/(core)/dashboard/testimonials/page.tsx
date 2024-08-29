@@ -2,34 +2,34 @@
 
 import React from "react";
 import { FeedbackCard } from "@/app/(core)/_components/FeedbackCard";
-import { useFetchFeedback } from "@/hooks/useFetchFeedback";
+import { useFetchTestimonials } from "@/hooks/useFetchTestimonials";
 import { useEffect } from "react";
 import { FeedbackSkeleton } from "@/components/TestimonialSkeleton";
 
 const TestimonialPage = () => {
-	const { feedback, setFeedback, isLoading, fetchFeedback } =
-		useFetchFeedback();
+	const { testimonial, setFeedback, isLoading, fetchTestimonials } =
+		useFetchTestimonials();
 
 	useEffect(() => {
-		fetchFeedback();
-	}, [fetchFeedback]);
+		fetchTestimonials();
+	}, [fetchTestimonials]);
 
 	const handleDeleteFeedback = (feedbackId: string) => {
-		setFeedback(feedback.filter((message) => message._id !== feedbackId));
+		setFeedback(testimonial.filter((message) => message._id !== feedbackId));
 	};
 
 	const actionsToExclude = ["archived", "exported"];
 
 	const filterFeedback = (
-		feedback: any[],
+		testimonial: any[],
 		actionsToExclude: string | any[]
 	) => {
-		return feedback.filter(
+		return testimonial.filter(
 			(message) => !actionsToExclude.includes(message.action)
 		);
 	};
 
-	const filteredFeedback = filterFeedback(feedback, actionsToExclude);
+	const filteredFeedback = filterFeedback(testimonial, actionsToExclude);
 
 	return (
 		<div className="w-full mx-auto scrollbar-hide">
@@ -47,7 +47,7 @@ const TestimonialPage = () => {
 								filteredFeedback.map((message) => (
 									<FeedbackCard
 										key={message._id}
-										feedback={message}
+										testimonial={message}
 										onFeedbackDelete={handleDeleteFeedback}
 									/>
 								))

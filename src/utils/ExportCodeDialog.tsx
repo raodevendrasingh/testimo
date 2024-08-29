@@ -22,20 +22,20 @@ import {
 } from "@/components/ui/command";
 import { ChevronDown, Code, Eye } from "lucide-react";
 import { Framework, languages } from "@/lib/selectOptions";
-import { Feedback } from "@/models/User";
+import { Testimonial } from "@/models/User";
 import { useState } from "react";
 import { TestimonialCard, CardToCode } from "@/utils/TestimonialComponents";
 
 type ExportDialogProps = {
 	isOpen: boolean;
 	onOpenChange: (open: boolean) => void;
-	feedback: Feedback;
+	testimonial: Testimonial;
 };
 
 export const ExportDialog = ({
 	isOpen,
 	onOpenChange,
-	feedback,
+	testimonial,
 }: ExportDialogProps) => {
 	const [openLang, setOpenLang] = useState(false);
 	const [selectedLang, setSelectedLang] = useState<Framework | null>(null);
@@ -127,7 +127,7 @@ export const ExportDialog = ({
 					<div className="flex items-center justify-center w-full h-full">
 						<TabsContent value="preview" className="w-full h-full rounded-lg">
 							<div className="grid place-items-center w-full h-full">
-								{TestimonialCard({ feedback: feedback })}
+								{TestimonialCard({ testimonial: testimonial })}
 							</div>
 						</TabsContent>
 						<TabsContent
@@ -135,7 +135,7 @@ export const ExportDialog = ({
 							className="w-full h-full rounded-lg overflow-x-hidden"
 						>
 							<div className="w-full h-80">
-								{CardToCode({ feedback: feedback })}
+								{CardToCode({ testimonial: testimonial })}
 							</div>
 						</TabsContent>
 					</div>

@@ -94,7 +94,7 @@ export default function SendMessage() {
 
 		try {
 			const response = await axios.post<ApiResponse>(
-				"/api/send-feedback",
+				"/api/send-testimonial",
 				feedbackData
 			);
 			toast.success(response.data.message);

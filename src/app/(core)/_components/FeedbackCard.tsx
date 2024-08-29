@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Feedback } from "@/models/User";
+import { Testimonial } from "@/models/User";
 import { CldImage } from "next-cloudinary";
 import { ApiResponse } from "@/types/ApiResponse";
 
@@ -33,12 +33,12 @@ import { DeleteDialog } from "@/utils/DeleteDialogBox";
 import { ExportDialog } from "@/utils/ExportCodeDialog";
 
 type FeedbackCardProps = {
-	feedback: Feedback;
+	testimonial: Testimonial;
 	onFeedbackDelete: (feedbackId: string) => void;
 };
 
 export const FeedbackCard = ({
-	feedback,
+	testimonial,
 	onFeedbackDelete,
 }: FeedbackCardProps) => {
 	const [open, setOpen] = useState(false);
@@ -50,10 +50,10 @@ export const FeedbackCard = ({
 	const handleDeleteConfirm = async () => {
 		try {
 			const response = await axios.delete<ApiResponse>(
-				`/api/delete-feedback/${feedback._id}`
+				`/api/delete-testimonial/${testimonial._id}`
 			);
 			toast.success(response.data.message);
-			onFeedbackDelete(feedback._id as string);
+			onFeedbackDelete(testimonial._id as string);
 		} catch (error) {
 			toast.error("Error", {
 				description: "Failed to delete message",
@@ -72,14 +72,14 @@ export const FeedbackCard = ({
 			setIsDeleteAlertOpen(true);
 		} else if (value === "exported") {
 			setIsExportAlertOpen(true);
-			await actionUpdate(feedback._id as string, value);
+			await actionUpdate(testimonial._id as string, value);
 		} else {
-			await actionUpdate(feedback._id as string, value);
+			await actionUpdate(testimonial._id as string, value);
 		}
 	};
 
 	const matchingStatus = statuses.find(
-		(status) => status.value === feedback.action
+		(status) => status.value === testimonial.action
 	);
 
 	return (
@@ -88,16 +88,16 @@ export const FeedbackCard = ({
 				className={cn(
 					"flex flex-col xs:flex-row items-start justify-start mx-5 p-2 gap-1 w-full rounded-md h-full",
 					{
-						"bg-red-50": feedback.action === "default",
-						"bg-zinc-50": feedback.action !== "default",
+						"bg-red-50": testimonial.action === "default",
+						"bg-zinc-50": testimonial.action !== "default",
 					}
 				)}
 			>
 				{/* display picture */}
 				<div className="p-1 flex justify-center h-full w-full xs:w-[20%]">
-					{feedback.imageUrl ? (
+					{testimonial.imageUrl ? (
 						<CldImage
-							src={feedback.imageUrl as string}
+							src={testimonial.imageUrl as string}
 							alt="pfp"
 							width={80}
 							height={80}
@@ -119,28 +119,28 @@ export const FeedbackCard = ({
 						<div className="flex flex-col h-full justify-center items-center xs:justify-start xs:items-start">
 							<div className="flex flex-col justify-center xs:items-start items-center">
 								<div className="flex flex-col-reverse xs:flex-row justify-center items-center xs:items-start xs:justify-start  gap-2 ">
-									{feedback.name ||
-										(feedback.jobTitle && (
+									{testimonial.name ||
+										(testimonial.jobTitle && (
 											<div className="flex flex-col justify-center items-center xs:items-start xs:justify-startxs:items-start xs:justify-start ">
 												<span className="text-base font-semibold">
-													{feedback.name}
+													{testimonial.name}
 												</span>
 												<span className="text-xs font-medium text-gray-600">
-													{feedback.jobTitle}
+													{testimonial.jobTitle}
 												</span>
 											</div>
 										))}
 
-									<Stars rating={feedback.rating} />
+									<Stars rating={testimonial.rating} />
 								</div>
 								<div>
 									<span className="text-xs font-light text-gray-500">
-										{timesAgo(feedback.createdAt.toString())}
+										{timesAgo(testimonial.createdAt.toString())}
 									</span>
 								</div>
 							</div>
 							<div className="flex h-full flex-col text-center xs:text-start text-sm flex-grow">
-								{feedback.content}
+								{testimonial.content}
 							</div>
 						</div>
 					</div>
@@ -161,7 +161,7 @@ export const FeedbackCard = ({
 										</>
 									) : (
 										<>
-											{feedback.action === "default" ? (
+											{testimonial.action === "default" ? (
 												"Select Action"
 											) : matchingStatus ? (
 												<>
@@ -169,7 +169,7 @@ export const FeedbackCard = ({
 													{capitalize(matchingStatus.value)}
 												</>
 											) : (
-												capitalize(feedback.action)
+												capitalize(testimonial.action)
 											)}
 										</>
 									)}
@@ -215,7 +215,7 @@ export const FeedbackCard = ({
 			<ExportDialog
 				isOpen={isExportAlertOpen}
 				onOpenChange={setIsExportAlertOpen}
-				feedback={feedback}
+				testimonial={testimonial}
 			/>
 		</>
 	);

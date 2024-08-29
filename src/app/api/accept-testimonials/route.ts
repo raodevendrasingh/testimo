@@ -27,14 +27,14 @@ export async function POST(request: Request) {
 	try {
 		const updatedUser = await UserModel.findByIdAndUpdate(
 			userId,
-			{ isAcceptingFeedback: acceptFeedback },
+			{ isAcceptingTestimonials: acceptFeedback },
 			{ new: true }
 		);
 		if (!updatedUser) {
 			return Response.json(
 				{
 					sucess: false,
-					message: "Failed to update status to accept feedback!",
+					message: "Failed to update status to accept testimonial!",
 				},
 				{ status: 401 }
 			);
@@ -43,17 +43,17 @@ export async function POST(request: Request) {
 		return Response.json(
 			{
 				sucess: true,
-				message: "Updated user status to accept feedback!",
+				message: "Updated user status to accept testimonial!",
 				updatedUser,
 			},
 			{ status: 200 }
 		);
 	} catch (error) {
-		// console.error("Failed to update status to accept feedback!\n", error);
+		// console.error("Failed to update status to accept testimonial!\n", error);
 		return Response.json(
 			{
 				sucess: false,
-				message: "Failed to update status to accept feedback!",
+				message: "Failed to update status to accept testimonial!",
 			},
 			{ status: 500 }
 		);
@@ -95,16 +95,16 @@ export async function GET(request: Request) {
 		return Response.json(
 			{
 				sucess: true,
-				isAcceptingFeedback: fetchedUser.isAcceptingFeedback,
+				isAcceptingTestimonials: fetchedUser.isAcceptingTestimonials,
 			},
 			{ status: 200 }
 		);
 	} catch (error) {
-		console.error("Failed to fetch status to accept feedback!\n", error);
+		console.error("Failed to fetch status to accept testimonial!\n", error);
 		return Response.json(
 			{
 				sucess: false,
-				message: "Failed to fetch feedback acceptance status.",
+				message: "Failed to fetch testimonial acceptance status.",
 			},
 			{ status: 500 }
 		);

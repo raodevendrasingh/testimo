@@ -1,23 +1,23 @@
 "use client";
 
 import { FeedbackCard } from "@/app/(core)/_components/FeedbackCard";
-import { useFetchFeedback } from "@/hooks/useFetchFeedback";
+import { useFetchTestimonials } from "@/hooks/useFetchTestimonials";
 import { useEffect } from "react";
 import { FeedbackSkeleton } from "@/components/TestimonialSkeleton";
 
 const ExportsPage = () => {
-	const { feedback, setFeedback, isLoading, fetchFeedback } =
-		useFetchFeedback();
+	const { testimonial, setFeedback, isLoading, fetchTestimonials } =
+		useFetchTestimonials();
 
 	useEffect(() => {
-		fetchFeedback();
-	}, [fetchFeedback]);
+		fetchTestimonials();
+	}, [fetchTestimonials]);
 
 	const handleDeleteFeedback = (feedbackId: string) => {
-		setFeedback(feedback.filter((message) => message._id !== feedbackId));
+		setFeedback(testimonial.filter((message) => message._id !== feedbackId));
 	};
 
-	const exportedFeedback = feedback.filter(
+	const exportedFeedback = testimonial.filter(
 		(message) => message.action === "exported"
 	);
 
@@ -37,7 +37,7 @@ const ExportsPage = () => {
 								exportedFeedback.map((message) => (
 									<FeedbackCard
 										key={message._id as string}
-										feedback={message}
+										testimonial={message}
 										onFeedbackDelete={handleDeleteFeedback}
 									/>
 								))

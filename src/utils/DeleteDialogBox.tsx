@@ -26,7 +26,7 @@ export const DeleteDialog = ({
 				<DialogTitle>Are you absolutely sure?</DialogTitle>
 				<DialogDescription>
 					This action cannot be undone. This will permanently delete this
-					feedback and remove it from our servers.
+					testimonial and remove it from our servers.
 				</DialogDescription>
 			</DialogHeader>
 			<DialogFooter>

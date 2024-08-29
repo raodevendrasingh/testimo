@@ -1,6 +1,6 @@
 "use client";
 
-import { Feedback } from "@/models/User";
+import { Testimonial } from "@/models/User";
 import { Stars } from "@/components/ui/Stars";
 import SyntaxHighlighter from "@/utils/SyntaxHighlighter";
 import { Clipboard, ClipboardCheck } from "lucide-react";
@@ -37,20 +37,20 @@ const CopyableTitle = ({
 	);
 };
 
-export const TestimonialCard = ({ feedback }: { feedback: Feedback }) => {
+export const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
 	return (
 		<div className="border rounded-lg select-none p-5 flex flex-col items-center justify-center gap-2 w-[320px]">
 			<span className="text-yellow-300 text-base flex">
-				<Stars rating={feedback.rating} />
+				<Stars rating={testimonial.rating} />
 			</span>
 			<div className="flex h-full flex-col text-center text-sm flex-grow">
-				{feedback.content}
+				{testimonial.content}
 			</div>
 			<div className="flex items-center justify-center gap-4 ">
-				{feedback.imageUrl && (
+				{testimonial.imageUrl && (
 					<div>
 						<img
-							src={`https://res.cloudinary.com/dniezlcfy/image/upload/v1724431325/${feedback.imageUrl}`}
+							src={`https://res.cloudinary.com/dniezlcfy/image/upload/v1724431325/${testimonial.imageUrl}`}
 							alt="pfp"
 							width={40}
 							height={40}
@@ -60,12 +60,12 @@ export const TestimonialCard = ({ feedback }: { feedback: Feedback }) => {
 				)}
 
 				<div className="flex flex-col items-center justify-center  ">
-					{feedback.name && (
-						<span className="text-base font-medium">{feedback.name}</span>
+					{testimonial.name && (
+						<span className="text-base font-medium">{testimonial.name}</span>
 					)}
-					{feedback.jobTitle && (
+					{testimonial.jobTitle && (
 						<span className="text-xs font-medium text-gray-600">
-							{feedback.jobTitle}
+							{testimonial.jobTitle}
 						</span>
 					)}
 				</div>
@@ -75,9 +75,9 @@ export const TestimonialCard = ({ feedback }: { feedback: Feedback }) => {
 };
 
 export const CardToCode = ({
-	feedback,
+	testimonial,
 }: {
-	feedback: Feedback;
+	testimonial: Testimonial;
 }): JSX.Element => {
 	const StarBlock = `const Stars = ({ rating }: { rating: number }) => {
     return (
@@ -119,15 +119,15 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 }) => {
 return (
     <div className="border rounded-lg select-none p-5 flex flex-col items-center justify-center gap-2 w-[320px]">
-        <Stars rating={${feedback.rating}} />
+        <Stars rating={${testimonial.rating}} />
         <div className="flex h-full flex-col text-center text-sm flex-grow">
-            ${feedback.content}
+            ${testimonial.content}
         </div>
         <div className="flex items-center justify-center gap-4 ">
             {imageUrl && (
                 <div>
                     <img
-                    src="https://res.cloudinary.com/dniezlcfy/image/upload/v1724431325/${feedback.imageUrl}" 
+                    src="https://res.cloudinary.com/dniezlcfy/image/upload/v1724431325/${testimonial.imageUrl}" 
                     alt="profile"
                     width={40}
                     height={40}
@@ -137,10 +137,10 @@ return (
             )}
             <div className="flex flex-col items-center justify-center">
                 {name && (
-                    <span className="text-base font-medium">${feedback.name}</span>
+                    <span className="text-base font-medium">${testimonial.name}</span>
                 )}
                 {jobTitle && (
-                    <span className="text-xs font-medium text-gray-600">${feedback.jobTitle}</span>
+                    <span className="text-xs font-medium text-gray-600">${testimonial.jobTitle}</span>
                 )}
             </div>
         </div>
@@ -151,13 +151,13 @@ return (
 export default TestimonialCard;`;
 
 	const UsageBlock = `<TestimonialCard
-    displayName="${feedback.name || ""}"
-    text="${feedback.content || ""}"
-    rating={${feedback.rating}}
-    jobTitle="${feedback.jobTitle || ""}"
+    displayName="${testimonial.name || ""}"
+    text="${testimonial.content || ""}"
+    rating={${testimonial.rating}}
+    jobTitle="${testimonial.jobTitle || ""}"
     imageUrl="${
-			feedback.imageUrl
-				? `https://res.cloudinary.com/dniezlcfy/image/upload/v1724431325/${feedback.imageUrl}`
+			testimonial.imageUrl
+				? `https://res.cloudinary.com/dniezlcfy/image/upload/v1724431325/${testimonial.imageUrl}`
 				: ""
 		}"
 />`;
