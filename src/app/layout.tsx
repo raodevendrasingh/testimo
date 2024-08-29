@@ -7,7 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "Critiqly",
+	title: "Remonial",
 	description: "Collecting Testimonials and Endorsements made easy",
 };
 

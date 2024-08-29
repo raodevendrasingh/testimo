@@ -1,9 +1,9 @@
 "use client";
 
-import { FeedbackCard } from "@/app/(core)/_components/FeedbackCard";
+import { TestimonialCard } from "@/app/(core)/_components/TestimonialCard";
 import { useFetchTestimonials } from "@/hooks/useFetchTestimonials";
 import { useEffect } from "react";
-import { FeedbackSkeleton } from "@/components/TestimonialSkeleton";
+import { TestimonialSkeleton } from "@/components/TestimonialSkeleton";
 
 const ArchivesPage = () => {
 	const { testimonial, setFeedback, isLoading, fetchTestimonials } =
@@ -13,7 +13,7 @@ const ArchivesPage = () => {
 		fetchTestimonials();
 	}, [fetchTestimonials]);
 
-	const handleDeleteFeedback = (feedbackId: string) => {
+	const handleTestimonialDelete = (feedbackId: string) => {
 		setFeedback(testimonial.filter((message) => message._id !== feedbackId));
 	};
 
@@ -29,16 +29,16 @@ const ArchivesPage = () => {
 						<div className="flex flex-col items-center gap-3 p-3">
 							{isLoading ? (
 								<span className="flex flex-col items-center gap-3 w-full">
-									<FeedbackSkeleton />
-									<FeedbackSkeleton />
-									<FeedbackSkeleton />
+									<TestimonialSkeleton />
+									<TestimonialSkeleton />
+									<TestimonialSkeleton />
 								</span>
 							) : archivedFeedback.length > 0 ? (
 								archivedFeedback.map((message) => (
-									<FeedbackCard
+									<TestimonialCard
 										key={message._id as string}
 										testimonial={message}
-										onFeedbackDelete={handleDeleteFeedback}
+										onTestimonialDelete={handleTestimonialDelete}
 									/>
 								))
 							) : (

@@ -32,15 +32,15 @@ import { Status, statuses } from "@/lib/selectOptions";
 import { DeleteDialog } from "@/utils/DeleteDialogBox";
 import { ExportDialog } from "@/utils/ExportCodeDialog";
 
-type FeedbackCardProps = {
+type TestimonialCardProps = {
 	testimonial: Testimonial;
-	onFeedbackDelete: (feedbackId: string) => void;
+	onTestimonialDelete: (feedbackId: string) => void;
 };
 
-export const FeedbackCard = ({
+export const TestimonialCard = ({
 	testimonial,
-	onFeedbackDelete,
-}: FeedbackCardProps) => {
+	onTestimonialDelete,
+}: TestimonialCardProps) => {
 	const [open, setOpen] = useState(false);
 	const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
 	const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
@@ -53,7 +53,7 @@ export const FeedbackCard = ({
 				`/api/delete-testimonial/${testimonial._id}`
 			);
 			toast.success(response.data.message);
-			onFeedbackDelete(testimonial._id as string);
+			onTestimonialDelete(testimonial._id as string);
 		} catch (error) {
 			toast.error("Error", {
 				description: "Failed to delete message",

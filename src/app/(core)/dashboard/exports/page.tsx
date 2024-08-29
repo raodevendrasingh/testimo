@@ -1,9 +1,9 @@
 "use client";
 
-import { FeedbackCard } from "@/app/(core)/_components/FeedbackCard";
+import { TestimonialCard } from "@/app/(core)/_components/TestimonialCard";
 import { useFetchTestimonials } from "@/hooks/useFetchTestimonials";
 import { useEffect } from "react";
-import { FeedbackSkeleton } from "@/components/TestimonialSkeleton";
+import { TestimonialSkeleton } from "@/components/TestimonialSkeleton";
 
 const ExportsPage = () => {
 	const { testimonial, setFeedback, isLoading, fetchTestimonials } =
@@ -13,11 +13,11 @@ const ExportsPage = () => {
 		fetchTestimonials();
 	}, [fetchTestimonials]);
 
-	const handleDeleteFeedback = (feedbackId: string) => {
+	const handleTestimonialDelete = (feedbackId: string) => {
 		setFeedback(testimonial.filter((message) => message._id !== feedbackId));
 	};
 
-	const exportedFeedback = testimonial.filter(
+	const exportedTestimonials = testimonial.filter(
 		(message) => message.action === "exported"
 	);
 
@@ -29,16 +29,16 @@ const ExportsPage = () => {
 						<div className="flex flex-col items-center gap-3 p-3">
 							{isLoading ? (
 								<span className="flex flex-col items-center gap-3 w-full">
-                                <FeedbackSkeleton />
-                                <FeedbackSkeleton />
-                                <FeedbackSkeleton />
-                            </span>
-							) : exportedFeedback.length > 0 ? (
-								exportedFeedback.map((message) => (
-									<FeedbackCard
+									<TestimonialSkeleton />
+									<TestimonialSkeleton />
+									<TestimonialSkeleton />
+								</span>
+							) : exportedTestimonials.length > 0 ? (
+								exportedTestimonials.map((message) => (
+									<TestimonialCard
 										key={message._id as string}
 										testimonial={message}
-										onFeedbackDelete={handleDeleteFeedback}
+										onTestimonialDelete={handleTestimonialDelete}
 									/>
 								))
 							) : (

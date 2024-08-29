@@ -1,6 +1,6 @@
 import { Skeleton } from "./ui/skeleton";
 
-export const FeedbackSkeleton = () => {
+export const TestimonialSkeleton = () => {
 	return (
 		<div className="w-full max-w-5xl h-28 flex items-center gap-2 bg-slate-50 rounded-lg">
 			<div className="w-20% px-10">

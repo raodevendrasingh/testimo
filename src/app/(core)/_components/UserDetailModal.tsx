@@ -1,27 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { AnimatePresence, motion } from "framer-motion";
-import { useForm } from "react-hook-form";
+import {
+	Control,
+	FieldErrors,
+	FieldValues,
+	useForm,
+	UseFormSetValue,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userDetailSchema } from "@/schemas/userDetailSchema";
-import { ArrowLeft, ArrowRight, Loader, Upload, X } from "lucide-react";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
+import { ArrowLeft, ArrowRight, Loader, X } from "lucide-react";
+import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { CldImage, CldUploadWidget } from "next-cloudinary";
 import { useSession } from "next-auth/react";
 import { User } from "next-auth";
+import { SocialLinksScreen, UserDetailScreen } from "./TestimonialForm";
 
 const screens = ["Update Details", "Add Social Links"];
 
@@ -85,14 +82,18 @@ export const UserDetailModal: React.FC<{
 			case 0:
 				return (
 					<UserDetailScreen
-						setValue={setValue}
-						control={control}
-						errors={errors}
-						touchedFields={touchedFields}
+						setValue={setValue as unknown as UseFormSetValue<FieldValues>}
+						control={control as unknown as Control<FieldValues>}
+						errors={errors as FieldErrors<FieldValues>}
+						touchedFields={touchedFields as Partial<Record<string, boolean>>}
 					/>
 				);
 			case 1:
-				return <SocialLinksScreen control={control} />;
+				return (
+					<SocialLinksScreen
+						control={control as unknown as Control<FieldValues>}
+					/>
+				);
 			default:
 				return null;
 		}
@@ -105,7 +106,7 @@ export const UserDetailModal: React.FC<{
 		try {
 			const response = await axios.post("/api/add-user-details", formData);
 			toast.success(response.data.message);
-            setShowUserDetailModal(false);
+			setShowUserDetailModal(false);
 			onSave();
 		} catch (error) {
 			if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -210,191 +211,3 @@ export const UserDetailModal: React.FC<{
 		</AnimatePresence>
 	);
 };
-
-interface CloudinaryUploadWidgetInfo {
-	public_id: string;
-}
-
-interface CloudinaryUploadWidgetResults {
-	event?: string;
-	info?: string | CloudinaryUploadWidgetInfo;
-}
-
-const UserDetailScreen: React.FC<{
-	control: any;
-	setValue: any;
-	errors: any;
-	touchedFields: any;
-}> = ({ control, setValue, errors, touchedFields }) => {
-	const [publicId, setPublicId] = useState<string>("");
-
-	useEffect(() => {
-		if (publicId) {
-			setValue("imageUrl", publicId);
-		}
-	}, [publicId, setValue]);
-
-	return (
-		<div className="flex flex-col gap-2">
-			<FormLabel>Profile Picture</FormLabel>
-			<div className="w-full border h-24 border-dashed rounded-lg p-2 flex justify-center items-center border-gray-400 bg-sky-50">
-				<CldUploadWidget
-					options={{
-						sources: ["local"],
-						multiple: false,
-						maxFiles: 1,
-						cropping: true,
-						croppingAspectRatio: 1,
-						showSkipCropButton: false,
-						clientAllowedFormats: ["jpg", "jpeg", "png"],
-						minImageWidth: 300,
-						minImageHeight: 300,
-						maxImageFileSize: 1050000,
-						styles: {
-							palette: {
-								window: "#FFFFFF",
-								windowBorder: "#90A0B3",
-								tabIcon: "#141414",
-								menuIcons: "#5A616A",
-								textDark: "#000000",
-								textLight: "#FFFFFF",
-								link: "#141414",
-								action: "#FF620C",
-								error: "#F44235",
-								inProgress: "#0078FF",
-								complete: "#20B832",
-								sourceBg: "#FFFFFF",
-							},
-							fonts: {
-								default: null,
-								"'Poppins', sans-serif": {
-									url: "https://fonts.googleapis.com/css?family=Poppins",
-									active: true,
-								},
-							},
-						},
-					}}
-					uploadPreset={process.env.NEXT_PUBLIC_UPLOAD_PRESET}
-					onSuccess={(results: CloudinaryUploadWidgetResults) => {
-						if (typeof results.info === "object" && results.info !== null) {
-							setPublicId(results.info.public_id);
-						} else {
-							console.error("Unexpected info format:", results.info);
-						}
-					}}
-				>
-					{({ open }) => (
-						<button
-							type="button"
-							onClick={(e) => {
-								e.preventDefault();
-								open();
-							}}
-							className="flex justify-center items-center text-gray-600 gap-3 p-8 w-full"
-						>
-							{publicId ? (
-								<>
-									<CldImage
-										src={publicId}
-										alt={publicId}
-										width={50}
-										height={50}
-										className="rounded-md"
-									/>
-									<div className="flex flex-col justify-start items-start">
-										<span className="text-sm text-green-600">
-											Image Successfully uploaded
-										</span>
-										<span className="text-xs">
-											Click to upload another image
-										</span>
-									</div>
-								</>
-							) : (
-								<div className="flex items-center justify-center gap-3 ">
-									<Upload />
-									<span>Upload an Image</span>
-								</div>
-							)}
-						</button>
-					)}
-				</CldUploadWidget>
-			</div>
-
-			<FormField
-				control={control}
-				name="name"
-				render={({ field }) => (
-					<FormItem>
-						<FormLabel>Name</FormLabel>
-						<FormControl>
-							<Input placeholder="Your Name" {...field} />
-						</FormControl>
-						{touchedFields.name && errors.name && <FormMessage />}
-					</FormItem>
-				)}
-			/>
-			<FormField
-				control={control}
-				name="tagline"
-				render={({ field }) => (
-					<FormItem>
-						<FormLabel>Tagline</FormLabel>
-						<FormControl>
-							<Textarea
-								placeholder="Your tagline"
-								className="resize-none"
-								{...field}
-							/>
-						</FormControl>
-						{touchedFields.tagline && errors.tagline && <FormMessage />}
-					</FormItem>
-				)}
-			/>
-		</div>
-	);
-};
-
-const SocialLinksScreen: React.FC<{
-	control: any;
-}> = ({ control }) => (
-	<>
-		<FormField
-			control={control}
-			name="companysite"
-			render={({ field }) => (
-				<FormItem>
-					<FormLabel>Company / Portfolio Site</FormLabel>
-					<FormControl>
-						<Input placeholder="https://yoursite.com" {...field} />
-					</FormControl>
-					<FormMessage />
-				</FormItem>
-			)}
-		/>
-
-		<div className="space-y-4">
-			{["linkedin", "twitter", "instagram"].map((siteName) => (
-				<FormField
-					key={siteName}
-					control={control}
-					name={`socials.${siteName}`}
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel htmlFor={siteName}>
-								{siteName.charAt(0).toUpperCase() + siteName.slice(1)}
-							</FormLabel>
-							<FormControl>
-								<Input
-									placeholder={`https://${siteName}.com/yourusername`}
-									{...field}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-			))}
-		</div>
-	</>
-);

@@ -8,58 +8,16 @@ import { useSession } from "next-auth/react";
 import { CldImage } from "next-cloudinary";
 import {
 	ArrowUpRight,
-	BookOpenCheck,
 	ChartPie,
-	CirclePercent,
 	ClipboardList,
-	Clock,
-	Cog,
-	Coins,
-	Copy,
 	Loader,
-	LucideIcon,
-	MessageSquareQuote,
 	RefreshCcw,
 	RotateCw,
-	Settings,
 	SlidersHorizontal,
-	Star,
 	UserRoundCog,
 } from "lucide-react";
 
-type Stats = {
-	icon: LucideIcon;
-	iconColor: string;
-	title: string;
-	value: number;
-};
-
-const FeedbackStats: Stats[] = [
-	{
-		icon: Coins,
-		iconColor: "text-orange-400",
-		title: "Credits Remaining",
-		value: 8,
-	},
-	{
-		icon: MessageSquareQuote,
-		iconColor: "text-indigo-400",
-		title: "Testimonials Recieved",
-		value: 2,
-	},
-	{
-		icon: Star,
-		iconColor: "text-yellow-400",
-		title: "Average Rating",
-		value: 4.5,
-	},
-	{
-		icon: Clock,
-		iconColor: "text-blue-500",
-		title: "Most Recent Testimonial",
-		value: 2,
-	},
-];
+import { FeedbackStats } from "@/lib/selectOptions";
 
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -72,8 +30,6 @@ import { UserDetailModal } from "../../_components/UserDetailModal";
 import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
 import { ExtractDomain } from "@/helpers/ExtractDomainName";
 import { capitalize } from "@/helpers/CapitalizeFirstChar";
-import { Separator } from "@/components/ui/separator";
-import { ProfileSkeleton } from "@/components/ProfileSkeleton";
 import PulseRingLoader from "@/components/ui/PulseRingLoader";
 
 const ProfilePage = () => {

@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { FeedbackCard } from "@/app/(core)/_components/FeedbackCard";
+import { TestimonialCard } from "@/app/(core)/_components/TestimonialCard";
 import { useFetchTestimonials } from "@/hooks/useFetchTestimonials";
 import { useEffect } from "react";
-import { FeedbackSkeleton } from "@/components/TestimonialSkeleton";
+import { TestimonialSkeleton } from "@/components/TestimonialSkeleton";
 
 const TestimonialPage = () => {
 	const { testimonial, setFeedback, isLoading, fetchTestimonials } =
@@ -14,13 +14,13 @@ const TestimonialPage = () => {
 		fetchTestimonials();
 	}, [fetchTestimonials]);
 
-	const handleDeleteFeedback = (feedbackId: string) => {
+	const handleTestimonialDelete = (feedbackId: string) => {
 		setFeedback(testimonial.filter((message) => message._id !== feedbackId));
 	};
 
 	const actionsToExclude = ["archived", "exported"];
 
-	const filterFeedback = (
+	const filterTestimonials = (
 		testimonial: any[],
 		actionsToExclude: string | any[]
 	) => {
@@ -29,7 +29,7 @@ const TestimonialPage = () => {
 		);
 	};
 
-	const filteredFeedback = filterFeedback(testimonial, actionsToExclude);
+	const filteredTestimonials = filterTestimonials(testimonial, actionsToExclude);
 
 	return (
 		<div className="w-full mx-auto scrollbar-hide">
@@ -39,16 +39,16 @@ const TestimonialPage = () => {
 						<div className="flex flex-col items-center gap-3 p-3">
 							{isLoading ? (
 								<span className="flex flex-col items-center gap-3 w-full">
-									<FeedbackSkeleton />
-									<FeedbackSkeleton />
-									<FeedbackSkeleton />
+									<TestimonialSkeleton />
+									<TestimonialSkeleton />
+									<TestimonialSkeleton />
 								</span>
-							) : filteredFeedback.length > 0 ? (
-								filteredFeedback.map((message) => (
-									<FeedbackCard
+							) : filteredTestimonials.length > 0 ? (
+								filteredTestimonials.map((message) => (
+									<TestimonialCard
 										key={message._id}
 										testimonial={message}
-										onFeedbackDelete={handleDeleteFeedback}
+										onTestimonialDelete={handleTestimonialDelete}
 									/>
 								))
 							) : (

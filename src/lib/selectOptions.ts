@@ -1,10 +1,48 @@
 import {
 	Archive,
 	ArrowRightFromLine,
+	Clock,
+	Coins,
 	LucideIcon,
+	MessageSquareQuote,
 	PartyPopper,
+	Star,
 	Trash2,
 } from "lucide-react";
+
+export type Stats = {
+	icon: LucideIcon;
+	iconColor: string;
+	title: string;
+	value: number;
+};
+
+export const FeedbackStats: Stats[] = [
+	{
+		icon: Coins,
+		iconColor: "text-orange-400",
+		title: "Credits Remaining",
+		value: 8,
+	},
+	{
+		icon: MessageSquareQuote,
+		iconColor: "text-indigo-400",
+		title: "Testimonials Recieved",
+		value: 2,
+	},
+	{
+		icon: Star,
+		iconColor: "text-yellow-400",
+		title: "Average Rating",
+		value: 4.5,
+	},
+	{
+		icon: Clock,
+		iconColor: "text-blue-500",
+		title: "Most Recent Testimonial",
+		value: 2,
+	},
+];
 
 export type Status = {
 	value: string;
