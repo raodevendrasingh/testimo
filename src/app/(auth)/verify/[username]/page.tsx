@@ -59,56 +59,59 @@ const VerificationPage = () => {
 	};
 
 	return (
-		<div className="flex justify-center items-center h-screen bg-gray-100">
-			<div className="w-full max-w-xl m-3 p-8 space-y-8 bg-white rounded-lg shadow-md">
-				<div className="text-center">
-					<h1 className="text-4xl font-bold tracking-tight mb-6 font-serif lg:text-5xl">
-						Verify your account
-					</h1>
+		<div className="relative min-h-screen">
+			<div className="absolute -z-10 inset-0 bg-white bg-[radial-gradient(#d2d2d2_1px,transparent_1px)] [background-size:20px_20px]" />
+			<div className="relative z-10 flex justify-center items-center min-h-screen">
+				<div className="w-full max-w-xl p-8 m-3 space-y-6 bg-white rounded-xl shadow-md">
+					<div className="text-center">
+						<h1 className="text-4xl font-bold tracking-tight mb-6 font-serif lg:text-5xl">
+							Verify your account
+						</h1>
 
-					<p className="mb-4">
-						Enter the six-digit verification code received in your mail
-					</p>
-				</div>
-				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(onSubmit)}
-						className="w-2/3 mx-auto space-y-8"
-					>
-						<div className="flex justify-center">
-							<FormField
-								control={form.control}
-								name="code"
-								render={({ field }) => (
-									<FormItem className="">
-										<FormControl>
-											<InputOTP maxLength={6} {...field}>
-												<InputOTPGroup>
-													<InputOTPSlot index={0} />
-													<InputOTPSlot index={1} />
-													<InputOTPSlot index={2} />
-													<InputOTPSlot index={3} />
-													<InputOTPSlot index={4} />
-													<InputOTPSlot index={5} />
-												</InputOTPGroup>
-											</InputOTP>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
+						<p className="mb-4">
+							Enter the six-digit verification code received in your mail
+						</p>
+					</div>
+					<Form {...form}>
+						<form
+							onSubmit={form.handleSubmit(onSubmit)}
+							className="w-2/3 mx-auto space-y-8"
+						>
+							<div className="flex justify-center">
+								<FormField
+									control={form.control}
+									name="code"
+									render={({ field }) => (
+										<FormItem className="">
+											<FormControl>
+												<InputOTP maxLength={6} {...field}>
+													<InputOTPGroup>
+														<InputOTPSlot index={0} />
+														<InputOTPSlot index={1} />
+														<InputOTPSlot index={2} />
+														<InputOTPSlot index={3} />
+														<InputOTPSlot index={4} />
+														<InputOTPSlot index={5} />
+													</InputOTPGroup>
+												</InputOTP>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+							<Button type="submit" disabled={isVerifying} className="w-full">
+								{isVerifying ? (
+									<>
+										<Loader className="mr-2 size-4 animate-spin" /> Loading
+									</>
+								) : (
+									"Verify"
 								)}
-							/>
-						</div>
-						<Button type="submit" disabled={isVerifying} className="w-full">
-							{isVerifying ? (
-								<>
-									<Loader className="mr-2 size-4 animate-spin" /> Loading
-								</>
-							) : (
-								"Verify"
-							)}
-						</Button>
-					</form>
-				</Form>
+							</Button>
+						</form>
+					</Form>
+				</div>
 			</div>
 		</div>
 	);

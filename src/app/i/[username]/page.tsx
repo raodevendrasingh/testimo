@@ -72,7 +72,7 @@ export default function SendMessage() {
 	const renderScreen = () => {
 		switch (currentScreen) {
 			case 0:
-				return <FeedbackForm control={control} errors={errors} />;
+				return <TestimonialForm control={control} errors={errors} />;
 			case 1:
 				return <DetailForm control={control} setValue={setValue} />;
 			case 2:
@@ -117,7 +117,9 @@ export default function SendMessage() {
 
 	return (
 		<>
-			<section className="flex flex-col gap-5">
+			<section className="relative min-h-screen flex flex-col gap-5 overflow-y-auto">
+				<div className="absolute -z-10 inset-0 bg-white bg-[radial-gradient(#d2d2d2_1px,transparent_1px)] [background-size:20px_20px]" />
+
 				{/* navbar */}
 				<nav className="sticky top-0 w-full flex items-center justify-start gap-2 px-12 pt-2">
 					<span className="text-3xl font-extrabold text-black">
@@ -129,7 +131,7 @@ export default function SendMessage() {
 				</nav>
 				{/* content box */}
 				<AnimatePresence>
-					<div className="w-[70%] sm:w-2/4 max-w-md mx-auto border rounded-xl shadow">
+					<div className="w-[70%] sm:w-2/4 max-w-md mx-auto border rounded-xl bg-white shadow">
 						<div className="flex items-center gap-5 rounded-t p-3 border-b">
 							<span>
 								<Image
@@ -198,7 +200,7 @@ export default function SendMessage() {
 				</AnimatePresence>
 
 				{/* signup card */}
-				<div className="absolute bottom-2 right-2 shadow text-center border rounded-lg p-3 w-52">
+				<div className="absolute bottom-2 right-2 shadow text-center border rounded-lg p-3 w-52 bg-white">
 					<div className="mb-4 text-sm font-medium">
 						Want Your Own Testimonial Board ?
 					</div>
@@ -211,7 +213,7 @@ export default function SendMessage() {
 	);
 }
 
-const FeedbackForm: React.FC<{
+const TestimonialForm: React.FC<{
 	control: any;
 	errors: any;
 }> = ({ control, errors }) => {
