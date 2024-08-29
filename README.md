@@ -1,4 +1,6 @@
-# critiqly
+# remonials
+
+## Testimonial Collection made easy
 
 ### Tech Stack : NextJS, TailwindCSS, ShadcnUI, Next-Auth, MongoDB
 

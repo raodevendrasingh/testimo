@@ -28,13 +28,15 @@ export const HomeNav = (): JSX.Element => {
 					</div>
 					<TooltipProvider>
 						<Tooltip>
-							<TooltipTrigger>
-								<button
+							<TooltipTrigger asChild>
+								<div
 									onClick={() => signOut()}
-									className="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-md text-white text-sm"
+									className="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-md text-white text-sm cursor-pointer"
+									role="button"
+									tabIndex={0}
 								>
 									<LogOutIcon className="size-4 text-rose-600" />
-								</button>
+								</div>
 							</TooltipTrigger>
 							<TooltipContent>
 								<p>Logout</p>
