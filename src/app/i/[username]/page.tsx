@@ -121,9 +121,9 @@ export default function SendMessage() {
 				<div className="absolute -z-10 inset-0 bg-white bg-[radial-gradient(#d2d2d2_1px,transparent_1px)] [background-size:20px_20px]" />
 
 				{/* navbar */}
-				<nav className="sticky top-0 w-full flex items-center justify-start gap-2 px-12 pt-2">
-					<span className="text-3xl font-extrabold text-black">
-						<Link href="/">critiqly</Link>
+				<nav className="sticky top-0 w-full flex items-center justify-start gap-2 px-12 pt-3">
+					<span className="text-3xl font-bold font-mono text-black">
+						<Link href="/">remonials.</Link>
 					</span>
 					<span className="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-md text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">
 						Beta

@@ -7,11 +7,11 @@ export const Navbar = (): JSX.Element => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	return (
-		<header className="w-full bg-transparent text-stone-100 z-20 absolute top-0">
+		<header className="w-full bg-transparent select-none text-stone-100 z-20 absolute top-0">
 			<div className="container mx-auto px-4 py-3 lg:py-4">
 				<div className="flex items-center justify-between">
 					<Link href="/" className="flex items-center space-x-2">
-						<span className="text-3xl font-bold">critiqly</span>
+						<span className="text-3xl font-bold font-mono">remonials.</span>
 					</Link>
 
 					<div className="hidden md:flex items-center space-x-4">
