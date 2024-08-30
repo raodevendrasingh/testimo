@@ -37,11 +37,11 @@ export const StarsCodeBlock = () => {
 	return (
 		<>
 			<div
-				className="flex items-start justify-start p-2 h-24 w-36 bg-slate-100 rounded-md border cursor-pointer"
+				className="flex items-start justify-start p-2 h-32 w-44 bg-slate-50 rounded-md border cursor-pointer"
 				onClick={() => setIsStarDialogOpen(true)}
 			>
-				<div className="flex flex-col justify-between gap-2 pt-1 pb-2 w-full h-full">
-					<div className="flex gap-2">Stars</div>
+				<div className="flex flex-col justify-evenly gap-2 pt-1 pb-2 w-full h-full">
+					<div className="flex gap-2 text-lg">Stars</div>
 					<Stars rating={4} />
 				</div>
 			</div>
