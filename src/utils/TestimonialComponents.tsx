@@ -37,7 +37,11 @@ const CopyableTitle = ({
 	);
 };
 
-export const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
+export const TestimonialCard = ({
+	testimonial,
+}: {
+	testimonial: Testimonial;
+}) => {
 	return (
 		<div className="border rounded-lg select-none p-5 flex flex-col items-center justify-center gap-2 w-[320px]">
 			<span className="text-yellow-300 text-base flex">
@@ -58,8 +62,7 @@ export const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) =
 						/>
 					</div>
 				)}
-
-				<div className="flex flex-col items-center justify-center  ">
+				<div className="flex flex-col items-start">
 					{testimonial.name && (
 						<span className="text-base font-medium">{testimonial.name}</span>
 					)}
@@ -79,7 +82,7 @@ export const CardToCode = ({
 }: {
 	testimonial: Testimonial;
 }): JSX.Element => {
-	const StarBlock = `const Stars = ({ rating }: { rating: number }) => {
+	const StarBlock = `export const Stars = ({ rating }: { rating: number }) => {
     return (
         <span className="text-yellow-300 text-base flex">
             {Array.from({ length: rating }).map((_, index) => (
@@ -102,9 +105,12 @@ export const CardToCode = ({
     );
 };`;
 
-	const ComponentBlock = `interface TestimonialCardProps {
+	const ComponentBlock = `// import the stars component from your preferred path
+import { Stars } from "@/components/ui/Stars";
+
+interface TestimonialCardProps {
     displayName?: string;
-    text: string;
+    content: string;
     rating: number;
     jobTitle?: string;
     imageUrl?: string;
@@ -112,22 +118,22 @@ export const CardToCode = ({
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({
     displayName,
-    text,
+    content,
     rating,
     jobTitle,
     imageUrl
 }) => {
 return (
     <div className="border rounded-lg select-none p-5 flex flex-col items-center justify-center gap-2 w-[320px]">
-        <Stars rating={${testimonial.rating}} />
+        <Stars rating={rating} />
         <div className="flex h-full flex-col text-center text-sm flex-grow">
-            ${testimonial.content}
+            {content}
         </div>
         <div className="flex items-center justify-center gap-4 ">
             {imageUrl && (
                 <div>
                     <img
-                    src="https://res.cloudinary.com/dniezlcfy/image/upload/v1724431325/${testimonial.imageUrl}" 
+                    src={\`https://res.cloudinary.com/dniezlcfy/image/upload/v1724431325/\${imageUrl}\`}
                     alt="profile"
                     width={40}
                     height={40}
@@ -135,12 +141,12 @@ return (
                     />
                 </div>
             )}
-            <div className="flex flex-col items-center justify-center">
-                {name && (
-                    <span className="text-base font-medium">${testimonial.name}</span>
+            <div className="flex flex-col items-start">
+                {displayName && (
+                    <span className="text-base font-medium">{displayName}</span>
                 )}
                 {jobTitle && (
-                    <span className="text-xs font-medium text-gray-600">${testimonial.jobTitle}</span>
+                    <span className="text-xs font-medium text-gray-600">{jobTitle}</span>
                 )}
             </div>
         </div>
@@ -152,14 +158,10 @@ export default TestimonialCard;`;
 
 	const UsageBlock = `<TestimonialCard
     displayName="${testimonial.name || ""}"
-    text="${testimonial.content || ""}"
+    content="${testimonial.content || ""}"
     rating={${testimonial.rating}}
     jobTitle="${testimonial.jobTitle || ""}"
-    imageUrl="${
-			testimonial.imageUrl
-				? `https://res.cloudinary.com/dniezlcfy/image/upload/v1724431325/${testimonial.imageUrl}`
-				: ""
-		}"
+    imageUrl="${testimonial.imageUrl ? `${testimonial.imageUrl}` : ""}"
 />`;
 
 	return (
