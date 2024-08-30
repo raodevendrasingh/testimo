@@ -9,6 +9,7 @@ import ArchivesPage from "./archives/page";
 import ComponentsPage from "./components/page";
 import CustomizePage from "./customize/page";
 import InsightsPage from "./insights/page";
+import { useSidebar } from "@/context/SidebarContext";
 
 const tabComponents = [
 	ProfilePage,
@@ -20,15 +21,8 @@ const tabComponents = [
 	InsightsPage,
 ];
 
-interface DashboardPageProps {
-	isSidebarOpen: boolean;
-	toggleSidebar: () => void;
-}
-
-const DashboardPage: React.FC<DashboardPageProps> = ({
-	isSidebarOpen,
-	toggleSidebar,
-}) => {
+const DashboardPage: React.FC = () => {
+	const { isSidebarOpen, toggleSidebar } = useSidebar();
 	const [selectedTab, setSelectedTab] = useState<number>(0);
 
 	const SelectedComponent = tabComponents[selectedTab];
@@ -39,7 +33,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({
 				isOpen={isSidebarOpen}
 				selectedTab={selectedTab}
 				setSelectedTab={setSelectedTab}
-				toggleSidebar={toggleSidebar} 
+				toggleSidebar={toggleSidebar}
 			/>
 			<main className="flex-1 overflow-auto lg:ml-64">
 				<SelectedComponent />

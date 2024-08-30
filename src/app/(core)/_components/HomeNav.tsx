@@ -2,32 +2,51 @@
 
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import { LogOutIcon, Menu } from "lucide-react";
-
+import { LogOutIcon } from "lucide-react";
+import { useSidebar } from "@/context/SidebarContext";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 
-interface HomeNavProps {
-	toggleSidebar: () => void;
-}
+export const HomeNav = (): JSX.Element => {
+	const { toggleSidebar, isSidebarOpen } = useSidebar();
 
-export const HomeNav = ({ toggleSidebar }: HomeNavProps): JSX.Element => {
 	return (
 		<header className="w-full h-14 text-zinc-800 bg-white z-20 sticky border-b top-0">
 			<div className="container mx-auto px-4 py-2.5">
 				<div className="flex items-center justify-between">
 					<div className="flex gap-2 items-center">
-						<button
-							onClick={toggleSidebar}
-							className="lg:hidden mr-2 p-2 rounded-md hover:bg-gray-100"
-							aria-label="Toggle sidebar"
-						>
-							<Menu className="h-6 w-6" />
-						</button>
+                        <button
+                  		className={`relative block size-10 self-center lg:hidden
+                            ${
+															isSidebarOpen
+																? "visible opacity-100 [&_span:nth-child(1)]:w-6 [&_span:nth-child(1)]:translate-y-0 [&_span:nth-child(1)]:rotate-45 [&_span:nth-child(3)]:w-0 [&_span:nth-child(2)]:-rotate-45 "
+																: ""
+														}
+                    `}
+						aria-expanded={isSidebarOpen ? "true" : "false"}
+						aria-label="Toggle navigation"
+						onClick={toggleSidebar}
+					>
+						<div className="absolute top-1/2 left-1/2 w-6 -translate-x-1/2 -translate-y-1/2 transform">
+							<span
+								aria-hidden="true"
+								className="absolute block h-0.5 w-9/12 -translate-y-2 transform rounded-full bg-zinc-900 transition-all duration-300"
+							></span>
+							<span
+								aria-hidden="true"
+								className="absolute block h-0.5 w-6 transform rounded-full bg-zinc-900 transition duration-300"
+							></span>
+							<span
+								aria-hidden="true"
+								className="absolute block h-0.5 w-1/2 origin-top-left translate-y-2 transform rounded-full bg-zinc-900 transition-all duration-300"
+							></span>
+						</div>
+					</button>
 						<Link href="/" className="flex items-center space-x-2">
 							<span className="text-2xl font-extrabold font-mono">
 								remonials.
@@ -40,14 +59,13 @@ export const HomeNav = ({ toggleSidebar }: HomeNavProps): JSX.Element => {
 					<TooltipProvider>
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<div
+								<Button
+                                    size="sm"
+                                    variant="outline"
 									onClick={() => signOut()}
-									className="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-md text-white text-sm cursor-pointer"
-									role="button"
-									tabIndex={0}
 								>
-									<LogOutIcon className="size-4 text-rose-600" />
-								</div>
+									<LogOutIcon className="size-4 text-red-600" />
+								</Button>
 							</TooltipTrigger>
 							<TooltipContent>
 								<p>Logout</p>
