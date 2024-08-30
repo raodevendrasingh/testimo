@@ -12,13 +12,15 @@ import {
 	ChartArea,
 	FolderInput,
 	LayoutTemplate,
+    Braces,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import TestimonialPage from "../dashboard/testimonials/page";
 import ArchivesPage from "../dashboard/archives/page";
 import InsightsPage from "../dashboard/insights/page";
 import ExportsPage from "../dashboard/exports/page";
-import CustomizePage from "../dashboard/customized/page";
+import CustomizePage from "../dashboard/customize/page";
+import ComponentsPage from "../dashboard/components/page";
 
 type Tabs = {
 	title: string;
@@ -53,7 +55,13 @@ export const tabsData: Tabs[] = [
 		icon: Archive,
 		content: <ArchivesPage />,
 	},
-	{
+    {
+		title: "Components",
+		href: "/components",
+		icon: Braces,
+		content: <ComponentsPage />,
+	},
+    {
 		title: "Customize Page",
 		href: "/customize-page",
 		icon: LayoutTemplate,

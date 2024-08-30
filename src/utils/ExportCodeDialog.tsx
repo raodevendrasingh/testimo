@@ -44,7 +44,9 @@ export const ExportDialog = ({
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
 			<DialogContent className="flex flex-col justify-start items-center h-[90%]">
 				<DialogHeader className="flex flex-col justify-start w-full">
-					<DialogTitle>Export Testimonial</DialogTitle>
+					<DialogTitle className="tracking-wider">
+						Export Testimonial
+					</DialogTitle>
 					<DialogDescription>
 						Paste the component in your code
 					</DialogDescription>
