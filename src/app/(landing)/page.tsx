@@ -1,6 +1,7 @@
 "use client";
 
 import Footer from "@/components/Footer";
+import { MarqueeSection } from "@/components/MarqueeSection";
 import { Navbar } from "@/components/Navbar";
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import Link from "next/link";
@@ -13,11 +14,10 @@ export default function HomePage() {
 				<div className="absolute inset-0 z-0 bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#0f0f0f_1px)] bg-[size:25px_25px]" />
 				<div className="relative z-10 flex flex-col items-center max-w-5xl px-4 text-center">
 					<h1 className="mb-6 text-5xl md:text-7xl lg:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
-						Turning Experiences into Endorsements
+						Authentic Praise, Effortlessly Captured
 					</h1>
 					<p className="mb-10 text-2xl md:text-3xl lg:text-4xl font-medium text-gray-300">
-						Collecting Testimonials Made Easy
-						<br className="hidden md:inline" /> Let Them Tell Your Success Story
+						Let Your Clients Become Your Best Marketers
 					</p>
 					<Link href="/sign-up">
 						<ShimmerButton className="shadow-2xl hover:scale-105 transition-all duration-300">
@@ -29,7 +29,8 @@ export default function HomePage() {
 					<p className="mt-6 text-sm text-gray-400">No credit card required</p>
 				</div>
 			</div>
-            <Footer/>
+			<MarqueeSection />
+			<Footer />
 		</>
 	);
 }
