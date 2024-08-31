@@ -7,14 +7,14 @@ import { Testimonial } from "@/models/User";
 import { toast } from "sonner";
 
 export const useFetchTestimonials = () => {
-	const [testimonial, setFeedback] = useState<Testimonial[]>([]);
+	const [testimonial, setTestimonial] = useState<Testimonial[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const fetchTestimonials = useCallback(async (refresh: boolean = false) => {
 		setIsLoading(true);
 		try {
 			const response = await axios.get<ApiResponse>("/api/get-testimonials");
-			setFeedback(response.data.testimonial || []);
+			setTestimonial(response.data.testimonial || []);
 			if (refresh) {
 				toast("Testimonial Refreshed");
 			}
@@ -29,5 +29,5 @@ export const useFetchTestimonials = () => {
 		}
 	}, []);
 
-	return { testimonial, isLoading, setFeedback, fetchTestimonials };
+	return { testimonial, isLoading, setTestimonial, fetchTestimonials };
 };

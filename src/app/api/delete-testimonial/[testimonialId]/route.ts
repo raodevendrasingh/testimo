@@ -5,9 +5,10 @@ import { UserModel } from "@/models/User";
 
 export async function DELETE(
 	request: Request,
-	{ params }: { params: { feedbackId: string } }
+	{ params }: { params: { testimonialId: string } }
 ) {
-	const feedbackId = params.feedbackId;
+	const testimonialId = params.testimonialId;
+
 	await dbConnect();
 
 	const session = await getServerSession(authOptions);
@@ -27,7 +28,7 @@ export async function DELETE(
 	try {
 		const updateResult = await UserModel.updateOne(
 			{ _id: _user._id },
-			{ $pull: { testimonial: { _id: feedbackId } } }
+			{ $pull: { testimonial: { _id: testimonialId } } }
 		);
 		if (updateResult.modifiedCount === 0) {
 			return new Response(
@@ -46,7 +47,7 @@ export async function DELETE(
 			{ status: 200 }
 		);
 	} catch (error) {
-        // console.error('An Error occured while deleting testimonial', error);
+		// console.error('An Error occured while deleting testimonial', error);
 		return new Response(
 			JSON.stringify({
 				success: false,

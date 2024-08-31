@@ -7,15 +7,15 @@ import { useEffect } from "react";
 import { TestimonialSkeleton } from "@/components/TestimonialSkeleton";
 
 const TestimonialPage = () => {
-	const { testimonial, setFeedback, isLoading, fetchTestimonials } =
+	const { testimonial, setTestimonial, isLoading, fetchTestimonials } =
 		useFetchTestimonials();
 
 	useEffect(() => {
 		fetchTestimonials();
 	}, [fetchTestimonials]);
 
-	const handleTestimonialDelete = (feedbackId: string) => {
-		setFeedback(testimonial.filter((message) => message._id !== feedbackId));
+	const handleTestimonialDelete = (testimonialId: string) => {
+		setTestimonial(testimonial.filter((message) => message._id !== testimonialId));
 	};
 
 	const actionsToExclude = ["archived", "exported"];
