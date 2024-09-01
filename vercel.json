@@ -3,6 +3,6 @@
         "env": {
             "NODE_ENV": "production"
         },
-        "command": "bun install --legacy-peer-deps && bun run build"
+        "command": "npm install --legacy-peer-deps && npm run build"
     }
 }
