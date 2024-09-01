@@ -5,6 +5,7 @@ import { Stars } from "@/components/ui/Stars";
 import SyntaxHighlighter from "@/utils/SyntaxHighlighter";
 import { Clipboard, ClipboardCheck } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 
 export const CopyableTitle = ({
 	title,
@@ -53,7 +54,7 @@ export const TestimonialCard = ({
 			<div className="flex items-center justify-center gap-4 ">
 				{testimonial.imageUrl && (
 					<div>
-						<img
+						<Image
 							src={`https://res.cloudinary.com/dniezlcfy/image/upload/v1724431325/${testimonial.imageUrl}`}
 							alt="pfp"
 							width={40}

@@ -59,7 +59,7 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 			const user = userDetail[0];
 			setValue("publicId", user.imageUrl);
 		}
-	}, [userDetail, setValue]);
+	}, [userDetail, isUserLoading, setValue]);
 
 	useEffect(() => {
 		if (publicId) {
