@@ -40,9 +40,8 @@ export async function POST(request: Request) {
 				{ status: 404 }
 			);
 		}
-
 		const updatedFeedback = updatedUser.testimonial.find(
-			(fb) => fb._id.toString() === feedbackId
+			(fb: any) => fb._id.toString() === feedbackId
 		);
 
 		return Response.json(
