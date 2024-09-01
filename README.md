@@ -1,4 +1,4 @@
-# remonials
+# Remonial
 
 ## Testimonial Collection made easy
 

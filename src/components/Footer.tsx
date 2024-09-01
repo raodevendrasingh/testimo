@@ -1,4 +1,6 @@
 import Link from "next/link";
+import remonial_wordmark_light from "@/assets/brand/remonial_wordmark_light.png";
+import Image from "next/image";
 
 const Footer = () => {
 	return (
@@ -6,7 +8,13 @@ const Footer = () => {
 			<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 				<div className="flex flex-col md:flex-row justify-between items-center">
 					<div className=" text-center md:text-left mb-4 md:mb-0">
-						<h2 className="text-2xl font-bold font-mono">remonials.</h2>
+						<Image
+							src={remonial_wordmark_light}
+							alt="remonials"
+							width={180}
+							height={100}
+							className="aspect-auto"
+						/>
 						<p className="text-sm mt-2">Empowering your success stories</p>
 					</div>
 					<div className="flex space-x-6">

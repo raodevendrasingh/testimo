@@ -3,6 +3,9 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
+import remonial_wordmark_light from "@/assets/brand/remonial_wordmark_light.png";
+import Image from "next/image";
+
 export const Navbar = (): JSX.Element => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -11,7 +14,13 @@ export const Navbar = (): JSX.Element => {
 			<div className="container mx-auto px-4 py-3 lg:py-4">
 				<div className="flex items-center justify-between">
 					<Link href="/" className="flex items-center space-x-2">
-						<span className="text-3xl font-bold font-mono">remonials.</span>
+						<Image
+							src={remonial_wordmark_light}
+							alt="remonials"
+							width={180}
+							height={100}
+							className="aspect-auto"
+						/>
 					</Link>
 
 					<div className="hidden md:flex items-center space-x-4">
@@ -29,7 +38,7 @@ export const Navbar = (): JSX.Element => {
 						</Link>
 					</div>
 
-                    {/* mobile trigger */}
+					{/* mobile trigger */}
 					<button
 						className={`relative order-10 block h-10 w-10 self-center md:hidden
                             ${
@@ -64,7 +73,6 @@ export const Navbar = (): JSX.Element => {
 			{isMobileMenuOpen && (
 				<div className="md:hidden absolute top-full left-0 right-0 bg-transparent transition-all duration-500 opacity-[0.80]">
 					<nav className=" flex flex-col  mx-auto px-4 py-3">
-						
 						<div className="flex justify-between py-3">
 							<Link
 								href="/sign-in"
