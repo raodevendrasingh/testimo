@@ -21,12 +21,30 @@ import { User } from "next-auth";
 import { SocialLinksScreen, UserDetailScreen } from "./UserProfileForm";
 import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
 
+
+interface FormValues {
+	name: string;
+	imageUrl?: string;
+	tagline: string;
+	companysite?: string;
+	socials: {
+		linkedin?: string;
+		twitter?: string;
+		instagram?: string;
+	};
+}
+
 const screens = ["Update Details", "Add Social Links"];
 
-export const UserDetailModal: React.FC<{
+interface UserDetailModalProps {
 	onSave: () => void;
 	setShowUserDetailModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setShowUserDetailModal, onSave }) => {
+}
+
+export const UserDetailModal: React.FC<UserDetailModalProps> = ({
+	setShowUserDetailModal,
+	onSave,
+}) => {
 	const { data: session } = useSession();
 	const [currentScreen, setCurrentScreen] = useState(0);
 	const [slideDirection, setSlideDirection] = useState(0);
@@ -34,13 +52,7 @@ export const UserDetailModal: React.FC<{
 
 	const { userDetail, isUserLoading, fetchUserData } = useFetchUserDetail();
 
-	useEffect(() => {
-		if (session?.user) {
-			fetchUserData();
-		}
-	}, [session, fetchUserData]);
-
-	const form = useForm({
+	const form = useForm<FormValues>({
 		resolver: zodResolver(userDetailSchema),
 		defaultValues: {
 			name: "",
@@ -57,8 +69,24 @@ export const UserDetailModal: React.FC<{
 	});
 
 	useEffect(() => {
+		if (session?.user) {
+			fetchUserData();
+		}
+	}, [session, fetchUserData]);
+
+    useEffect(() => {
 		if (userDetail && !isUserLoading && userDetail.length > 0) {
-            const user = userDetail[0];
+			const user = userDetail[0] as {
+				name?: string;
+				imageUrl?: string;
+				tagline?: string;
+				companysite?: string;
+				socials?: {
+					linkedin?: string;
+					twitter?: string;
+					instagram?: string;
+				};
+			};
 			form.reset({
 				name: user.name ?? "",
 				imageUrl: user.imageUrl,
@@ -86,7 +114,7 @@ export const UserDetailModal: React.FC<{
 
 	const isFirstScreenValid = name.length >= 3 && tagline.length >= 5;
 
-	const user = session?.user as User;
+	const user = session?.user as User | undefined;
 	const username = user?.username;
 
 	const handleNext = (e: React.MouseEvent) => {
@@ -115,17 +143,13 @@ export const UserDetailModal: React.FC<{
 					/>
 				);
 			case 1:
-				return (
-					<SocialLinksScreen
-						control={control as unknown as Control<FieldValues>}
-					/>
-				);
+				return <SocialLinksScreen control={control as unknown as Control<FieldValues>} />;
 			default:
 				return null;
 		}
 	};
 
-	const onSubmit = async (data: any) => {
+	const onSubmit = async (data: FormValues) => {
 		setIsLoading(true);
 		const formData = { ...data, username: username };
 
