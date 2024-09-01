@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { AnimatePresence, motion } from "framer-motion";
@@ -18,7 +18,8 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import { User } from "next-auth";
-import { SocialLinksScreen, UserDetailScreen } from "./TestimonialForm";
+import { SocialLinksScreen, UserDetailScreen } from "./UserProfileForm";
+import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
 
 const screens = ["Update Details", "Add Social Links"];
 
@@ -30,6 +31,14 @@ export const UserDetailModal: React.FC<{
 	const [currentScreen, setCurrentScreen] = useState(0);
 	const [slideDirection, setSlideDirection] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
+
+	const { userDetail, isUserLoading, fetchUserData } = useFetchUserDetail();
+
+	useEffect(() => {
+		if (session?.user) {
+			fetchUserData();
+		}
+	}, [session, fetchUserData]);
 
 	const form = useForm({
 		resolver: zodResolver(userDetailSchema),
@@ -46,6 +55,23 @@ export const UserDetailModal: React.FC<{
 		},
 		mode: "onChange",
 	});
+
+	useEffect(() => {
+		if (userDetail && !isUserLoading && userDetail.length > 0) {
+            const user = userDetail[0];
+			form.reset({
+				name: user.name ?? "",
+				imageUrl: user.imageUrl,
+				tagline: user.tagline ?? "",
+				companysite: user.companysite,
+				socials: {
+					linkedin: user.socials?.linkedin,
+					twitter: user.socials?.twitter,
+					instagram: user.socials?.instagram,
+				},
+			});
+		}
+	}, [userDetail, isUserLoading, form]);
 
 	const {
 		control,

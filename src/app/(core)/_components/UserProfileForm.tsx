@@ -18,6 +18,8 @@ import {
 	UseFormSetValue,
 	FieldValues,
 } from "react-hook-form";
+import { useSession } from "next-auth/react";
+import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
 
 interface CloudinaryUploadWidgetInfo {
 	public_id: string;
@@ -41,7 +43,23 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 	errors,
 	touchedFields,
 }) => {
+	const { data: session } = useSession();
 	const [publicId, setPublicId] = useState<string>("");
+
+	const { userDetail, isUserLoading, fetchUserData } = useFetchUserDetail();
+
+	useEffect(() => {
+		if (session?.user) {
+			fetchUserData();
+		}
+	}, [session, fetchUserData]);
+
+	useEffect(() => {
+		if (userDetail && !isUserLoading && userDetail.length > 0) {
+			const user = userDetail[0];
+			setValue("publicId", user.imageUrl);
+		}
+	}, [userDetail, setValue]);
 
 	useEffect(() => {
 		if (publicId) {
@@ -107,7 +125,23 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 							}}
 							className="flex justify-center items-center text-gray-600 gap-3 p-8 w-full"
 						>
-							{publicId ? (
+							{userDetail[0]?.imageUrl ? (
+								<>
+									<CldImage
+										src={`${userDetail[0]?.imageUrl}`}
+										alt="User profile"
+										width={50}
+										height={50}
+										className="rounded-md"
+									/>
+									<div className="flex flex-col justify-start items-start">
+										<span className="text-sm text-green-600">
+											Current profile image
+										</span>
+										<span className="text-xs">Click to upload a new image</span>
+									</div>
+								</>
+							) : publicId ? (
 								<>
 									<CldImage
 										src={publicId}
