@@ -3,11 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/context/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "Remonials",
+	title: "Remonial",
 	description: "Collecting Testimonials and Endorsements made easy",
 	icons: {
 		icon: [
@@ -39,6 +39,7 @@ export default function RootLayout({
 			<AuthProvider>
 				<body className={inter.className}>
 					{children}
+                    <SpeedInsights />
 					<Toaster position="top-center" />
 				</body>
 			</AuthProvider>

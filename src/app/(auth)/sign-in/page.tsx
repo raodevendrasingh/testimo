@@ -33,15 +33,12 @@ const SignInPage = (): JSX.Element => {
 		data
 	) => {
 		setIsSubmitting(true);
-		// console.log("data", data);
 		try {
 			const result = await signIn("credentials", {
 				redirect: false,
 				identifier: data.identifier,
 				password: data.password,
 			});
-
-			// console.log("result", result);
 
 			if (result?.error) {
 				if (result.error === "CredentialsSignin") {
@@ -57,11 +54,11 @@ const SignInPage = (): JSX.Element => {
 
 			if (result?.status === 200 && result.ok && result.url) {
                 console.log("Logged in sucessfully");
-				console.log("Navigating to dashboard"); // Log navigation attempt
+				console.log("Navigating to dashboard");
 
 				router.replace("/dashboard");
 			} else {
-				console.log("Sign-in failed, no valid status or ok flag"); // Log if no valid status or ok flag
+				console.log("Sign-in failed, no valid status or ok flag");
 			}
 		} catch (error) {
 			console.error("Sign-in error:", error);

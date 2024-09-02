@@ -23,6 +23,7 @@
         "@react-email/components": "^0.0.22",
         "@types/bcryptjs": "^2.4.6",
         "@types/canvas-confetti": "^1.6.4",
+        "@vercel/speed-insights": "^1.0.12",
         "all": "^0.0.0",
         "axios": "^1.7.4",
         "bcryptjs": "^2.4.3",
