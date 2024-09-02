@@ -29,14 +29,19 @@ const SignInPage = (): JSX.Element => {
 		resolver: zodResolver(signInSchema),
 	});
 
-	const onSubmit: SubmitHandler<z.infer<typeof signInSchema>> = async (data) => {
+	const onSubmit: SubmitHandler<z.infer<typeof signInSchema>> = async (
+		data
+	) => {
 		setIsSubmitting(true);
+		// console.log("data", data);
 		try {
 			const result = await signIn("credentials", {
 				redirect: false,
 				identifier: data.identifier,
 				password: data.password,
 			});
+
+			// console.log("result", result);
 
 			if (result?.error) {
 				if (result.error === "CredentialsSignin") {
@@ -50,10 +55,14 @@ const SignInPage = (): JSX.Element => {
 				return;
 			}
 
-			if (result?.url) {
+			if (result?.status === 200 && result.ok && result.url) {
+                console.log("Logged in sucessfully");
+				console.log("Navigating to dashboard"); // Log navigation attempt
+
 				router.replace("/dashboard");
+			} else {
+				console.log("Sign-in failed, no valid status or ok flag"); // Log if no valid status or ok flag
 			}
-            console.log('Logged in sucessfully')
 		} catch (error) {
 			console.error("Sign-in error:", error);
 			toast.error("An unexpected error occurred. Please try again.");
