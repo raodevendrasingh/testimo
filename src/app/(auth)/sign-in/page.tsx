@@ -32,28 +32,29 @@ const SignInPage = (): JSX.Element => {
 	const onSubmit: SubmitHandler<z.infer<typeof signInSchema>> = async (
 		data
 	) => {
-		try {
-			setIsSubmitting(true);
-			const result = await signIn("credentials", {
-				redirect: false,
-				identifier: data.identifier,
-				password: data.password,
-			});
+		setIsSubmitting(true);
+		const result = await signIn("credentials", {
+			redirect: false,
+			identifier: data.identifier,
+			password: data.password,
+		});
 
-			toast.success("Success", {
-				description: "You are now logged in!",
-			});
-
-			setIsSubmitting(false);
-
-			if (result?.url) {
-				router.replace("/dashboard");
+		if (result?.error) {
+			if (result.error === "CredentialsSignin") {
+				toast.error("Login Failed", {
+					description: "Incorrect username or password",
+				});
+			} else {
+				toast.error(result.error);
 			}
-		} catch (error) {
-			toast.error("Failed", {
-				description: "Incorrect username or password",
-			});
+			setIsSubmitting(false);
+			return;
 		}
+
+		if (result?.url) {
+			router.replace("/dashboard");
+		}
+		setIsSubmitting(false);
 	};
 
 	return (
