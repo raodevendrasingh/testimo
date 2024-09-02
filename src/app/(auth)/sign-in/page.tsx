@@ -29,32 +29,37 @@ const SignInPage = (): JSX.Element => {
 		resolver: zodResolver(signInSchema),
 	});
 
-	const onSubmit: SubmitHandler<z.infer<typeof signInSchema>> = async (
-		data
-	) => {
+	const onSubmit: SubmitHandler<z.infer<typeof signInSchema>> = async (data) => {
 		setIsSubmitting(true);
-		const result = await signIn("credentials", {
-			redirect: false,
-			identifier: data.identifier,
-			password: data.password,
-		});
+		try {
+			const result = await signIn("credentials", {
+				redirect: false,
+				identifier: data.identifier,
+				password: data.password,
+			});
 
-		if (result?.error) {
-			if (result.error === "CredentialsSignin") {
-				toast.error("Login Failed", {
-					description: "Incorrect username or password",
-				});
-			} else {
-				toast.error(result.error);
+			if (result?.error) {
+				if (result.error === "CredentialsSignin") {
+					toast.error("Login Failed", {
+						description: "Incorrect username or password",
+					});
+				} else {
+					toast.error(result.error);
+				}
+				setIsSubmitting(false);
+				return;
 			}
-			setIsSubmitting(false);
-			return;
-		}
 
-		if (result?.url) {
-			router.replace("/dashboard");
+			if (result?.url) {
+				router.replace("/dashboard");
+			}
+            console.log('Logged in sucessfully')
+		} catch (error) {
+			console.error("Sign-in error:", error);
+			toast.error("An unexpected error occurred. Please try again.");
+		} finally {
+			setIsSubmitting(false);
 		}
-		setIsSubmitting(false);
 	};
 
 	return (
