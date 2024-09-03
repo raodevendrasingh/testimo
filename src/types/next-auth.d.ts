@@ -14,6 +14,7 @@ declare module 'next-auth' {
             isVerified?: boolean;
             isAcceptingTestimonials?: boolean;
             username?: string;
+            oauthProvider?: string | null;
         } & DefaultSession['user']
     }
 }
@@ -24,5 +25,6 @@ declare module 'next-auth/jwt' {
         isVerified?: boolean;
         isAcceptingTestimonials?: boolean;
         username?: string;
+        oauthProvider?: string | null;
     }
 }

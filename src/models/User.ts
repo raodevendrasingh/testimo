@@ -72,6 +72,7 @@ export interface User extends Document {
 	tagline?: String;
 	email: string;
 	password: string;
+	oauthProvider: string | null;
 	signUpToken: string;
 	verifyCode: string;
 	verifyCodeExpiry: Date;
@@ -111,6 +112,7 @@ const UserSchema: Schema<User> = new Schema({
 		type: String,
 		required: [true, "Password is required"],
 	},
+	oauthProvider: { type: String, default: null },
 	signUpToken: {
 		type: String,
 	},

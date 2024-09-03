@@ -20,6 +20,8 @@ import { Loader } from "lucide-react";
 import { signInSchema } from "@/schemas/signInSchema";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
+import { GoogleAuthButton } from "@/components/GoogleAuthButton";
+import { Separator } from "@/components/ui/separator";
 
 const SignInPage = (): JSX.Element => {
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -53,7 +55,7 @@ const SignInPage = (): JSX.Element => {
 			}
 
 			if (result?.status === 200 && result.ok && result.url) {
-                console.log("Logged in sucessfully");
+				console.log("Logged in sucessfully");
 				console.log("Navigating to dashboard");
 
 				router.replace("/dashboard");
@@ -77,6 +79,12 @@ const SignInPage = (): JSX.Element => {
 						<h1 className="text-4xl font-bold tracking-tight mb-6 font-serif lg:text-5xl text-left">
 							sign in.
 						</h1>
+					</div>
+					<GoogleAuthButton />
+					<div className="flex items-center justify-center px-5">
+						<Separator className="w-1/2" />
+						<p className="text-center text-sm text-gray-500 mx-4">or</p>
+						<Separator className="w-1/2" />
 					</div>
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -113,7 +121,7 @@ const SignInPage = (): JSX.Element => {
 							<Button type="submit" disabled={isSubmitting} className="w-full">
 								{isSubmitting ? (
 									<>
-										<Loader className="mr-2 size-4 animate-spin" /> Loading
+										Please wait <Loader className="ml-2 size-4 animate-spin" />
 									</>
 								) : (
 									"Sign In"

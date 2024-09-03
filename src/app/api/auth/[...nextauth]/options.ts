@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
 import { UserModel } from "@/models/User";
@@ -42,14 +43,39 @@ export const authOptions: NextAuthOptions = {
 				}
 			},
 		}),
+		GoogleProvider({
+			clientId: process.env.GOOGLE_CLIENT_ID as string,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+		}),
 	],
 	callbacks: {
-		async jwt({ token, user }) {
+		async jwt({ token, user, account, profile }) {
+			await dbConnect();
 			if (user) {
-				token._id = user._id?.toString(); // Convert ObjectId to string
-				token.isVerified = user.isVerified;
-				token.isAcceptingMessages = user.isAcceptingTestimonials;
-				token.username = user.username;
+				let dbUser = await UserModel.findOne({ email: user.email });
+                
+				if (!dbUser) {
+					dbUser = await UserModel.create({
+						email: user.email,
+						name: user.name,
+						imageUrl: user.image,
+						username: user.email?.split("@")[0] || profile?.name,
+						isVerified: true,
+						password:
+							account?.provider === "google"
+								? Math.random().toString(36).slice(-12)
+								: undefined,
+						verifyCode:
+							account?.provider === "google" ? "GOOGLE_OAUTH" : "000000",
+						verifyCodeExpiry: Date.now() + 1000 * 60 * 60 * 24,
+						oauthProvider: account?.provider === "google" ? "google" : null,
+					});
+				}
+				token._id = dbUser._id?.toString();
+				token.isVerified = dbUser.isVerified;
+				token.isAcceptingMessages = dbUser.isAcceptingTestimonials;
+				token.username = dbUser.username;
+				token.oauthProvider = dbUser.oauthProvider;
 			}
 			return token;
 		},
@@ -59,6 +85,7 @@ export const authOptions: NextAuthOptions = {
 				session.user.isVerified = token.isVerified;
 				session.user.isAcceptingTestimonials = token.isAcceptingTestimonials;
 				session.user.username = token.username;
+				session.user.oauthProvider = (token.oauthProvider as string) || null;
 			}
 			return session;
 		},

@@ -8,7 +8,8 @@ import Link from "next/link";
 import * as z from "zod";
 import axios, { AxiosError } from "axios";
 import { signUpSchema } from "@/schemas/signUpSchema";
-
+import { GoogleAuthButton } from "@/components/GoogleAuthButton";
+import { Separator } from "@/components/ui/separator";
 import { ApiResponse } from "@/types/ApiResponse";
 
 import {
@@ -66,9 +67,14 @@ const SignUpPage = (): JSX.Element => {
 							sign up.
 						</h1>
 					</div>
+					<GoogleAuthButton />
+					<div className="flex items-center justify-center px-5">
+						<Separator className="w-1/2" />
+						<p className="text-center text-sm text-gray-500 mx-4">or</p>
+						<Separator className="w-1/2" />
+					</div>
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-							
 							<FormField
 								name="email"
 								control={form.control}

@@ -20,6 +20,7 @@ import {
 } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
+import Image from "next/image";
 
 interface CloudinaryUploadWidgetInfo {
 	public_id: string;
@@ -44,6 +45,7 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 	touchedFields,
 }) => {
 	const { data: session } = useSession();
+	const oauthProvider = session?.user?.oauthProvider;
 	const [publicId, setPublicId] = useState<string>("");
 
 	const { userDetail, isUserLoading, fetchUserData } = useFetchUserDetail();
@@ -125,13 +127,41 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 							}}
 							className="flex justify-center items-center text-gray-600 gap-3 p-8 w-full"
 						>
-							{userDetail[0]?.imageUrl ? (
+							{/* loading google profile image */}
+							{oauthProvider &&
+							userDetail &&
+							userDetail.length > 0 &&
+							userDetail[0].imageUrl ? (
+								<>
+									<Image
+										src={userDetail[0].imageUrl as string}
+										alt="oauth-profile"
+										width={64}
+										height={64}
+										priority={true}
+										className="rounded-lg"
+										onError={(e) => {
+											console.error("Image failed to load:", e);
+											e.currentTarget.src =
+												"@/assets/placeholder/emptyLogo.png";
+										}}
+									/>
+									<div className="flex flex-col justify-start items-start">
+										<span className="text-sm text-green-600">
+											Current profile image
+										</span>
+										<span className="text-xs">Click to upload a new image</span>
+									</div>
+								</>
+							) : userDetail &&
+							  userDetail.length > 0 &&
+							  userDetail[0]?.imageUrl ? (
 								<>
 									<CldImage
 										src={`${userDetail[0]?.imageUrl}`}
 										alt="User profile"
-										width={50}
-										height={50}
+										width={64}
+										height={64}
 										className="rounded-md"
 									/>
 									<div className="flex flex-col justify-start items-start">

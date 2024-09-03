@@ -48,6 +48,7 @@ const ProfilePage = () => {
 
 	const user = session?.user as User;
 	const username = user?.username;
+	const oauthProvider = session?.user?.oauthProvider;
 
 	const { testimonial, isLoading, fetchTestimonials } = useFetchTestimonials();
 	const {
@@ -128,7 +129,21 @@ const ProfilePage = () => {
 									<div className="flex flex-col sm:flex-row items-center justify-center w-[80%] sm:justify-start gap-3 sm:gap-5 ">
 										<div className="flex items-center justify-center">
 											<div className="size-28 rounded-lg">
-												{userDetail[0].imageUrl ? (
+												{oauthProvider ? (
+													<Image
+														src={userDetail[0].imageUrl as string}
+														alt="user-profile"
+														width={120}
+														height={120}
+														priority={true}
+														className="rounded-lg"
+														onError={(e) => {
+															console.error("Image failed to load:", e);
+															e.currentTarget.src =
+																"@/assets/placeholder/emptyLogo.png";
+														}}
+													/>
+												) : userDetail[0].imageUrl ? (
 													<CldImage
 														src={userDetail[0].imageUrl as string}
 														alt="user-profile"
