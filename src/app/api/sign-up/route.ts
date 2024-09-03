@@ -1,31 +1,20 @@
 import dbConnect from "@/lib/dbConnect";
 import { UserModel } from "@/models/User";
 import bcrypt from "bcryptjs"
+import { nanoid } from 'nanoid';
 import { sendVerifyEmail } from "@/helpers/sendVerifyEmail";
 
 export async function POST(request: Request) {
     await dbConnect();
 
     try {
-        const { username, email, password } = await request.json();
-
-        const existingUserVerifiedbyUsername = await UserModel.findOne({
-            username,
-            isVerified: true
-        });
-
-        if (existingUserVerifiedbyUsername) {
-            return Response.json({
-                success: false,
-                message: "Username is already taken"
-            }, {
-                status: 400
-            })
-        }
+        const { email, password } = await request.json();
 
         const existingUserbyEmail = await UserModel.findOne({ email });
 
         const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+        const signUpToken = nanoid(32)
+
         if (existingUserbyEmail) {
             if (existingUserbyEmail.isVerified) {
                 return Response.json({
@@ -36,6 +25,7 @@ export async function POST(request: Request) {
                 const hashedPassword = await bcrypt.hash(password, 10)
 
                 existingUserbyEmail.password = hashedPassword;
+                existingUserbyEmail.signUpToken = signUpToken;
                 existingUserbyEmail.verifyCode = verifyCode;
                 existingUserbyEmail.verifyCodeExpiry = new Date(Date.now() + 3600000)
 
@@ -47,14 +37,15 @@ export async function POST(request: Request) {
             expiryDate.setHours(expiryDate.getHours() + 1)
 
             const newUser = new UserModel({
-                username,
+                username: email.split("@")[0],
                 email,
                 password: hashedPassword,
+                signUpToken,
                 verifyCode,
                 verifyCodeExpiry: expiryDate,
                 isVerified: false,
                 isAcceptingTestimonials: true,
-                testimonial: []
+                testimonial: [],
             })
 
             await newUser.save();
@@ -62,7 +53,7 @@ export async function POST(request: Request) {
 
         //& send verification email
         const emailResponse = await sendVerifyEmail(
-            email, username, verifyCode
+            email, signUpToken, verifyCode
         )
 
         if (!emailResponse.success) {
@@ -74,6 +65,7 @@ export async function POST(request: Request) {
 
         return Response.json({
             success: true,
+            token: signUpToken,
             message: "User registered sucessfully! Email verification pending.",
         }, { status: 201 });
 
@@ -82,7 +74,7 @@ export async function POST(request: Request) {
         console.error("Error signing up: ", error);
         return Response.json({
             success: false,
-            message: 'Failed to sign up'
+            message: 'Error signing up!'
         }, { status: 500 })
     }
 }

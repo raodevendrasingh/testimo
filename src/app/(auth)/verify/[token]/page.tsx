@@ -10,7 +10,6 @@ import * as z from "zod";
 import {
 	InputOTP,
 	InputOTPGroup,
-	InputOTPSeparator,
 	InputOTPSlot,
 } from "@/components/ui/input-otp";
 import {
@@ -18,7 +17,6 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -29,7 +27,7 @@ import { toast } from "sonner";
 const VerificationPage = () => {
 	const [isVerifying, setIsVerifying] = useState<boolean>(false);
 	const router = useRouter();
-	const params = useParams<{ username: string }>();
+	const params = useParams<{ token: string }>();
 
 	const form = useForm<z.infer<typeof verifySchema>>({
 		resolver: zodResolver(verifySchema),
@@ -41,7 +39,7 @@ const VerificationPage = () => {
 		try {
 			setIsVerifying(true);
 			const response = await axios.post("/api/verify-code", {
-				username: params.username,
+				token: params.token,
 				code: data.code,
 			});
 			toast.success("Success", {
@@ -103,7 +101,7 @@ const VerificationPage = () => {
 							<Button type="submit" disabled={isVerifying} className="w-full">
 								{isVerifying ? (
 									<>
-										<Loader className="mr-2 size-4 animate-spin" /> Loading
+										Verifying <Loader className="ml-2 size-4 animate-spin" /> 
 									</>
 								) : (
 									"Verify"

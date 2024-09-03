@@ -10,7 +10,6 @@ export const usernameValidation = z
     .transform((val) => val.toLowerCase());
 
 export const signUpSchema = z.object({
-    username: usernameValidation,
     email: z
         .string()
         .email({ message: "Email is invalid" })

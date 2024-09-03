@@ -5,23 +5,33 @@ export async function POST(request: Request) {
 	await dbConnect();
 
 	try {
-		const { username, code } = await request.json();
-		const decodedUsername = decodeURIComponent(username);
+		const { token, code } = await request.json();
 
-		const user = await UserModel.findOne({ username: decodedUsername });
+        if (!token) {
+            return Response.json(
+                {
+                    success: false,
+                    message: "Token is missing",
+                },
+                { status: 400 }
+            );
+        }
+
+		const user = await UserModel.findOne({ signUpToken: token });
 
 		if (!user) {
 			return Response.json(
 				{
 					sucess: false,
-					message: "User not found",
+					message: "Invalid token",
 				},
-				{ status: 404 }
+				{ status: 400 }
 			);
 		}
 
-		const isCodeValid = user.verifyCode === code;
-		const isCodeNotExpired = new Date(user.verifyCodeExpiry) > new Date();
+
+        const isCodeValid = user.verifyCode === code;
+        const isCodeNotExpired = new Date(user.verifyCodeExpiry) > new Date();
 
 		if (isCodeValid && isCodeNotExpired) {
 			user.isVerified = true;

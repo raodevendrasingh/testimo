@@ -66,12 +66,13 @@ const SocialSchema: Schema<Socials> = new Schema({
 });
 
 export interface User extends Document {
-	username: string;
+	username?: string;
 	name?: string;
 	imageUrl?: String;
 	tagline?: String;
 	email: string;
 	password: string;
+	signUpToken: string;
 	verifyCode: string;
 	verifyCodeExpiry: Date;
 	isVerified: boolean;
@@ -84,7 +85,7 @@ export interface User extends Document {
 const UserSchema: Schema<User> = new Schema({
 	username: {
 		type: String,
-		required: [true, "Username is required"],
+		// required: [true, "Username is required"],
 		trim: true,
 		unique: true,
 	},
@@ -109,6 +110,9 @@ const UserSchema: Schema<User> = new Schema({
 	password: {
 		type: String,
 		required: [true, "Password is required"],
+	},
+	signUpToken: {
+		type: String,
 	},
 	verifyCode: {
 		type: String,

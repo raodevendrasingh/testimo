@@ -7,17 +7,18 @@ import {
 	Row,
 	Section,
 	Text,
-	Button,
 } from "@react-email/components";
 
 interface VerificationEmailProps {
-	username: string;
+    email: string;
+	token: string;
 	otp: string;
 }
 
 export default function VerificationEmail({
-	username,
+    email,
 	otp,
+	token,
 }: VerificationEmailProps) {
 	return (
 		<Html lang="en" dir="ltr">
@@ -37,7 +38,7 @@ export default function VerificationEmail({
 			<Preview>Here&apos;s your verification code: {otp}</Preview>
 			<Section>
 				<Row>
-					<Heading as="h2">Hello {username},</Heading>
+					<Heading as="h2">Hello {email.split("@")[0]}, </Heading>
 				</Row>
 				<Row>
 					<Text>
@@ -48,19 +49,17 @@ export default function VerificationEmail({
 				<Row>
 					<Text>{otp}</Text>
 				</Row>
+                <Row>
+					<Text>
+						If your are not automaticaly redirected, use the below link for verification:
+                        <a href={`http://localhost:3000/verify/${token}`}>Verify here</a>
+					</Text>
+				</Row>
 				<Row>
 					<Text>
 						If you did not request this code, please ignore this email.
 					</Text>
 				</Row>
-				{/* <Row>
-            <Button
-              href={`http://localhost:3000/verify/${username}`}
-              style={{ color: '#61dafb' }}
-            >
-              Verify here
-            </Button>
-          </Row> */}
 			</Section>
 		</Html>
 	);
