@@ -5,6 +5,15 @@ import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
 import { UserModel } from "@/models/User";
 
+const googleClientId = process.env.GOOGLE_CLIENT_ID;
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+
+console.log('Environment:', process.env.NODE_ENV);
+console.log('NEXTAUTH_URL:', process.env.NEXTAUTH_URL);
+console.log('Google Client ID available:', !!googleClientId);
+console.log('Google Client Secret available:', !!googleClientSecret);
+
+
 export const authOptions: NextAuthOptions = {
 	providers: [
 		CredentialsProvider({
@@ -44,8 +53,8 @@ export const authOptions: NextAuthOptions = {
 			},
 		}),
 		GoogleProvider({
-			clientId: process.env.GOOGLE_CLIENT_ID as string,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+            clientId: googleClientId ?? '',
+            clientSecret: googleClientSecret ?? '',
 		}),
 	],
 	callbacks: {
