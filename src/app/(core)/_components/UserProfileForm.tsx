@@ -70,9 +70,9 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 	}, [publicId, setValue]);
 
 	return (
-		<div className="flex flex-col gap-2">
+		<div className="flex flex-col gap-2 pb-1">
 			<FormLabel>Profile Picture</FormLabel>
-			<div className="w-full border h-24 border-dashed rounded-lg p-2 flex justify-center items-center border-gray-400 bg-sky-50">
+			<div className="w-full border h-[70px] border-dashed rounded-lg p-2 flex justify-center items-center border-gray-400 bg-sky-50">
 				<CldUploadWidget
 					options={{
 						sources: ["local"],
@@ -136,8 +136,8 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 									<Image
 										src={userDetail[0].imageUrl as string}
 										alt="oauth-profile"
-										width={64}
-										height={64}
+										width={50}
+										height={50}
 										priority={true}
 										className="rounded-lg"
 										onError={(e) => {
@@ -160,8 +160,8 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 									<CldImage
 										src={`${userDetail[0]?.imageUrl}`}
 										alt="User profile"
-										width={64}
-										height={64}
+										width={50}
+										height={50}
 										className="rounded-md"
 									/>
 									<div className="flex flex-col justify-start items-start">
@@ -207,7 +207,11 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 					<FormItem>
 						<FormLabel>Name</FormLabel>
 						<FormControl>
-							<Input placeholder="Your Name" {...field} />
+							<Input
+								{...field}
+								placeholder="Your Name / Business Name"
+								maxLength={32}
+							/>
 						</FormControl>
 						{touchedFields.name && errors.name && <FormMessage />}
 					</FormItem>
@@ -221,9 +225,11 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 						<FormLabel>Tagline</FormLabel>
 						<FormControl>
 							<Textarea
+								{...field}
+								rows={2}
+								maxLength={64}
 								placeholder="Your tagline"
 								className="resize-none"
-								{...field}
 							/>
 						</FormControl>
 						{touchedFields.tagline && errors.tagline && <FormMessage />}
@@ -233,51 +239,3 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 		</div>
 	);
 };
-
-interface SocialLinksScreenProps {
-	control: Control<FieldValues>;
-}
-
-export const SocialLinksScreen: React.FC<SocialLinksScreenProps> = ({
-	control,
-}) => (
-	<>
-		<FormField
-			control={control}
-			name="companysite"
-			render={({ field }) => (
-				<FormItem>
-					<FormLabel>Company / Portfolio Site</FormLabel>
-					<FormControl>
-						<Input placeholder="https://yoursite.com" {...field} />
-					</FormControl>
-					<FormMessage />
-				</FormItem>
-			)}
-		/>
-
-		<div className="space-y-4">
-			{["linkedin", "twitter", "instagram"].map((siteName) => (
-				<FormField
-					key={siteName}
-					control={control}
-					name={`socials.${siteName}`}
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel htmlFor={siteName}>
-								{siteName.charAt(0).toUpperCase() + siteName.slice(1)}
-							</FormLabel>
-							<FormControl>
-								<Input
-									placeholder={`https://${siteName}.com/yourusername`}
-									{...field}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-			))}
-		</div>
-	</>
-);

@@ -22,7 +22,6 @@ import { FeedbackStats } from "@/lib/selectOptions";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import emptyLogo from "@/assets/placeholder/emptyLogo.png";
-
 import { useFetchTestimonials } from "@/hooks/useFetchTestimonials";
 import { useFetchAcceptTestimonials } from "@/hooks/useFetchAcceptTestimonials";
 import { copyToClipboard } from "@/helpers/CopytoClipboard";
@@ -32,6 +31,7 @@ import { ExtractDomain } from "@/helpers/ExtractDomainName";
 import { capitalize } from "@/helpers/CapitalizeFirstChar";
 import PulseRingLoader from "@/components/ui/PulseRingLoader";
 import { ProfileSkeleton } from "@/components/ProfileSkeleton";
+import { OnboardingModal } from "@/components/OnboardingModal";
 
 const ProfilePage = () => {
 	const { data: session } = useSession();
@@ -40,6 +40,10 @@ const ProfilePage = () => {
 	const [isFetchingUser, setIsFetchingUser] = useState(true);
 	const [showUserDetailModal, setShowUserDetailModal] =
 		useState<boolean>(false);
+	const [showOnboardingModal, setShowOnboardingModal] =
+		useState<boolean>(false);
+	const [isInitialFetch, setIsInitialFetch] = useState(true);
+
 	const [refresh, setRefresh] = useState(false);
 
 	const handleRefresh = () => {
@@ -71,6 +75,22 @@ const ProfilePage = () => {
 			fetchUserData();
 		}
 	}, [session, fetchUserData]);
+
+	useEffect(() => {
+		if (session?.user && isInitialFetch) {
+			fetchUserData().then(() => {
+				setIsInitialFetch(false);
+			});
+		}
+	}, [session, fetchUserData, isInitialFetch]);
+
+	useEffect(() => {
+		if (!isInitialFetch && userDetail && userDetail.length > 0) {
+			if (userDetail[0].isUsernameUpdated === false) {
+				setShowOnboardingModal(true);
+			}
+		}
+	}, [userDetail, isInitialFetch]);
 
 	useEffect(() => {
 		const baseUrl = `${window.location.protocol}//${window.location.host}`;
@@ -116,6 +136,12 @@ const ProfilePage = () => {
 
 	return (
 		<div className="w-full mx-auto">
+			{showOnboardingModal && (
+				<OnboardingModal
+					setShowOnboardingModal={setShowOnboardingModal}
+					onSave={handleRefresh}
+				/>
+			)}
 			<div className="max-w-5xl mx-auto mt-4 px-3">
 				{/* Profile Header */}
 				<section className="flex flex-col sm:flex-row justify-between border rounded-xl gap-2 items-center  p-3 ">

@@ -35,6 +35,7 @@ export async function GET(request: Request) {
 					companysite: 1,
 					tagline: 1,
 					socials: 1,
+                    isUsernameUpdated: 1,
 				},
 			},
 		]);

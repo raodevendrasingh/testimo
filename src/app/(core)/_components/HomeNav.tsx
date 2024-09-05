@@ -34,7 +34,7 @@ export const HomeNav = (): JSX.Element => {
 							aria-label="Toggle navigation"
 							onClick={toggleSidebar}
 						>
-							<div className="absolute top-1/2 left-1/2 w-6 -translate-x-1/2 -translate-y-1/2 transform">
+							<div className="absolute top-1/2 left-1/2 w-6 -translate-x-1/2 -translate-y-1/2 -mt-1 transform">
 								<span
 									aria-hidden="true"
 									className="absolute block h-0.5 w-9/12 -translate-y-2 transform rounded-full bg-zinc-900 transition-all duration-300"
@@ -55,7 +55,8 @@ export const HomeNav = (): JSX.Element => {
 								alt="remonials"
 								width={160}
 								height={40}
-								className="aspect-auto -mt-1.5"
+								priority
+								className="w-40 h-12 -mt-1.5"
 							/>
 						</Link>
 						<span className="inline-flex -mt-1.5 items-center gap-x-1.5 py-1 px-2 rounded-md text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">
