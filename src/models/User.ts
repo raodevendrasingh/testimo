@@ -19,6 +19,23 @@ export interface User extends Document {
 	companysite?: string;
 	socials: Socials[];
 	testimonial: Testimonial[];
+	monthlyTestimonialCount: number;
+	monthlyTestimonialResetDate: Date;
+	subscriptionTier: "starter" | "premium";
+	subscriptionStartDate: Date;
+	subscriptionEndDate: Date;
+	paymentMethod: {
+		type: string;
+		lastFour: string;
+		expiryDate: string;
+	};
+	billingAddress: {
+		street: string;
+		city: string;
+		state: string;
+		country: string;
+		zipCode: string;
+	};
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -79,9 +96,44 @@ const UserSchema: Schema<User> = new Schema({
 	},
 	socials: SocialSchema,
 	testimonial: [TestimonialSchema],
+	monthlyTestimonialCount: {
+		type: Number,
+		default: 0,
+	},
+	monthlyTestimonialResetDate: {
+		type: Date,
+	},
+	subscriptionTier: {
+		type: String,
+		enum: ["starter", "premium"],
+		default: "starter",
+	},
+	subscriptionStartDate: {
+		type: Date,
+	},
+	subscriptionEndDate: {
+		type: Date,
+	},
+	paymentMethod: {
+		type: {
+			type: String,
+		},
+		lastFour: {
+			type: String,
+		},
+		expiryDate: {
+			type: String,
+		},
+	},
+	billingAddress: {
+		street: String,
+		city: String,
+		state: String,
+		country: String,
+		zipCode: String,
+	},
 });
 
 export const UserModel =
 	(mongoose.models.User as mongoose.Model<User>) ||
 	mongoose.model<User>("User", UserSchema);
-
