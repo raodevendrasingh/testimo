@@ -69,6 +69,9 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 		}
 	}, [publicId, setValue]);
 
+	const isFullUrl = (url: string) =>
+		url.startsWith("http://") || url.startsWith("https://");
+
 	return (
 		<div className="flex flex-col gap-2 pb-1">
 			<FormLabel>Profile Picture</FormLabel>
@@ -131,7 +134,8 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 							{oauthProvider &&
 							userDetail &&
 							userDetail.length > 0 &&
-							userDetail[0].imageUrl ? (
+							userDetail[0].imageUrl &&
+							isFullUrl(userDetail[0].imageUrl as string) ? (
 								<>
 									<Image
 										src={userDetail[0].imageUrl as string}
@@ -153,25 +157,7 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 										<span className="text-xs">Click to upload a new image</span>
 									</div>
 								</>
-							) : userDetail &&
-							  userDetail.length > 0 &&
-							  userDetail[0]?.imageUrl ? (
-								<>
-									<CldImage
-										src={`${userDetail[0]?.imageUrl}`}
-										alt="User profile"
-										width={50}
-										height={50}
-										className="rounded-md"
-									/>
-									<div className="flex flex-col justify-start items-start">
-										<span className="text-sm text-green-600">
-											Current profile image
-										</span>
-										<span className="text-xs">Click to upload a new image</span>
-									</div>
-								</>
-							) : publicId ? (
+							) : oauthProvider || publicId ? (
 								<>
 									<CldImage
 										src={publicId}

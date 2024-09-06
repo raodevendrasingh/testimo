@@ -77,7 +77,7 @@ export interface User extends Document {
 	verifyCode: string;
 	verifyCodeExpiry: Date;
 	isVerified: boolean;
-    isUsernameUpdated: boolean;
+	isOnboarded: boolean;
 	isAcceptingTestimonials: boolean;
 	companysite?: string;
 	socials: Socials[];
@@ -116,10 +116,10 @@ const UserSchema: Schema<User> = new Schema({
 	signUpToken: {
 		type: String,
 	},
-    isUsernameUpdated: {
-        type: Boolean,
-        default: false,
-    },
+	isOnboarded: {
+		type: Boolean,
+		default: false,
+	},
 	verifyCode: {
 		type: String,
 		required: [true, "Verify code is required"],

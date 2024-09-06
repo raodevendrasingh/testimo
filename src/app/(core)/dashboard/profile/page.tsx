@@ -14,7 +14,6 @@ import {
 	RefreshCcw,
 	RotateCw,
 	SlidersHorizontal,
-	UserRoundCog,
 } from "lucide-react";
 
 import { FeedbackStats } from "@/lib/selectOptions";
@@ -25,7 +24,6 @@ import emptyLogo from "@/assets/placeholder/emptyLogo.png";
 import { useFetchTestimonials } from "@/hooks/useFetchTestimonials";
 import { useFetchAcceptTestimonials } from "@/hooks/useFetchAcceptTestimonials";
 import { copyToClipboard } from "@/helpers/CopytoClipboard";
-import { UserDetailModal } from "../../_components/UserDetailModal";
 import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
 import { ExtractDomain } from "@/helpers/ExtractDomainName";
 import { capitalize } from "@/helpers/CapitalizeFirstChar";
@@ -36,10 +34,9 @@ import { OnboardingModal } from "@/components/OnboardingModal";
 const ProfilePage = () => {
 	const { data: session } = useSession();
 	const [profileUrl, setProfileUrl] = useState<string>("");
+    const [username, setUsername] = useState<string>("");
 	const [showLoginMessage, setShowLoginMessage] = useState(false);
 	const [isFetchingUser, setIsFetchingUser] = useState(true);
-	const [showUserDetailModal, setShowUserDetailModal] =
-		useState<boolean>(false);
 	const [showOnboardingModal, setShowOnboardingModal] =
 		useState<boolean>(false);
 	const [isInitialFetch, setIsInitialFetch] = useState(true);
@@ -51,7 +48,6 @@ const ProfilePage = () => {
 	};
 
 	const user = session?.user as User;
-	const username = user?.username;
 	const oauthProvider = session?.user?.oauthProvider;
 
 	const { testimonial, isLoading, fetchTestimonials } = useFetchTestimonials();
@@ -66,15 +62,10 @@ const ProfilePage = () => {
 
 	useEffect(() => {
 		if (!session || !session.user) return;
+		fetchUserData();
 		fetchTestimonials();
 		fetchAcceptTestimonial();
-	}, [session, fetchTestimonials, fetchAcceptTestimonial]);
-
-	useEffect(() => {
-		if (session?.user) {
-			fetchUserData();
-		}
-	}, [session, fetchUserData]);
+	}, [session, fetchTestimonials, fetchAcceptTestimonial, fetchUserData]);
 
 	useEffect(() => {
 		if (session?.user && isInitialFetch) {
@@ -86,9 +77,10 @@ const ProfilePage = () => {
 
 	useEffect(() => {
 		if (!isInitialFetch && userDetail && userDetail.length > 0) {
-			if (userDetail[0].isUsernameUpdated === false) {
-				setShowOnboardingModal(true);
+            if (userDetail[0].isOnboarded === false) {
+                setShowOnboardingModal(true);
 			}
+            setUsername(userDetail[0].username || "");
 		}
 	}, [userDetail, isInitialFetch]);
 
@@ -134,6 +126,8 @@ const ProfilePage = () => {
 		);
 	}
 
+    const isFullUrl = (url: string) => url.startsWith('http://') || url.startsWith('https://');
+
 	return (
 		<div className="w-full mx-auto">
 			{showOnboardingModal && (
@@ -155,7 +149,7 @@ const ProfilePage = () => {
 									<div className="flex flex-col sm:flex-row items-center justify-center w-[80%] sm:justify-start gap-3 sm:gap-5 ">
 										<div className="flex items-center justify-center">
 											<div className="size-28 rounded-lg">
-												{oauthProvider ? (
+                                            {oauthProvider && (userDetail[0].imageUrl && isFullUrl(userDetail[0].imageUrl as string)) ? (
 													<Image
 														src={userDetail[0].imageUrl as string}
 														alt="user-profile"
@@ -169,7 +163,7 @@ const ProfilePage = () => {
 																"@/assets/placeholder/emptyLogo.png";
 														}}
 													/>
-												) : userDetail[0].imageUrl ? (
+												) : oauthProvider || userDetail[0].imageUrl ? (
 													<CldImage
 														src={userDetail[0].imageUrl as string}
 														alt="user-profile"
@@ -204,25 +198,6 @@ const ProfilePage = () => {
 												)}
 											</div>
 											<div className="flex items-center justify-center sm:justify-start w-full gap-2">
-												<div className="flex justify-center items-center">
-													<button
-														type="button"
-														onClick={() => setShowUserDetailModal(true)}
-														className="flex justify-evenly items-center px-2 py-1 gap-2 bg-white border border-gray-300 hover:bg-gray-100 rounded-lg "
-													>
-														<span className="text-xs font-medium text-gray-600">
-															Edit
-														</span>
-														<UserRoundCog className="size-3 text-gray-800" />
-													</button>
-													{showUserDetailModal && (
-														<UserDetailModal
-															setShowUserDetailModal={setShowUserDetailModal}
-															onSave={handleRefresh}
-														/>
-													)}
-												</div>
-
 												<Link
 													href={userDetail[0].companysite || "#"}
 													target="_blank"
@@ -238,7 +213,7 @@ const ProfilePage = () => {
 															</>
 														) : (
 															<span className="text-blue-500 text-sm">
-																+ Add Website
+																+ Website
 															</span>
 														)}
 													</div>
@@ -281,9 +256,9 @@ const ProfilePage = () => {
 													);
 												})
 											) : (
-												<div className="flex justify-center items-center gap-2 px-3 py-1 rounded-full border bg-white">
+												<div className="flex w-32 justify-center items-center gap-2 px-3 py-1 rounded-full border bg-white">
 													<span className="text-blue-500 text-sm">
-														+ Add Social Links
+														+ Social Links
 													</span>
 												</div>
 											)}

@@ -47,8 +47,8 @@ export const authOptions: NextAuthOptions = {
 			},
 		}),
 		GoogleProvider({
-            clientId: googleClientId ?? '',
-            clientSecret: googleClientSecret ?? '',
+			clientId: googleClientId ?? "",
+			clientSecret: googleClientSecret ?? "",
 		}),
 	],
 	callbacks: {
@@ -56,13 +56,13 @@ export const authOptions: NextAuthOptions = {
 			await dbConnect();
 			if (user) {
 				let dbUser = await UserModel.findOne({ email: user.email });
-                
+
 				if (!dbUser) {
 					dbUser = await UserModel.create({
+						username: user.email?.split("@")[0] || profile?.name,
 						email: user.email,
 						name: user.name,
 						imageUrl: user.image,
-						username: user.email?.split("@")[0] || profile?.name,
 						isVerified: true,
 						password:
 							account?.provider === "google"

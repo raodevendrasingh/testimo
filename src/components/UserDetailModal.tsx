@@ -18,9 +18,8 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import { User } from "next-auth";
-import { SocialLinksScreen, UserDetailScreen } from "./UserProfileForm";
+import { UserDetailScreen } from "./UserProfileForm";
 import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
-
 
 interface FormValues {
 	name: string;
@@ -74,7 +73,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 		}
 	}, [session, fetchUserData]);
 
-    useEffect(() => {
+	useEffect(() => {
 		if (userDetail && !isUserLoading && userDetail.length > 0) {
 			const user = userDetail[0] as {
 				name?: string;
@@ -142,8 +141,6 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 						touchedFields={touchedFields as Partial<Record<string, boolean>>}
 					/>
 				);
-			case 1:
-				return <SocialLinksScreen control={control as unknown as Control<FieldValues>} />;
 			default:
 				return null;
 		}

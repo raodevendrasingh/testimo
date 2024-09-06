@@ -16,10 +16,11 @@ import { userDetailSchema } from "@/schemas/userDetailSchema";
 import { ArrowRight, Loader } from "lucide-react";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { UserDetailScreen } from "@/app/(core)/_components/UserProfileForm";
+import { UserDetailScreen } from "@/components/UserProfileForm";
 import { UsernameScreen } from "./UsernameScreen";
 import Image from "next/image";
 import iconLogo from "@/assets/brand/remonial_icon_dark.png";
+import { useSession } from "next-auth/react";
 interface FormValues {
 	username: string;
 	name: string;
@@ -45,6 +46,8 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 	const [slideDirection, setSlideDirection] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
 
+	const { data: session } = useSession();
+
 	const form = useForm<FormValues>({
 		resolver: zodResolver(userDetailSchema),
 		defaultValues: {
@@ -64,6 +67,10 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 		setValue,
 		getValues,
 	} = form;
+
+	if (!session) {
+		return null;
+	}
 
 	const username = watch("username");
 	const name = watch("name");
@@ -106,15 +113,15 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 		setIsLoading(true);
 		const formData = {
 			...data,
-			username: getValues("username"), 
+			username: getValues("username"),
 		};
-		console.log("Form data:", formData);
 		try {
-			const response = await axios.post("/api/add-user-details", data);
+			const response = await axios.post("/api/onboard-user", formData);
 			toast.success(response.data.message);
 			setShowOnboardingModal(false);
 			onSave();
 		} catch (error) {
+			console.log(error);
 			toast.error("Error updating user details");
 		} finally {
 			setIsLoading(false);

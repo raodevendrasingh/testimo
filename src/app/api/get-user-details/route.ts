@@ -30,12 +30,12 @@ export async function GET(request: Request) {
 				$project: {
 					username: 1,
 					name: 1,
-                    imageUrl: 1,
+					imageUrl: 1,
 					email: 1,
 					companysite: 1,
 					tagline: 1,
 					socials: 1,
-                    isUsernameUpdated: 1,
+					isOnboarded: 1,
 				},
 			},
 		]);
@@ -53,7 +53,7 @@ export async function GET(request: Request) {
 		return new Response(
 			JSON.stringify({
 				success: true,
-                message: "User data fetched successfully!",
+				message: "User data fetched successfully!",
 				user: userData,
 			}),
 			{ status: 200 }

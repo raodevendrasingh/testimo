@@ -10,7 +10,6 @@ export const ProfileSkeleton = () => {
 						<Skeleton className="h-6 w-44 bg-slate-200 animate-pulse rounded-lg" />
 						<Skeleton className="h-5 w-56 bg-slate-200 animate-pulse rounded-lg" />
 						<div className="flex justify-start gap-2">
-							<Skeleton className="h-5 w-10 bg-slate-200 animate-pulse rounded-lg" />
 							<Skeleton className="h-5 w-44 bg-slate-200 animate-pulse rounded-lg" />
 						</div>
 					</div>
