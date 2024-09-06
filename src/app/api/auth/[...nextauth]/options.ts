@@ -4,6 +4,12 @@ import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
 import { UserModel } from "@/models/User";
+import {
+	getExpiryDate,
+	getResetDate,
+	INITIAL_TESTIMONIAL_COUNT,
+	INITIAL_TIER,
+} from "@/lib/constants";
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
@@ -32,9 +38,12 @@ export const authOptions: NextAuthOptions = {
 					if (!user.isVerified) {
 						throw new Error("Please verify your account before logging in");
 					}
+					if (!user.password) {
+						throw new Error("Please sign in with your OAuth provider");
+					}
 					const isPasswordCorrect = await bcrypt.compare(
 						credentials.password,
-						user.password
+						user.password as string
 					);
 					if (isPasswordCorrect) {
 						return user;
@@ -63,22 +72,26 @@ export const authOptions: NextAuthOptions = {
 						email: user.email,
 						name: user.name,
 						imageUrl: user.image,
+						password: null,
 						isVerified: true,
-						password:
-							account?.provider === "google"
-								? Math.random().toString(36).slice(-12)
-								: undefined,
-						verifyCode:
-							account?.provider === "google" ? "GOOGLE_OAUTH" : "000000",
-						verifyCodeExpiry: Date.now() + 1000 * 60 * 60 * 24,
-						oauthProvider: account?.provider === "google" ? "google" : null,
+						verifyCode: "000000",
+						verifyCodeExpiry: getExpiryDate(),
+						isAcceptingTestimonials: true,
+						oauthProvider: "GOOGLE",
+						subscriptionTier: INITIAL_TIER,
+						monthlyTestimonialCount: INITIAL_TESTIMONIAL_COUNT,
+						subscriptionStartDate: new Date(),
+						monthlyTestimonialResetDate: getResetDate(),
 					});
 				}
 				token._id = dbUser._id?.toString();
 				token.isVerified = dbUser.isVerified;
-				token.isAcceptingMessages = dbUser.isAcceptingTestimonials;
+				token.isAcceptingTestimonials = dbUser.isAcceptingTestimonials;
 				token.username = dbUser.username;
 				token.oauthProvider = dbUser.oauthProvider;
+				token.subscriptionTier = dbUser.subscriptionTier;
+				token.monthlyTestimonialCount = dbUser.monthlyTestimonialCount;
+				token.monthlyTestimonialResetDate = dbUser.monthlyTestimonialResetDate;
 			}
 			return token;
 		},
@@ -89,6 +102,10 @@ export const authOptions: NextAuthOptions = {
 				session.user.isAcceptingTestimonials = token.isAcceptingTestimonials;
 				session.user.username = token.username;
 				session.user.oauthProvider = (token.oauthProvider as string) || null;
+				session.user.subscriptionTier = token.subscriptionTier;
+				session.user.monthlyTestimonialCount = token.monthlyTestimonialCount;
+				session.user.monthlyTestimonialResetDate =
+					token.monthlyTestimonialResetDate;
 			}
 			return session;
 		},
