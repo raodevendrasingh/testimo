@@ -19,9 +19,8 @@ import {
 	CommandItem,
 	CommandList,
 } from "@/components/ui/command";
-import { ChevronDown, Code } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { Framework, languages } from "@/lib/selectOptions";
-import { Testimonial } from "@/models/User";
 import { useState } from "react";
 import { CopyableTitle } from "@/utils/TestimonialComponents";
 import SyntaxHighlighter from "./SyntaxHighlighter";

@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/command";
 import { ChevronDown, Code, Eye } from "lucide-react";
 import { Framework, languages } from "@/lib/selectOptions";
-import { Testimonial } from "@/models/User";
+import { Testimonial } from "@/models/Testimonial";
 import { useState } from "react";
 import { TestimonialCard, CardToCode } from "@/utils/TestimonialComponents";
 

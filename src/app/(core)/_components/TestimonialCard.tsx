@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Testimonial } from "@/models/User";
+import { Testimonial } from "@/models/Testimonial";
 import { CldImage } from "next-cloudinary";
 import { ApiResponse } from "@/types/ApiResponse";
 

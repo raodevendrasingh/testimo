@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
-import { Testimonial } from "@/models/User";
+import { Testimonial } from "@/models/Testimonial";
 import { toast } from "sonner";
 
 export const useFetchTestimonials = () => {

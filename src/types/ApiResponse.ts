@@ -1,4 +1,5 @@
-import { Testimonial, User } from "@/models/User";
+import { Testimonial } from "@/models/Testimonial";
+import { User } from "@/models/User";
 
 export interface ApiResponse {
     user?: Array<User>,

@@ -1,6 +1,6 @@
 "use client";
 
-import { Testimonial } from "@/models/User";
+import { Testimonial } from "@/models/Testimonial";
 import { Stars } from "@/components/ui/Stars";
 import SyntaxHighlighter from "@/utils/SyntaxHighlighter";
 import { Clipboard, ClipboardCheck } from "lucide-react";

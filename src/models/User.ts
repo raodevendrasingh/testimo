@@ -1,69 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
-
-const urlMatcher = [
-	/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
-	"Enter a valid URL",
-];
-export interface Testimonial extends Document {
-	action: string;
-	content: string;
-	rating: number;
-	name?: string;
-	jobTitle?: string;
-	imageUrl?: string;
-	createdAt: Date;
-}
-
-const TestimonialSchema: Schema<Testimonial> = new Schema({
-	action: {
-		type: String,
-		default: "default",
-		required: true,
-	},
-	content: {
-		type: String,
-		required: true,
-	},
-	rating: {
-		type: Number,
-		required: true,
-	},
-	name: {
-		type: String,
-	},
-	jobTitle: {
-		type: String,
-	},
-	imageUrl: {
-		type: String,
-	},
-	createdAt: {
-		type: Date,
-		required: true,
-		default: Date.now,
-	},
-});
-
-export interface Socials extends Document {
-	linkedin?: string;
-	twitter?: string;
-	instagram?: string;
-}
-
-const SocialSchema: Schema<Socials> = new Schema({
-	linkedin: {
-		type: String,
-		match: urlMatcher,
-	},
-	twitter: {
-		type: String,
-		match: urlMatcher,
-	},
-	instagram: {
-		type: String,
-		match: urlMatcher,
-	},
-});
+import { Socials, SocialSchema, urlMatcher } from "./Social";
+import { Testimonial, TestimonialSchema } from "./Testimonial";
 
 export interface User extends Document {
 	username?: string;
@@ -147,3 +84,4 @@ const UserSchema: Schema<User> = new Schema({
 export const UserModel =
 	(mongoose.models.User as mongoose.Model<User>) ||
 	mongoose.model<User>("User", UserSchema);
+
