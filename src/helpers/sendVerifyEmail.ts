@@ -3,13 +3,13 @@ import { ApiResponse } from "@/types/ApiResponse";
 import { renderVerificationEmail } from "@/lib/renderVerifyEmail";
 
 const userEmail = process.env.EMAIL_USER
-const pass = process.env.EMAIL_PASS
+const password = process.env.EMAIL_PASS
 
 const transporter = nodemailer.createTransport({
 	service: "gmail",
 	auth: {
 		user: userEmail,
-		pass
+		pass: password
 	},
 });
 
