@@ -1,31 +1,44 @@
-import { resend } from '@/lib/resend'
-import VerificationEmail from '../../emails/verificationEmail'
+import nodemailer from "nodemailer"; // Import nodemailer
+import { ApiResponse } from "@/types/ApiResponse";
+import { renderVerificationEmail } from "@/lib/renderVerifyEmail";
 
-import { ApiResponse } from '@/types/ApiResponse'
+const userEmail = process.env.EMAIL_USER
+const pass = process.env.EMAIL_PASS
+
+const transporter = nodemailer.createTransport({
+	service: "gmail",
+	auth: {
+		user: userEmail,
+		pass
+	},
+});
+
 
 export async function sendVerifyEmail(
-    email: string,
-    signUpToken: string,
-    verifyCode: string
+	email: string,
+	signUpToken: string,
+	verifyCode: string
 ): Promise<ApiResponse> {
-    try {
-        await resend.emails.send({
-            from: 'oboarding@resend.dev',
-            to: email,
-            subject: 'Remonial | Verify your email',
-            react: VerificationEmail({ email: email, otp: verifyCode, token: signUpToken })
-        });
+	try {
+        const emailContent = renderVerificationEmail(email, verifyCode, signUpToken);
 
-        return {
-            success: true,
-            message: 'Verification email sent successfully'
-        }
-    } catch (emailError) {
-        console.error("Error sending verification email: ", emailError);
+		await transporter.sendMail({
+			from: userEmail,
+			to: email,
+			subject: "Remonial | Verify your email",
+			html: emailContent
+		});
 
-        return {
-            success: false,
-            message: 'Failed to send verification email'
-        }
-    }
+		return {
+			success: true,
+			message: "Verification email sent successfully",
+		};
+	} catch (emailError) {
+		console.error("Error sending verification email: ", emailError);
+
+		return {
+			success: false,
+			message: "Failed to send verification email",
+		};
+	}
 }
