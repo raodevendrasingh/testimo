@@ -53,10 +53,10 @@ export const HomeNav = (): JSX.Element => {
 							<Image
 								src={remonial_wordmark_dark}
 								alt="remonials"
-								width={160}
+								width={180}
 								height={40}
 								priority
-								className="w-40 h-12 -mt-1.5"
+								className="w-44 h-12 -mt-1.5"
 							/>
 						</Link>
 						<span className="inline-flex -mt-1.5 items-center gap-x-1.5 py-1 px-2 rounded-md text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">

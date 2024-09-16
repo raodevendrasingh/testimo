@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer"; // Import nodemailer
+import nodemailer from "nodemailer";
 import { ApiResponse } from "@/types/ApiResponse";
 import { renderVerificationEmail } from "@/lib/renderVerifyEmail";
 

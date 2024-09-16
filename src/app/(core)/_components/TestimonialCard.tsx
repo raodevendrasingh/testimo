@@ -96,7 +96,7 @@ export const TestimonialCard = ({
 				{/* display picture */}
 				<div className="p-1 flex justify-center h-full w-full xs:w-[20%]">
 					{testimonial.imageUrl ? (
-						<CldImage
+						<Image
 							src={testimonial.imageUrl as string}
 							alt="pfp"
 							width={80}

@@ -55,8 +55,8 @@ export const TestimonialCard = ({
 				{testimonial.imageUrl && (
 					<div>
 						<Image
-							src={`https://res.cloudinary.com/dniezlcfy/image/upload/v1724431325/${testimonial.imageUrl}`}
-							alt="pfp"
+							src={testimonial.imageUrl}
+							alt="cardpic"
 							width={40}
 							height={40}
 							className="rounded-full"
@@ -111,7 +111,7 @@ return (
             {imageUrl && (
                 <div>
                     <img
-                    src={\`https://res.cloudinary.com/dniezlcfy/image/upload/v1724431325/\${imageUrl}\`}
+                    src={imageUrl}
                     alt="profile"
                     width={40}
                     height={40}
