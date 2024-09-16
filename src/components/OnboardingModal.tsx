@@ -43,12 +43,11 @@ interface UserOnboardingModalProps {
 }
 
 export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
-	setShowOnboardingModal
+	setShowOnboardingModal,
 }) => {
 	const [currentScreen, setCurrentScreen] = useState(0);
 	const [slideDirection, setSlideDirection] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
-	const [publicUrl, setPublicUrl] = useState("");
 	const croppedImage = useReadLocalStorage<string | ArrayBuffer | null>(
 		"croppedImage"
 	);
@@ -124,12 +123,9 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 		setIsLoading(true);
 
 		try {
-            let cloudinaryImageUrl = "";
+			let cloudinaryImageUrl = "";
 			if (croppedImage) {
-				cloudinaryImageUrl = await uploadToCloudinary(
-					croppedImage as string
-				);
-				setPublicUrl(cloudinaryImageUrl);
+				cloudinaryImageUrl = await uploadToCloudinary(croppedImage as string);
 			}
 
 			const formData = {

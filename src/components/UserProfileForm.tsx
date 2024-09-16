@@ -94,7 +94,6 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 					name="imageUrl"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Name</FormLabel>
 							<FormControl>
 								<Input
 									{...field}
@@ -106,7 +105,6 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 									onChange={handleFileUpload}
 								/>
 							</FormControl>
-							{touchedFields.name && errors.name && <FormMessage />}
 						</FormItem>
 					)}
 				/>

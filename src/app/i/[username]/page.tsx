@@ -28,12 +28,16 @@ import { Input } from "@/components/ui/input";
 
 import heartIcon from "@/assets/svgicons/heart-svgrepo-com.png";
 import starIcon from "@/assets/svgicons/star-svgrepo-com.png";
+import userImage from "@/assets/placeholder/emptyUser.png";
 import Image from "next/image";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
 import type { ConfettiRef } from "@/components/magicui/confetti";
 import Confetti from "@/components/magicui/confetti";
 
 import remonial_wordmark_dark from "@/assets/brand/remonial_wordmark_dark.png";
+import { ImageCropper } from "@/components/ImageCropper";
+import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
+import { uploadToCloudinary } from "@/lib/UploadToCloudinary";
 
 const screens = [
 	{ title: "Write a Testimonial", image: starIcon },
@@ -41,10 +45,17 @@ const screens = [
 	{ title: "Thank You", image: heartIcon },
 ];
 
-export default function SendMessage() {
+export default function SendTestimonial() {
 	const [currentScreen, setCurrentScreen] = useState(0);
 	const [slideDirection, setSlideDirection] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
+	const croppedImage = useReadLocalStorage<string | ArrayBuffer | null>(
+		"croppedImage"
+	);
+	const [, , removeCroppedValue] = useLocalStorage<string>(
+		"croppedImage",
+		"null"
+	);
 
 	const form = useForm<z.infer<typeof feedbackSchema>>({
 		resolver: zodResolver(feedbackSchema),
@@ -91,16 +102,26 @@ export default function SendMessage() {
 		data
 	) => {
 		setIsLoading(true);
-
-		const feedbackData = { ...data, username: username, action: "default" };
-
 		try {
+			let cloudinaryImageUrl = "";
+			if (croppedImage) {
+				cloudinaryImageUrl = await uploadToCloudinary(croppedImage as string);
+			}
+
+			const feedbackData = {
+				...data,
+				imageUrl: cloudinaryImageUrl,
+				username: username,
+				action: "default",
+			};
+
 			const response = await axios.post<ApiResponse>(
 				"/api/send-testimonial",
 				feedbackData
 			);
 			toast.success(response.data.message);
 			setCurrentScreen(2);
+			removeCroppedValue();
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 			toast.error("Error", {
@@ -278,7 +299,7 @@ const TestimonialForm: React.FC<{
 								<Textarea
 									{...field}
 									maxLength={maxChars}
-                                    rows={5}
+									rows={5}
 									className="resize-none"
 									onChange={(e) => {
 										setBio(e.target.value);
@@ -312,13 +333,36 @@ const DetailForm: React.FC<{
 	control: any;
 	setValue: any;
 }> = ({ control, setValue }) => {
-	const [publicId, setPublicId] = useState<string>("");
+	const [, setCroppedValue] = useLocalStorage<string | ArrayBuffer | null>(
+		"croppedImage",
+		""
+	);
+	const [croppedImage, setCroppedImage] = useState<string | null>(null);
+	const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+	const inputRef = useRef<HTMLInputElement | null>(null);
 
-	useEffect(() => {
-		if (publicId) {
-			setValue("imageUrl", publicId);
+	const handleCrop = (croppedImageData: string) => {
+		setCroppedImage(croppedImageData);
+		setCroppedValue(croppedImageData);
+	};
+
+	const openFileDialog = () => {
+		inputRef.current?.click();
+		setUploadedImage(null);
+	};
+
+	const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (file) {
+			setCroppedImage(null);
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setUploadedImage(reader.result as string);
+				setCroppedValue(reader.result);
+			};
+			reader.readAsDataURL(file);
 		}
-	}, [publicId, setValue]);
+	};
 
 	return (
 		<>
@@ -327,88 +371,64 @@ const DetailForm: React.FC<{
 				<span className="font-light">Completely Optional</span>
 			</div>
 			<FormLabel>Profile Picture</FormLabel>
-			<div className="w-full border h-24 border-dashed rounded-lg p-2 flex justify-center items-center border-gray-400 bg-sky-50">
-				<CldUploadWidget
-					options={{
-						sources: ["local"],
-						multiple: false,
-						maxFiles: 1,
-						cropping: true,
-						croppingAspectRatio: 1,
-						showSkipCropButton: false,
-						clientAllowedFormats: ["jpg", "jpeg", "png"],
-						minImageWidth: 300,
-						minImageHeight: 300,
-						maxImageFileSize: 1050000,
-						styles: {
-							palette: {
-								window: "#FFFFFF",
-								windowBorder: "#90A0B3",
-								tabIcon: "#141414",
-								menuIcons: "#5A616A",
-								textDark: "#000000",
-								textLight: "#FFFFFF",
-								link: "#141414",
-								action: "#FF620C",
-								error: "#F44235",
-								inProgress: "#0078FF",
-								complete: "#20B832",
-								sourceBg: "#FFFFFF",
-							},
-							fonts: {
-								default: null,
-								"'Poppins', sans-serif": {
-									url: "https://fonts.googleapis.com/css?family=Poppins",
-									active: true,
-								},
-							},
-						},
-					}}
-					uploadPreset={process.env.NEXT_PUBLIC_UPLOAD_PRESET}
-					onSuccess={(results: CloudinaryUploadWidgetResults) => {
-						if (typeof results.info === "object" && results.info !== null) {
-							setPublicId(results.info.public_id);
-						} else {
-							console.error("Unexpected info format:", results.info);
-						}
-					}}
-				>
-					{({ open }) => (
-						<button
-							type="button"
-							onClick={(e) => {
-								e.preventDefault();
-								open();
-							}}
-							className="flex justify-center items-center text-gray-600 gap-3 p-8 w-full"
-						>
-							{publicId ? (
-								<>
-									<CldImage
-										src={publicId}
-										alt={publicId}
-										width={50}
-										height={50}
-										className="rounded-md"
-									/>
-									<div className="flex flex-col justify-start items-start">
-										<span className="text-sm text-green-600">
-											Image Successfully uploaded
-										</span>
-										<span className="text-xs">
-											Click to upload another image
-										</span>
-									</div>
-								</>
-							) : (
-								<div className="flex items-center justify-center gap-3 ">
-									<Upload />
-									<span>Upload an Image</span>
-								</div>
-							)}
-						</button>
+			<div className="flex flex-col items-center justify-center gap-2 w-full">
+				<FormField
+					control={control}
+					name="imageUrl"
+					render={({ field }) => (
+						<FormItem>
+							<FormControl>
+								<Input
+									{...field}
+									type="file"
+									className="hidden"
+									ref={(e) => {
+										inputRef.current = e;
+									}}
+									onChange={handleFileUpload}
+								/>
+							</FormControl>
+						</FormItem>
 					)}
-				</CldUploadWidget>
+				/>
+				{croppedImage ? (
+					<Image
+						src={croppedImage}
+						alt="Cropped"
+						width={70}
+						height={70}
+						className="size-16 object-cover rounded-full bg-gray-400"
+					/>
+				) : uploadedImage ? (
+					<>
+						<ImageCropper
+							imageSrc={uploadedImage}
+							onCropComplete={handleCrop}
+						/>
+						<Image
+							src={uploadedImage}
+							width={70}
+							height={70}
+							alt="User profile"
+							className="size-[70px] object-cover rounded-full bg-gray-400"
+						/>
+					</>
+				) : (
+					<Image
+						src={userImage}
+						width={70}
+						height={70}
+						alt="User profile"
+						className="size-[70px] object-cover rounded-full bg-gray-400"
+					/>
+				)}
+				<button
+					type="button"
+					onClick={openFileDialog}
+					className="text-slate-700 bg-white text-xs p-1 rounded-md"
+				>
+					Upload Picture
+				</button>
 			</div>
 			<FormField
 				control={control}
