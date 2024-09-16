@@ -226,7 +226,7 @@ const TestimonialForm: React.FC<{
 	errors: any;
 }> = ({ control, errors }) => {
 	const [bio, setBio] = useState("");
-	const maxChars = 250;
+	const maxChars = 500;
 
 	return (
 		<div className="flex flex-col gap-2">
@@ -278,6 +278,7 @@ const TestimonialForm: React.FC<{
 								<Textarea
 									{...field}
 									maxLength={maxChars}
+                                    rows={5}
 									className="resize-none"
 									onChange={(e) => {
 										setBio(e.target.value);

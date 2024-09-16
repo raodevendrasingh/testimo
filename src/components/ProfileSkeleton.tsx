@@ -14,11 +14,6 @@ export const ProfileSkeleton = () => {
 						</div>
 					</div>
 				</div>
-				<div className="flex flex-col items-center justify-end gap-3 w-1/3">
-					<Skeleton className="w-20 h-5 bg-slate-200 animate-pulse rounded-lg" />
-					<Skeleton className="w-20 h-5 bg-slate-200 animate-pulse rounded-lg" />
-					<Skeleton className="w-20 h-5 bg-slate-200 animate-pulse rounded-lg" />
-				</div>
 			</div>
 		</div>
 	);

@@ -47,6 +47,7 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-hook-form": "^7.52.2",
+        "react-image-crop": "^11.0.7",
         "react-simple-star-rating": "^5.1.7",
         "sharp": "^0.33.5",
         "sonner": "^1.5.0",

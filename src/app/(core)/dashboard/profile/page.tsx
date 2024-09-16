@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { User } from "next-auth";
 import { useSession } from "next-auth/react";
-import { CldImage } from "next-cloudinary";
 import {
 	ArrowUpRight,
 	ChartPie,
@@ -26,7 +25,6 @@ import { useFetchAcceptTestimonials } from "@/hooks/useFetchAcceptTestimonials";
 import { copyToClipboard } from "@/helpers/CopytoClipboard";
 import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
 import { ExtractDomain } from "@/helpers/ExtractDomainName";
-import { capitalize } from "@/helpers/CapitalizeFirstChar";
 import PulseRingLoader from "@/components/ui/PulseRingLoader";
 import { ProfileSkeleton } from "@/components/ProfileSkeleton";
 import { OnboardingModal } from "@/components/OnboardingModal";
@@ -34,7 +32,7 @@ import { OnboardingModal } from "@/components/OnboardingModal";
 const ProfilePage = () => {
 	const { data: session } = useSession();
 	const [profileUrl, setProfileUrl] = useState<string>("");
-    const [username, setUsername] = useState<string>("");
+	const [username, setUsername] = useState<string>("");
 	const [showLoginMessage, setShowLoginMessage] = useState(false);
 	const [isFetchingUser, setIsFetchingUser] = useState(true);
 	const [showOnboardingModal, setShowOnboardingModal] =
@@ -48,7 +46,6 @@ const ProfilePage = () => {
 	};
 
 	const user = session?.user as User;
-	const oauthProvider = session?.user?.oauthProvider;
 
 	const { testimonial, isLoading, fetchTestimonials } = useFetchTestimonials();
 	const {
@@ -77,10 +74,10 @@ const ProfilePage = () => {
 
 	useEffect(() => {
 		if (!isInitialFetch && userDetail && userDetail.length > 0) {
-            if (userDetail[0].isOnboarded === false) {
-                setShowOnboardingModal(true);
+			if (userDetail[0].isOnboarded === false) {
+				setShowOnboardingModal(true);
 			}
-            setUsername(userDetail[0].username || "");
+			setUsername(userDetail[0].username || "");
 		}
 	}, [userDetail, isInitialFetch]);
 
@@ -126,8 +123,6 @@ const ProfilePage = () => {
 		);
 	}
 
-    const isFullUrl = (url: string) => url.startsWith('http://') || url.startsWith('https://');
-
 	return (
 		<div className="w-full mx-auto">
 			{showOnboardingModal && (
@@ -149,7 +144,7 @@ const ProfilePage = () => {
 									<div className="flex flex-col sm:flex-row items-center justify-center w-[80%] sm:justify-start gap-3 sm:gap-5 ">
 										<div className="flex items-center justify-center">
 											<div className="size-28 rounded-lg">
-                                            {oauthProvider && (userDetail[0].imageUrl && isFullUrl(userDetail[0].imageUrl as string)) ? (
+												{userDetail[0].imageUrl ? (
 													<Image
 														src={userDetail[0].imageUrl as string}
 														alt="user-profile"
@@ -162,15 +157,6 @@ const ProfilePage = () => {
 															e.currentTarget.src =
 																"@/assets/placeholder/emptyLogo.png";
 														}}
-													/>
-												) : oauthProvider || userDetail[0].imageUrl ? (
-													<CldImage
-														src={userDetail[0].imageUrl as string}
-														alt="user-profile"
-														width={120}
-														height={120}
-														priority={true}
-														className="rounded-lg"
 													/>
 												) : (
 													<Image
@@ -219,49 +205,6 @@ const ProfilePage = () => {
 													</div>
 												</Link>
 											</div>
-										</div>
-									</div>
-									<div className="flex flex-row sm:flex-col items-center justify-center sm:justify-start w-[20%] gap-2 ">
-										<div className="flex flex-row sm:flex-col gap-2">
-											{userDetail[0].socials &&
-											Object.keys(userDetail[0].socials).some((key) =>
-												["linkedin", "twitter", "instagram"].includes(key)
-											) ? (
-												["linkedin", "twitter", "instagram"].map((platform) => {
-													const value = (userDetail[0].socials as any)[
-														platform
-													];
-													if (!value || platform === "_id") return null;
-													return (
-														<Link
-															href={value}
-															key={platform}
-															target="_blank"
-															rel="noopener noreferrer"
-														>
-															<div className="flex justify-start items-center gap-1 px-3 py-1.5 rounded-full border bg-white">
-																<span className="text-sm font-medium text-gray-600 w-4/5">
-																	{capitalize(
-																		ExtractDomain(value as string).replace(
-																			".com",
-																			""
-																		)
-																	)}
-																</span>
-																<span className="w-1/5">
-																	<ArrowUpRight className="size-4 text-gray-700" />
-																</span>
-															</div>
-														</Link>
-													);
-												})
-											) : (
-												<div className="flex w-32 justify-center items-center gap-2 px-3 py-1 rounded-full border bg-white">
-													<span className="text-blue-500 text-sm">
-														+ Social Links
-													</span>
-												</div>
-											)}
 										</div>
 									</div>
 								</div>

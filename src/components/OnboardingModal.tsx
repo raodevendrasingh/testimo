@@ -21,6 +21,10 @@ import { UsernameScreen } from "./UsernameScreen";
 import Image from "next/image";
 import iconLogo from "@/assets/brand/remonial_icon_dark.png";
 import { useSession } from "next-auth/react";
+import clsx from "clsx";
+import { uploadToCloudinary } from "@/lib/UploadToCloudinary";
+import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
+
 interface FormValues {
 	username: string;
 	name: string;
@@ -39,12 +43,19 @@ interface UserOnboardingModalProps {
 }
 
 export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
-	setShowOnboardingModal,
-	onSave,
+	setShowOnboardingModal
 }) => {
 	const [currentScreen, setCurrentScreen] = useState(0);
 	const [slideDirection, setSlideDirection] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
+	const [publicUrl, setPublicUrl] = useState("");
+	const croppedImage = useReadLocalStorage<string | ArrayBuffer | null>(
+		"croppedImage"
+	);
+	const [, , removeCroppedValue] = useLocalStorage<string>(
+		"croppedImage",
+		"null"
+	);
 
 	const { data: session } = useSession();
 
@@ -111,15 +122,24 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 
 	const onSubmit = async (data: FormValues) => {
 		setIsLoading(true);
-		const formData = {
-			...data,
-			username: getValues("username"),
-		};
+
 		try {
+            let cloudinaryImageUrl = "";
+			if (croppedImage) {
+				cloudinaryImageUrl = await uploadToCloudinary(
+					croppedImage as string
+				);
+				setPublicUrl(cloudinaryImageUrl);
+			}
+
+			const formData = {
+				...data,
+				imageUrl: cloudinaryImageUrl,
+				username: getValues("username"),
+			};
 			const response = await axios.post("/api/onboard-user", formData);
 			toast.success(response.data.message);
 			setShowOnboardingModal(false);
-			onSave();
 		} catch (error) {
 			console.log(error);
 			toast.error("Error updating user details");
@@ -168,7 +188,10 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 										animate={{ x: 0, opacity: 1 }}
 										exit={{ x: -slideDirection * 50, opacity: 0 }}
 										transition={{ duration: 0.3 }}
-										className="h-full"
+										className={clsx({
+											"h-[216px]": currentScreen === 0,
+											"h-[400px] sm:h-[310px]": currentScreen === 1,
+										})}
 									>
 										<div className="p-3">
 											<div className="flex flex-col gap-3">

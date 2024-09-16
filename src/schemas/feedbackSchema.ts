@@ -4,7 +4,7 @@ export const feedbackSchema = z.object({
 	content: z
 		.string()
 		.min(5, { message: "Content must be at least 5 characters long" })
-		.max(300, { message: "Content must not exceed 300 characters" }),
+		.max(500, { message: "Content must not exceed 500 characters" }),
 	rating: z.number().min(1, { message: "Select at least one star" }),
 	name: z
 		.string()
