@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { CldImage, CldUploadWidget } from "next-cloudinary";
 import {
 	Control,
 	FieldErrors,
@@ -23,15 +22,7 @@ import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
 import Image from "next/image";
 import { useLocalStorage } from "usehooks-ts";
 import { ImageCropper } from "./ImageCropper";
-
-interface CloudinaryUploadWidgetInfo {
-    url: string;
-}
-
-interface CloudinaryUploadWidgetResults {
-	event?: string;
-	info?: string | CloudinaryUploadWidgetInfo;
-}
+import emptyUser from "@/assets/placeholder/emptyUser.png";
 
 interface UserDetailScreenProps {
 	control: Control<FieldValues>;
@@ -112,40 +103,40 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 					<Image
 						src={croppedImage}
 						alt="Cropped"
-                        width={70}
-                        height={70}
+						width={70}
+						height={70}
 						className="size-16 object-cover rounded-full bg-gray-400"
 					/>
 				) : uploadedImage ? (
-					userDetail &&
-					userDetail.length > 0 &&
-					userDetail[0].imageUrl && (
-						<>
-							<ImageCropper
-								imageSrc={uploadedImage}
-								onCropComplete={handleCrop}
-							/>
-							<Image
-								src={userDetail[0].imageUrl as string}
-								width={70}
-								height={70}
-								alt="User profile"
-								className="size-[70px] object-cover rounded-full bg-gray-400"
-							/>
-						</>
-					)
-				) : (
-					userDetail &&
-					userDetail.length > 0 &&
-					userDetail[0].imageUrl && (
+					<>
+						<ImageCropper
+							imageSrc={uploadedImage}
+							onCropComplete={handleCrop}
+						/>
 						<Image
-							src={userDetail[0].imageUrl as string}
+							src={uploadedImage}
 							width={70}
 							height={70}
 							alt="User profile"
 							className="size-[70px] object-cover rounded-full bg-gray-400"
 						/>
-					)
+					</>
+				) : userDetail && userDetail.length > 0 && userDetail[0].imageUrl ? (
+					<Image
+						src={userDetail[0].imageUrl as string}
+						width={70}
+						height={70}
+						alt="User profile"
+						className="size-[70px] object-cover rounded-full bg-gray-400"
+					/>
+				) : (
+					<Image
+						src={emptyUser}
+						width={70}
+						height={70}
+						alt="User profile"
+						className="size-[70px] object-cover rounded-full bg-gray-400"
+					/>
 				)}
 				<button
 					type="button"

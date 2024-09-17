@@ -186,7 +186,7 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 										transition={{ duration: 0.3 }}
 										className={clsx({
 											"h-[216px]": currentScreen === 0,
-											"h-[400px] sm:h-[310px]": currentScreen === 1,
+											"h-[310px]": currentScreen === 1,
 										})}
 									>
 										<div className="p-3">
