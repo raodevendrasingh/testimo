@@ -2,7 +2,7 @@ import dbConnect from "@/lib/dbConnect";
 import { UserModel } from "@/models/User";
 import bcrypt from "bcryptjs";
 import { nanoid } from "nanoid";
-import { sendVerifyEmail } from "@/helpers/sendVerifyEmail";
+import { sendVerificationEmail } from "@/actions/sendVerifyEmail";
 import {
 	INITIAL_TIER,
 	INITIAL_TESTIMONIAL_COUNT,
@@ -17,7 +17,9 @@ export async function POST(request: Request) {
 
 		const existingUserbyEmail = await UserModel.findOne({ email });
 
-		const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+		const verifyCode = Math.floor(
+			100000 + Math.random() * 900000
+		).toString();
 		const signUpToken = nanoid(32);
 
 		if (existingUserbyEmail) {
@@ -68,7 +70,11 @@ export async function POST(request: Request) {
 		}
 
 		//* send verification email
-		const emailResponse = await sendVerifyEmail(email, signUpToken, verifyCode);
+		const emailResponse = await sendVerificationEmail(
+			email,
+			verifyCode,
+			signUpToken
+		);
 
 		if (!emailResponse.success) {
 			return Response.json(
@@ -84,7 +90,8 @@ export async function POST(request: Request) {
 			{
 				success: true,
 				token: signUpToken,
-				message: "User registered sucessfully! Email verification pending.",
+				message:
+					"User registered sucessfully! Email verification pending.",
 			},
 			{ status: 201 }
 		);
