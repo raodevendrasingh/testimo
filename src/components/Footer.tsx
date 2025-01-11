@@ -15,7 +15,9 @@ const Footer = () => {
 							height={100}
 							className="aspect-auto"
 						/>
-						<p className="text-sm mt-2">Empowering your success stories</p>
+						<p className="text-sm mt-2">
+							Empowering your success stories
+						</p>
 					</div>
 					<div className="flex space-x-6">
 						<Link
@@ -46,7 +48,8 @@ const Footer = () => {
 				</div>
 				<div className="mt-8 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
 					<p className="text-sm text-gray-400">
-						&copy; 2024 Remonials. All rights reserved.
+						&copy; {new Date().getFullYear()} Remonials. All rights
+						reserved.
 					</p>
 					<div className="flex space-x-4 mt-4 md:mt-0">
 						<Link
