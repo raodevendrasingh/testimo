@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Testimonial } from "@/models/Testimonial";
-import { CldImage } from "next-cloudinary";
 import { ApiResponse } from "@/types/ApiResponse";
 
 import { cn } from "@/lib/utils";
@@ -135,7 +134,9 @@ export const TestimonialCard = ({
 								</div>
 								<div>
 									<span className="text-xs font-light text-gray-500">
-										{timesAgo(testimonial.createdAt.toString())}
+										{timesAgo(
+											testimonial.createdAt.toString()
+										)}
 									</span>
 								</div>
 							</div>
@@ -157,16 +158,23 @@ export const TestimonialCard = ({
 										<>
 											<selectedStatus.icon className="mr-2 h-4 w-4 shrink-0" />
 											{selectedStatus.label +
-												(selectedStatus.label.endsWith("e") ? "d" : "ed")}
+												(selectedStatus.label.endsWith(
+													"e"
+												)
+													? "d"
+													: "ed")}
 										</>
 									) : (
 										<>
-											{testimonial.action === "default" ? (
+											{testimonial.action ===
+											"default" ? (
 												"Select Action"
 											) : matchingStatus ? (
 												<>
 													<matchingStatus.icon className="mr-2 h-4 w-4 shrink-0" />
-													{capitalize(matchingStatus.value)}
+													{capitalize(
+														matchingStatus.value
+													)}
 												</>
 											) : (
 												capitalize(testimonial.action)
@@ -175,7 +183,11 @@ export const TestimonialCard = ({
 									)}
 								</Button>
 							</PopoverTrigger>
-							<PopoverContent className="p-0" width="144px" align="start">
+							<PopoverContent
+								className="p-0"
+								width="144px"
+								align="start"
+							>
 								<Command>
 									<CommandList>
 										<CommandGroup>
@@ -184,12 +196,15 @@ export const TestimonialCard = ({
 													key={status.value}
 													value={status.value}
 													className="text-sm"
-													onSelect={handleActionSelect}
+													onSelect={
+														handleActionSelect
+													}
 												>
 													<status.icon
 														className={cn(
 															"mr-2 h-4 w-4",
-															status.value === selectedStatus?.value
+															status.value ===
+																selectedStatus?.value
 																? "opacity-100"
 																: "opacity-60"
 														)}

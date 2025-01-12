@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 		if (!user) {
 			return Response.json(
 				{
-					sucess: false,
+					success: false,
 					message: "User not found!",
 				},
 				{ status: 404 }
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 		if (!user.isAcceptingTestimonials) {
 			return Response.json(
 				{
-					sucess: false,
+					success: false,
 					message: "User is not accepting testimonials currently!",
 				},
 				{ status: 403 }
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
 
 		return Response.json(
 			{
-				sucess: true,
+				success: true,
 				message: "Testimonial is sent successfully!",
 				testimonial: newTestimonial,
 			},
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
 		// console.error("Error sending testimonial\n", error);
 		return Response.json(
 			{
-				sucess: false,
+				success: false,
 				message: "Error sending testimonial. Try Again!",
 			},
 			{ status: 500 }

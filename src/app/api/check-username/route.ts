@@ -22,7 +22,7 @@ export async function GET(request: Request) {
 			const usernameErr = result.error.format().username?._errors || [];
 			return Response.json(
 				{
-					sucess: false,
+					success: false,
 					message:
 						usernameErr?.length > 0
 							? usernameErr.join(",")
@@ -42,7 +42,7 @@ export async function GET(request: Request) {
 		if (existingVerifiedUser) {
 			return Response.json(
 				{
-					sucess: false,
+					success: false,
 					message: "Username is already taken",
 				},
 				{ status: 400 }
@@ -51,7 +51,7 @@ export async function GET(request: Request) {
 
 		return Response.json(
 			{
-				sucess: true,
+				success: true,
 				message: "Username is available",
 			},
 			{ status: 200 }
@@ -60,7 +60,7 @@ export async function GET(request: Request) {
 		// console.error("Error checking username!\n", error);
 		return Response.json(
 			{
-				sucess: false,
+				success: false,
 				message: "Error checking username",
 			},
 			{ status: 500 }

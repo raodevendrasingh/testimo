@@ -91,7 +91,7 @@ export async function POST(request: Request) {
 				success: true,
 				token: signUpToken,
 				message:
-					"User registered sucessfully! Email verification pending.",
+					"User registered successfully! Email verification pending.",
 			},
 			{ status: 201 }
 		);

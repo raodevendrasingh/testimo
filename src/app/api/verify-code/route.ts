@@ -7,31 +7,30 @@ export async function POST(request: Request) {
 	try {
 		const { token, code } = await request.json();
 
-        if (!token) {
-            return Response.json(
-                {
-                    success: false,
-                    message: "Token is missing",
-                },
-                { status: 400 }
-            );
-        }
+		if (!token) {
+			return Response.json(
+				{
+					success: false,
+					message: "Token is missing",
+				},
+				{ status: 400 }
+			);
+		}
 
 		const user = await UserModel.findOne({ signUpToken: token });
 
 		if (!user) {
 			return Response.json(
 				{
-					sucess: false,
+					success: false,
 					message: "Invalid token",
 				},
 				{ status: 400 }
 			);
 		}
 
-
-        const isCodeValid = user.verifyCode === code;
-        const isCodeNotExpired = new Date(user.verifyCodeExpiry) > new Date();
+		const isCodeValid = user.verifyCode === code;
+		const isCodeNotExpired = new Date(user.verifyCodeExpiry) > new Date();
 
 		if (isCodeValid && isCodeNotExpired) {
 			user.isVerified = true;
@@ -39,7 +38,7 @@ export async function POST(request: Request) {
 
 			return Response.json(
 				{
-					sucess: true,
+					success: true,
 					message: "User verified successfully",
 				},
 				{ status: 200 }
@@ -47,7 +46,7 @@ export async function POST(request: Request) {
 		} else if (!isCodeValid) {
 			return Response.json(
 				{
-					sucess: false,
+					success: false,
 					message: "Incorrect verification code",
 				},
 				{ status: 400 }
@@ -55,7 +54,7 @@ export async function POST(request: Request) {
 		} else {
 			return Response.json(
 				{
-					sucess: false,
+					success: false,
 					message:
 						"Verification code is expired. Please signup again to receive a new code!",
 				},
@@ -66,7 +65,7 @@ export async function POST(request: Request) {
 		// console.error("Error verifying code!\n", error);
 		return Response.json(
 			{
-				sucess: false,
+				success: false,
 				message: "Error verifying code",
 			},
 			{ status: 500 }

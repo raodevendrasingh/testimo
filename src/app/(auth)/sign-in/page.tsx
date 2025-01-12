@@ -55,17 +55,15 @@ const SignInPage = (): JSX.Element => {
 			}
 
 			if (result?.status === 200 && result.ok && result.url) {
-				console.log("Logged in sucessfully");
-				console.log("Navigating to dashboard");
-
 				router.replace("/dashboard");
 			} else {
-				console.log("Sign-in failed, no valid status or ok flag");
+				console.error("Sign-in failed, no valid status or ok flag");
 			}
 		} catch (error) {
 			console.error("Sign-in error:", error);
 			toast.error("An unexpected error occurred. Please try again.");
 		} finally {
+			form.reset();
 			setIsSubmitting(false);
 		}
 	};
@@ -83,11 +81,16 @@ const SignInPage = (): JSX.Element => {
 					<GoogleAuthButton />
 					<div className="flex items-center justify-center px-5">
 						<Separator className="w-1/2" />
-						<p className="text-center text-sm text-gray-500 mx-4">or</p>
+						<p className="text-center text-sm text-gray-500 mx-4">
+							or
+						</p>
 						<Separator className="w-1/2" />
 					</div>
 					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+						<form
+							onSubmit={form.handleSubmit(onSubmit)}
+							className="space-y-4"
+						>
 							<FormField
 								name="identifier"
 								control={form.control}
@@ -95,7 +98,10 @@ const SignInPage = (): JSX.Element => {
 									<FormItem>
 										<FormLabel>Email / Username</FormLabel>
 										<FormControl>
-											<Input placeholder="Email / Username" {...field} />
+											<Input
+												placeholder="Email / Username"
+												{...field}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -118,10 +124,15 @@ const SignInPage = (): JSX.Element => {
 									</FormItem>
 								)}
 							/>
-							<Button type="submit" disabled={isSubmitting} className="w-full">
+							<Button
+								type="submit"
+								disabled={isSubmitting}
+								className="w-full"
+							>
 								{isSubmitting ? (
 									<>
-										Please wait <Loader className="ml-2 size-4 animate-spin" />
+										Please wait{" "}
+										<Loader className="ml-2 size-4 animate-spin" />
 									</>
 								) : (
 									"Sign In"

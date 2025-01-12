@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 	if (!session || !session.user) {
 		return Response.json(
 			{
-				sucess: false,
+				success: false,
 				message: "User is not logged in",
 			},
 			{ status: 401 }

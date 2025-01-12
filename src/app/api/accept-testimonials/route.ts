@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 	if (!session || !session.user) {
 		return Response.json(
 			{
-				sucess: false,
+				success: false,
 				message: "User is not logged in",
 			},
 			{ status: 401 }
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 		if (!updatedUser) {
 			return Response.json(
 				{
-					sucess: false,
+					success: false,
 					message: "Failed to update status to accept testimonial!",
 				},
 				{ status: 401 }
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
 
 		return Response.json(
 			{
-				sucess: true,
+				success: true,
 				message: "Updated user status to accept testimonial!",
 				updatedUser,
 			},
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
 		// console.error("Failed to update status to accept testimonial!\n", error);
 		return Response.json(
 			{
-				sucess: false,
+				success: false,
 				message: "Failed to update status to accept testimonial!",
 			},
 			{ status: 500 }
@@ -70,7 +70,7 @@ export async function GET(request: Request) {
 	if (!session || !session.user) {
 		return Response.json(
 			{
-				sucess: false,
+				success: false,
 				message: "User is not logged in",
 			},
 			{ status: 401 }
@@ -85,7 +85,7 @@ export async function GET(request: Request) {
 		if (!fetchedUser) {
 			return Response.json(
 				{
-					sucess: false,
+					success: false,
 					message: "User not found!",
 				},
 				{ status: 404 }
@@ -94,7 +94,7 @@ export async function GET(request: Request) {
 
 		return Response.json(
 			{
-				sucess: true,
+				success: true,
 				isAcceptingTestimonials: fetchedUser.isAcceptingTestimonials,
 			},
 			{ status: 200 }
@@ -103,7 +103,7 @@ export async function GET(request: Request) {
 		console.error("Failed to fetch status to accept testimonial!\n", error);
 		return Response.json(
 			{
-				sucess: false,
+				success: false,
 				message: "Failed to fetch testimonial acceptance status.",
 			},
 			{ status: 500 }

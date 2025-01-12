@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 	if (!session || !session.user) {
 		return Response.json(
 			{
-				sucess: false,
+				success: false,
 				message: "User is not logged in",
 			},
 			{ status: 401 }
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
 		// console.error("Failed to update testimonial action!\n", error);
 		return Response.json(
 			{
-				sucess: false,
+				success: false,
 				message: "Failed to update testimonial action!",
 			},
 			{ status: 500 }

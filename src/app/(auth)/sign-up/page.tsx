@@ -43,16 +43,21 @@ const SignUpPage = (): JSX.Element => {
 	) => {
 		setIsSubmitting(true);
 		try {
-			const response = await axios.post<ApiResponse>("/api/sign-up", data);
+			const response = await axios.post<ApiResponse>(
+				"/api/sign-up",
+				data
+			);
 			toast.success("Success", { description: response.data.message });
 			router.replace(`/verify/${response.data.token}`);
 		} catch (error) {
 			console.error("Signup Failed: ", error);
 			const axiosError = error as AxiosError<ApiResponse>;
 			let errorMsg =
-				axiosError.response?.data.message || "An unknown error occurred";
+				axiosError.response?.data.message ||
+				"An unknown error occurred";
 			toast.error("Sign Up Failed", { description: errorMsg });
 		} finally {
+			form.reset();
 			setIsSubmitting(false);
 		}
 	};
@@ -70,11 +75,16 @@ const SignUpPage = (): JSX.Element => {
 					<GoogleAuthButton />
 					<div className="flex items-center justify-center px-5">
 						<Separator className="w-1/2" />
-						<p className="text-center text-sm text-gray-500 mx-4">or</p>
+						<p className="text-center text-sm text-gray-500 mx-4">
+							or
+						</p>
 						<Separator className="w-1/2" />
 					</div>
 					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+						<form
+							onSubmit={form.handleSubmit(onSubmit)}
+							className="space-y-4"
+						>
 							<FormField
 								name="email"
 								control={form.control}
@@ -82,7 +92,10 @@ const SignUpPage = (): JSX.Element => {
 									<FormItem>
 										<FormLabel>Email</FormLabel>
 										<FormControl>
-											<Input placeholder="Email" {...field} />
+											<Input
+												placeholder="Email"
+												{...field}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -112,7 +125,8 @@ const SignUpPage = (): JSX.Element => {
 							>
 								{isSubmitting ? (
 									<>
-										Please wait <Loader className="ml-2 size-4 animate-spin" />
+										Please wait{" "}
+										<Loader className="ml-2 size-4 animate-spin" />
 									</>
 								) : (
 									"Sign Up"

@@ -7,7 +7,6 @@ import { User } from "next-auth";
 import { useSession } from "next-auth/react";
 import {
 	ArrowUpRight,
-	ChartPie,
 	ClipboardList,
 	Loader,
 	RefreshCcw,

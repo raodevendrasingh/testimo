@@ -52,6 +52,7 @@ const VerificationPage = () => {
 				description: "Incorrect Verification Code",
 			});
 		} finally {
+			form.reset();
 			setIsVerifying(false);
 		}
 	};
@@ -67,7 +68,8 @@ const VerificationPage = () => {
 						</h1>
 
 						<p className="mb-4">
-							Enter the six-digit verification code received in your mail
+							Enter the six-digit verification code received in
+							your mail
 						</p>
 					</div>
 					<Form {...form}>
@@ -82,14 +84,29 @@ const VerificationPage = () => {
 									render={({ field }) => (
 										<FormItem className="">
 											<FormControl>
-												<InputOTP maxLength={6} {...field}>
+												<InputOTP
+													maxLength={6}
+													{...field}
+												>
 													<InputOTPGroup>
-														<InputOTPSlot index={0} />
-														<InputOTPSlot index={1} />
-														<InputOTPSlot index={2} />
-														<InputOTPSlot index={3} />
-														<InputOTPSlot index={4} />
-														<InputOTPSlot index={5} />
+														<InputOTPSlot
+															index={0}
+														/>
+														<InputOTPSlot
+															index={1}
+														/>
+														<InputOTPSlot
+															index={2}
+														/>
+														<InputOTPSlot
+															index={3}
+														/>
+														<InputOTPSlot
+															index={4}
+														/>
+														<InputOTPSlot
+															index={5}
+														/>
 													</InputOTPGroup>
 												</InputOTP>
 											</FormControl>
@@ -98,10 +115,15 @@ const VerificationPage = () => {
 									)}
 								/>
 							</div>
-							<Button type="submit" disabled={isVerifying} className="w-full">
+							<Button
+								type="submit"
+								disabled={isVerifying}
+								className="w-full"
+							>
 								{isVerifying ? (
 									<>
-										Verifying <Loader className="ml-2 size-4 animate-spin" /> 
+										Verifying{" "}
+										<Loader className="ml-2 size-4 animate-spin" />
 									</>
 								) : (
 									"Verify"
