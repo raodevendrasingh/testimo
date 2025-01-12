@@ -2,6 +2,7 @@ import dbConnect from "@/lib/dbConnect";
 import { UserModel } from "@/models/User";
 import { getServerSession, User } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
+import { Testimonial } from "@/models/Testimonial";
 
 interface UpdateUserData {
 	username: string;
@@ -56,6 +57,37 @@ export async function POST(request: Request) {
 				{ status: 404 }
 			);
 		}
+		const exampleTestimonial1 = {
+			action: "default",
+			content:
+				"Slack is awesome for team communication! Keeps everyone connected and organized. Love it",
+			rating: "5",
+			name: "Jason Viess",
+			jobTitle: "Managing Director",
+			imageUrl:
+				"https://media.istockphoto.com/id/1335941248/photo/shot-of-a-handsome-young-man-standing-against-a-grey-background.jpg?s=612x612&w=0&k=20&c=JSBpwVFm8vz23PZ44Rjn728NwmMtBa_DYL7qxrEWr38=",
+			createdAt: new Date(),
+		};
+
+		const exampleTestimonial2 = {
+			action: "default",
+			content:
+				"Notion is a lifesaver! I use it for everything from project management to note-taking. Highly recommend.",
+			rating: "5",
+			name: "Michael B.",
+			jobTitle: "",
+			imageUrl: "",
+			createdAt: new Date(),
+		};
+
+		updatedUser.testimonial.push(
+			exampleTestimonial1 as unknown as Testimonial
+		);
+		updatedUser.testimonial.push(
+			exampleTestimonial2 as unknown as Testimonial
+		);
+
+		await updatedUser.save();
 
 		return new Response(
 			JSON.stringify({

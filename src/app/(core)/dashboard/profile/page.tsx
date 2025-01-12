@@ -40,7 +40,7 @@ const ProfilePage = () => {
 	const [refresh, setRefresh] = useState(false);
 
 	const handleRefresh = () => {
-		setRefresh(!refresh);
+		window.location.reload();
 	};
 
 	const user = session?.user as User;

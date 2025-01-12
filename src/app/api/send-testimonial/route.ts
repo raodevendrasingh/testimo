@@ -49,7 +49,7 @@ export async function POST(request: Request) {
 			imageUrl,
 			createdAt: new Date(),
 		};
-		user.testimonial.push(newTestimonial as Testimonial);
+		user.testimonial.push(newTestimonial as unknown as Testimonial);
 		await user.save();
 
 		return Response.json(

@@ -29,7 +29,7 @@ export const UsernameScreen: React.FC<{
 				<div className="flex flex-col items-center w-full">
 					<div className="flex items-center justify-center w-full">
 						<span className="select-none px-2.5 py-2 border-l border-y border-gray-300 rounded-l-lg text-base bg-gray-50 text-gray-700">
-							remonial.vercel.app/
+							remonial.live/
 						</span>
 						<FormField
 							control={control}
@@ -39,7 +39,7 @@ export const UsernameScreen: React.FC<{
 									<FormControl>
 										<Input
 											{...field}
-                                            maxLength={16}
+											maxLength={16}
 											aria-label="Claim your username"
 											placeholder="username"
 											title="Claim your username!"
@@ -64,17 +64,25 @@ export const UsernameScreen: React.FC<{
 									{isCheckingUsername ? (
 										<span className="flex items-center gap-1">
 											<Loader className="animate-spin size-4 text-gray-600" />
-											<span className="text-slate-700">Checking...</span>
+											<span className="text-slate-700">
+												Checking...
+											</span>
 										</span>
-									) : usernameMsg === "Username is available" ? (
+									) : usernameMsg ===
+									  "Username is available" ? (
 										<span className="flex items-center gap-1">
 											<Check className="size-4 text-green-500" />
-											<span className="text-green-500">{usernameMsg}</span>
+											<span className="text-green-500">
+												{usernameMsg}
+											</span>
 										</span>
-									) : usernameMsg === "Username is already taken" ? (
+									) : usernameMsg ===
+									  "Username is already taken" ? (
 										<span className="flex items-center gap-1">
 											<X className="size-4 text-red-500" />
-											<span className="text-red-500">{usernameMsg}</span>
+											<span className="text-red-500">
+												{usernameMsg}
+											</span>
 										</span>
 									) : null}
 								</>

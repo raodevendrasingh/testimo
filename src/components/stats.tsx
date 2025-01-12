@@ -34,7 +34,7 @@ export const Stats = () => {
 		let ratingSum = 0;
 		testimonial.map((i) => (ratingSum += i.rating));
 		const avgRating = ratingSum / testimonial.length;
-		return avgRating;
+		return avgRating | 0;
 	};
 
 	const recentTestimonials = () => {
