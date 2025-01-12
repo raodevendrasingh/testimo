@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/context/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -39,8 +41,9 @@ export default function RootLayout({
 			<AuthProvider>
 				<body className={inter.className}>
 					{children}
-                    <SpeedInsights />
-					<Toaster position="top-center" />
+					<Analytics />
+					<SpeedInsights />
+					<Toaster position="bottom-right" />
 				</body>
 			</AuthProvider>
 		</html>
