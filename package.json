@@ -1,5 +1,5 @@
 {
-	"name": "remonials-app",
+	"name": "remonial-app",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
@@ -26,7 +26,6 @@
 		"@types/canvas-confetti": "^1.9.0",
 		"@types/nodemailer": "^6.4.17",
 		"@vercel/speed-insights": "^1.1.0",
-		"all": "^0.0.0",
 		"axios": "^1.7.9",
 		"bcryptjs": "^2.4.3",
 		"canvas-confetti": "^1.9.3",
