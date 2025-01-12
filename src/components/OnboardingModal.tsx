@@ -43,6 +43,7 @@ interface UserOnboardingModalProps {
 }
 
 export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
+	onSave,
 	setShowOnboardingModal,
 }) => {
 	const [currentScreen, setCurrentScreen] = useState(0);
@@ -108,10 +109,14 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 			case 1:
 				return (
 					<UserDetailScreen
-						setValue={setValue as unknown as UseFormSetValue<FieldValues>}
+						setValue={
+							setValue as unknown as UseFormSetValue<FieldValues>
+						}
 						control={control as unknown as Control<FieldValues>}
 						errors={errors as FieldErrors<FieldValues>}
-						touchedFields={touchedFields as Partial<Record<string, boolean>>}
+						touchedFields={
+							touchedFields as Partial<Record<string, boolean>>
+						}
 					/>
 				);
 			default:
@@ -125,7 +130,9 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 		try {
 			let cloudinaryImageUrl = "";
 			if (croppedImage) {
-				cloudinaryImageUrl = await uploadToCloudinary(croppedImage as string);
+				cloudinaryImageUrl = await uploadToCloudinary(
+					croppedImage as string
+				);
 			}
 
 			const formData = {
@@ -135,6 +142,7 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 			};
 			const response = await axios.post("/api/onboard-user", formData);
 			toast.success(response.data.message);
+			onSave();
 			setShowOnboardingModal(false);
 		} catch (error) {
 			console.log(error);
@@ -163,7 +171,12 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 						<div className="flex flex-col items-center justify-center select-none rounded-t p-3 pb-1">
 							{currentScreen === 0 ? (
 								<div className="flex flex-col items-center justify-center pt-5">
-									<Image src={iconLogo} alt="Remonial" width={60} height={60} />
+									<Image
+										src={iconLogo}
+										alt="Remonial"
+										width={60}
+										height={60}
+									/>
 									<h1 className="text-2xl font-semibold text-gray-800 mt-1">
 										Welcome to Remonial
 									</h1>
@@ -177,12 +190,21 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 						</div>
 						<div className="p-3">
 							<Form {...form}>
-								<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+								<form
+									onSubmit={handleSubmit(onSubmit)}
+									className="space-y-6"
+								>
 									<motion.div
 										key={currentScreen}
-										initial={{ x: slideDirection * 50, opacity: 0 }}
+										initial={{
+											x: slideDirection * 50,
+											opacity: 0,
+										}}
 										animate={{ x: 0, opacity: 1 }}
-										exit={{ x: -slideDirection * 50, opacity: 0 }}
+										exit={{
+											x: -slideDirection * 50,
+											opacity: 0,
+										}}
 										transition={{ duration: 0.3 }}
 										className={clsx({
 											"h-[216px]": currentScreen === 0,
@@ -204,12 +226,16 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 												disabled={!isFirstScreenValid}
 												className="flex w-full justify-center items-center gap-2 text-sm"
 											>
-												Next <ArrowRight className=" size-4" />
+												Next{" "}
+												<ArrowRight className=" size-4" />
 											</Button>
 										) : (
 											<Button
 												type="submit"
-												disabled={isLoading || !isSecondScreenValid}
+												disabled={
+													isLoading ||
+													!isSecondScreenValid
+												}
 												className="flex w-full justify-center items-center gap-2 text-sm"
 											>
 												{isLoading ? (

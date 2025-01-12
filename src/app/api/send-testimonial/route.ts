@@ -30,6 +30,16 @@ export async function POST(request: Request) {
 			);
 		}
 
+		if (user.testimonial.length == user.monthlyTestimonialCount) {
+			return Response.json(
+				{
+					success: false,
+					message: "User cannot accept testimonials currently!",
+				},
+				{ status: 403 }
+			);
+		}
+
 		const newTestimonial = {
 			action: "default",
 			content,

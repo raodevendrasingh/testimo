@@ -15,8 +15,6 @@ import {
 	SlidersHorizontal,
 } from "lucide-react";
 
-import { FeedbackStats } from "@/lib/selectOptions";
-
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import emptyLogo from "@/assets/placeholder/emptyLogo.png";
@@ -28,6 +26,7 @@ import { ExtractDomain } from "@/helpers/ExtractDomainName";
 import PulseRingLoader from "@/components/ui/PulseRingLoader";
 import { ProfileSkeleton } from "@/components/ProfileSkeleton";
 import { OnboardingModal } from "@/components/OnboardingModal";
+import { Stats } from "@/components/stats";
 
 const ProfilePage = () => {
 	const { data: session } = useSession();
@@ -47,7 +46,8 @@ const ProfilePage = () => {
 
 	const user = session?.user as User;
 
-	const { testimonial, isLoading, fetchTestimonials } = useFetchTestimonials();
+	const { testimonial, isLoading, fetchTestimonials } =
+		useFetchTestimonials();
 	const {
 		isAcceptingTestimonials,
 		isSwitchLoading,
@@ -146,14 +146,20 @@ const ProfilePage = () => {
 											<div className="size-28 rounded-lg">
 												{userDetail[0].imageUrl ? (
 													<Image
-														src={userDetail[0].imageUrl as string}
+														src={
+															userDetail[0]
+																.imageUrl as string
+														}
 														alt="user-profile"
 														width={120}
 														height={120}
 														priority={true}
 														className="rounded-lg"
 														onError={(e) => {
-															console.error("Image failed to load:", e);
+															console.error(
+																"Image failed to load:",
+																e
+															);
 															e.currentTarget.src =
 																"@/assets/placeholder/emptyLogo.png";
 														}}
@@ -185,15 +191,22 @@ const ProfilePage = () => {
 											</div>
 											<div className="flex items-center justify-center sm:justify-start w-full gap-2">
 												<Link
-													href={userDetail[0].companysite || "#"}
+													href={
+														userDetail[0]
+															.companysite || "#"
+													}
 													target="_blank"
 													rel="noopener noreferrer"
 												>
 													<div className="inline-flex justify-center items-center sm:justify-start gap-2 px-3 py-0.5 rounded-full border bg-white">
-														{userDetail[0].companysite ? (
+														{userDetail[0]
+															.companysite ? (
 															<>
 																<span className="text-sm">
-																	{ExtractDomain(userDetail[0].companysite)}
+																	{ExtractDomain(
+																		userDetail[0]
+																			.companysite
+																	)}
 																</span>
 																<ArrowUpRight className="size-5 text-gray-700" />
 															</>
@@ -218,7 +231,9 @@ const ProfilePage = () => {
 					<div className="flex items-start mb-4">
 						<div className="flex items-center gap-2">
 							<SlidersHorizontal className="w-5 h-5 text-gray-700" />
-							<h2 className="text-lg font-semibold text-gray-800">Controls</h2>
+							<h2 className="text-lg font-semibold text-gray-800">
+								Controls
+							</h2>
 						</div>
 					</div>
 					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -250,7 +265,9 @@ const ProfilePage = () => {
 								<p className="text-sm font-medium text-gray-700">
 									Refresh Data
 								</p>
-								<p className="text-xs text-gray-500">Update testimonials</p>
+								<p className="text-xs text-gray-500">
+									Update testimonials
+								</p>
 							</div>
 							{isLoading ? (
 								<Loader className="w-4 h-4 text-gray-600 animate-spin" />
@@ -275,29 +292,7 @@ const ProfilePage = () => {
 						</Button>
 					</div>
 				</section>
-
-				{/* Stats Section */}
-				<div className="bg-white rounded-xl border p-6">
-					<h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-						<ChartPie className="size-5 text-gray-600" />
-						Stats
-					</h2>
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-						{FeedbackStats.map((stat, index) => (
-							<div key={index} className="bg-gray-50 p-4 rounded-lg">
-								<div className="flex items-center justify-between mb-2">
-									<stat.icon className={`size-8 ${stat.iconColor}`} />
-									<span className="text-2xl font-bold text-gray-800">
-										{stat.value}
-									</span>
-								</div>
-								<h3 className="text-sm font-medium text-gray-600">
-									{stat.title}
-								</h3>
-							</div>
-						))}
-					</div>
-				</div>
+				<Stats />
 			</div>
 		</div>
 	);

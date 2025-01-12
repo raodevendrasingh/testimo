@@ -10,12 +10,12 @@ export const feedbackSchema = z.object({
 		.string()
 		.min(4, { message: "Name must be at least 4 characters" })
 		.max(30, { message: "Name must not exceed 30 characters" })
-        .optional(),
+		.optional(),
 	jobTitle: z
 		.string()
 		.min(3, { message: "Job Title must be at least 3 characters" })
 		.max(50, { message: "Job Title must not exceed 50 characters" })
-        .optional(),
+		.optional(),
 	imageUrl: z.string().optional(),
 	action: z.string().default("default"),
 });
