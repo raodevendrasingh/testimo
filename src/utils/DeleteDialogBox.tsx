@@ -25,18 +25,27 @@ export const DeleteDialog = ({
 			<DialogHeader>
 				<DialogTitle>Are you absolutely sure?</DialogTitle>
 				<DialogDescription>
-					This action cannot be undone. This will permanently delete this
-					testimonial and remove it from our servers.
+					This action cannot be undone. This will permanently delete
+					this testimonial and remove it from our servers.
 				</DialogDescription>
 			</DialogHeader>
 			<DialogFooter>
 				<DialogClose onClick={() => onOpenChange(false)}>
-					<Button type="button" variant="secondary" className="w-full">
+					<Button
+						asChild
+						type="button"
+						variant="secondary"
+						className="w-full"
+					>
 						Close
 					</Button>
 				</DialogClose>
-				<DialogClose onClick={onConfirm}>
-					<Button type="button" variant="destructive" className="w-full">
+				<DialogClose asChild onClick={onConfirm}>
+					<Button
+						type="button"
+						variant="destructive"
+						className="w-full"
+					>
 						Delete
 					</Button>
 				</DialogClose>
