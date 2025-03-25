@@ -4,7 +4,7 @@ import { Testimonial } from "@/models/Testimonial";
 import { Stars } from "@/components/ui/Stars";
 import SyntaxHighlighter from "@/utils/SyntaxHighlighter";
 import { Clipboard, ClipboardCheck } from "lucide-react";
-import { useState } from "react";
+import { useState, type JSX } from "react";
 import Image from "next/image";
 
 export const CopyableTitle = ({

@@ -1,5 +1,4 @@
-"use client";
-
+"use client";;
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { LogOutIcon } from "lucide-react";
@@ -13,6 +12,8 @@ import {
 import { Button } from "@/components/ui/button";
 import remonial_wordmark_dark from "@/assets/brand/remonial_wordmark_dark.png";
 import Image from "next/image";
+
+import type { JSX } from "react";
 
 export const HomeNav = (): JSX.Element => {
 	const { toggleSidebar, isSidebarOpen } = useSidebar();

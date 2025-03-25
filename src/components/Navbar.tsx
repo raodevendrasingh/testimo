@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, type JSX } from "react";
 import Link from "next/link";
 
 import remonial_wordmark_light from "@/assets/brand/remonial_wordmark_light.png";
