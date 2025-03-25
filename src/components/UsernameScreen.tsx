@@ -45,10 +45,10 @@ export const UsernameScreen: React.FC<{
 											title="Claim your username!"
 											className={cn(
 												"flex h-10 w-full rounded-r-lg border bg-background px-3 py-2 ring-offset-gray-700",
-												"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0",
+												"focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0",
 												"disabled:cursor-not-allowed disabled:opacity-50",
 												"rounded-l-none",
-												"!py-2 !h-auto !text-base",
+												"py-2! h-auto! text-base!",
 												"border-gray-300 hover:border-gray-600 focus:border-gray-500 focus:ring-gray-500"
 											)}
 										/>

@@ -53,7 +53,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
 	};
 
 	return (
-		<div className="absolute flex flex-col items-center p-10 z-[60] bg-white mt-36 rounded-lg">
+		<div className="absolute flex flex-col items-center p-10 z-60 bg-white mt-36 rounded-lg">
 			<ReactCrop
 				crop={crop}
 				onChange={(_, percentCrop) => setCrop(percentCrop)}
@@ -72,7 +72,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
 				/>
 			</ReactCrop>
 			<button
-				className="flex items-center justify-center gap-2 w-full mt-4 bg-slate-800 text-white font-semibold border rounded-lg text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
+				className="flex items-center justify-center gap-2 w-full mt-4 bg-slate-800 text-white font-semibold border rounded-lg text-sm px-4 py-2 shadow-sm hover:shadow-xl outline-hidden focus:outline-hidden ease-linear transition-all duration-150"
 				onClick={handleCropComplete}
 			>
 				Crop 

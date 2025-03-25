@@ -22,7 +22,7 @@ export const Chip = ({ index, text, selected, setSelected }: ChipProps) => {
 				<motion.span
 					layoutId="pill-tab"
 					transition={{ type: "spring", duration: 0.5 }}
-					className="absolute inset-0 z-0 bg-gradient-to-r from-slate-700 to-zinc-700 rounded-md"
+					className="absolute inset-0 z-0 bg-linear-to-r from-slate-700 to-zinc-700 rounded-md"
 				></motion.span>
 			)}
 		</button>

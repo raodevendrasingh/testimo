@@ -172,7 +172,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				exit={{ opacity: 0 }}
-				className="bg-slate-900/20 backdrop-blur fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer"
+				className="bg-slate-900/20 backdrop-blur-sm fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer"
 			>
 				<motion.div
 					initial={{ scale: 0.9, rotate: "0deg" }}
@@ -187,7 +187,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 								{screens[currentScreen]}
 							</h3>
 							<button
-								className="ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+								className="ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-hidden focus:outline-hidden"
 								onClick={() => setShowUserDetailModal(false)}
 							>
 								<span className="bg-transparent text-gray-800">

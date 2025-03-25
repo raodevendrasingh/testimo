@@ -48,7 +48,7 @@ export const TestimonialCard = ({
 			<span className="text-yellow-300 text-base flex">
 				<Stars rating={testimonial.rating} />
 			</span>
-			<div className="flex h-full flex-col text-center text-sm flex-grow">
+			<div className="flex h-full flex-col text-center text-sm grow">
 				{testimonial.content}
 			</div>
 			<div className="flex items-center justify-center gap-4 ">
@@ -104,7 +104,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 return (
     <div className="border rounded-lg select-none p-5 flex flex-col items-center justify-center gap-2 w-[320px]">
         <Stars rating={rating} />
-        <div className="flex h-full flex-col text-center text-sm flex-grow">
+        <div className="flex h-full flex-col text-center text-sm grow">
             {content}
         </div>
         <div className="flex items-center justify-center gap-4 ">

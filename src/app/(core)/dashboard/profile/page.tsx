@@ -226,7 +226,7 @@ const ProfilePage = () => {
 				</section>
 
 				{/* Controls */}
-				<section className="py-6 px-4 my-5 bg-white rounded-xl shadow-sm border border-gray-200">
+				<section className="py-6 px-4 my-5 bg-white rounded-xl shadow-xs border border-gray-200">
 					<div className="flex items-start mb-4">
 						<div className="flex items-center gap-2">
 							<SlidersHorizontal className="w-5 h-5 text-gray-700" />
@@ -287,7 +287,7 @@ const ProfilePage = () => {
 									{profileUrl}
 								</p>
 							</div>
-							<ClipboardList className="w-4 h-4 text-gray-600 flex-shrink-0" />
+							<ClipboardList className="w-4 h-4 text-gray-600 shrink-0" />
 						</Button>
 					</div>
 				</section>

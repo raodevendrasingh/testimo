@@ -158,7 +158,7 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				exit={{ opacity: 0 }}
-				className="bg-slate-900/20 backdrop-blur fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer"
+				className="bg-slate-900/20 backdrop-blur-sm fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer"
 			>
 				<motion.div
 					initial={{ scale: 0.9, rotate: "0deg" }}

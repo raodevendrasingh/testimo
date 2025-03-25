@@ -11,7 +11,7 @@ export const GoogleAuthButton = () => {
 	return (
 		<button
 			onClick={handleClick}
-			className="flex items-center justify-center h-[42px] w-full bg-white dark:bg-gray-900 border border-gray-300 rounded-lg px-6 py-2 text-sm font-medium text-gray-80 hover:bg-slate-100 trasition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+			className="flex items-center justify-center h-[42px] w-full bg-white dark:bg-gray-900 border border-gray-300 rounded-lg px-6 py-2 text-sm font-medium text-gray-80 hover:bg-slate-100 trasition duration-200 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
 		>
 			<svg
 				className="size-5 mr-2"

@@ -180,11 +180,11 @@ export function MarqueeSection() {
 		// 			<TestimonialCard key={review.content} {...review} />
 		// 		))}
 		// 	</Marquee>
-		// 	<div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r "></div>
-		// 	<div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l"></div>
+		// 	<div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-linear-to-r "></div>
+		// 	<div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-linear-to-l"></div>
 		// </div>
 
-		<div className="relative flex h-[800px] bg-gradient-to-b from-[#0f0f0f] to-[#1a1a1a] w-full flex-col items-center justify-center border-t border-zinc-800 overflow-hidden md:shadow-xl">
+		<div className="relative flex h-[800px] bg-linear-to-b from-[#0f0f0f] to-[#1a1a1a] w-full flex-col items-center justify-center border-t border-zinc-800 overflow-hidden md:shadow-xl">
 			<h2 className="text-5xl font-bold text-white mb-8 text-center px-4">
 				Create Your Own Stunning Testimonial Wall
 			</h2>
@@ -202,8 +202,8 @@ export function MarqueeSection() {
 					<TestimonialCard key={review.content} {...review} />
 				))}
 			</Marquee>
-			<div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#0f0f0f]"></div>
-			<div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-[#0f0f0f]"></div>
+			<div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-linear-to-r from-[#0f0f0f]"></div>
+			<div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-linear-to-l from-[#0f0f0f]"></div>
 			
 		</div>
 	);

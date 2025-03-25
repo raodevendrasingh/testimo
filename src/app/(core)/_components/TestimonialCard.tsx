@@ -140,13 +140,13 @@ export const TestimonialCard = ({
 									</span>
 								</div>
 							</div>
-							<div className="flex h-full flex-col text-center xs:text-start text-sm flex-grow">
+							<div className="flex h-full flex-col text-center xs:text-start text-sm grow">
 								{testimonial.content}
 							</div>
 						</div>
 					</div>
 
-					<div className="flex flex-grow justify-center items-start sm:items-center w-64 mx-auto xs:w-[30%] sm:w-[20%] p-1 md:mt-0">
+					<div className="flex grow justify-center items-start sm:items-center w-64 mx-auto xs:w-[30%] sm:w-[20%] p-1 md:mt-0">
 						<Popover open={open} onOpenChange={setOpen}>
 							<PopoverTrigger asChild>
 								<Button

@@ -117,10 +117,12 @@ const config = {
 				"accordion-down": "accordion-down 0.2s ease-out",
 				"accordion-up": "accordion-up 0.2s ease-out",
 				"caret-blink": "caret-blink 1.25s ease-out infinite",
-				"spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
+				"spin-around":
+					"spin-around calc(var(--speed) * 2) infinite linear",
 				slide: "slide var(--speed) ease-in-out infinite alternate",
 				marquee: "marquee var(--duration) linear infinite",
-				"marquee-vertical": "marquee-vertical var(--duration) linear infinite",
+				"marquee-vertical":
+					"marquee-vertical var(--duration) linear infinite",
 			},
 		},
 	},

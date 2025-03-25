@@ -160,7 +160,7 @@ export default function SendTestimonial() {
 				</nav>
 				{/* content box */}
 				<AnimatePresence>
-					<div className="w-[70%] sm:w-2/4 max-w-md mx-auto border rounded-xl bg-white shadow">
+					<div className="w-[70%] sm:w-2/4 max-w-md mx-auto border rounded-xl bg-white shadow-sm">
 						<div className="flex items-center gap-5 rounded-t p-3 border-b">
 							<span>
 								<Image
@@ -229,7 +229,7 @@ export default function SendTestimonial() {
 				</AnimatePresence>
 
 				{/* signup card */}
-				<div className="absolute bottom-2 right-2 shadow text-center border rounded-lg p-3 w-52 bg-white">
+				<div className="absolute bottom-2 right-2 shadow-sm text-center border rounded-lg p-3 w-52 bg-white">
 					<div className="mb-4 text-sm font-medium">
 						Want Your Own Testimonial Board ?
 					</div>

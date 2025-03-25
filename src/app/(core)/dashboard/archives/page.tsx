@@ -24,7 +24,7 @@ const ArchivesPage = () => {
 	return (
 		<div className="w-full mx-auto">
 			<div className="max-w-5xl mx-auto">
-				<div className="flex flex-col max-w-7xl mx-auto w-full flex-grow">
+				<div className="flex flex-col max-w-7xl mx-auto w-full grow">
 					<div className="flex flex-col items-center gap-3 p-4">
 						{isLoading ? (
 							<span className="flex flex-col items-center gap-3 w-full">
