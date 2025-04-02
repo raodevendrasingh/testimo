@@ -28,8 +28,8 @@ import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 interface FormValues {
 	username: string;
 	name: string;
-	imageUrl?: string;
-	tagline: string;
+	imageUrl?: string | undefined;
+	tagline?: string | undefined;
 }
 
 const screens = [
@@ -88,7 +88,7 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 	const tagline = watch("tagline");
 
 	const isFirstScreenValid = username.length >= 4 && username.length <= 16;
-	const isSecondScreenValid = name.length >= 2 && tagline.length >= 4;
+	const isSecondScreenValid = name.length >= 2 && (tagline?.length ?? 0) >= 4;
 
 	const handleNext = (e: React.MouseEvent) => {
 		e.preventDefault();

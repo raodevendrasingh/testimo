@@ -12,7 +12,7 @@ import {
 	UseFormSetValue,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userDetailSchema } from "@/schemas/userDetailSchema";
+import { userDetailModalSchema } from "@/schemas/userDetailSchema";
 import { ArrowLeft, ArrowRight, Loader, X } from "lucide-react";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -23,8 +23,8 @@ import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
 
 interface FormValues {
 	name: string;
-	imageUrl?: string;
-	tagline: string;
+	imageUrl?: string | undefined;
+	tagline?: string | undefined;
 	companysite?: string;
 	socials: {
 		linkedin?: string;
@@ -52,7 +52,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 	const { userDetail, isUserLoading, fetchUserData } = useFetchUserDetail();
 
 	const form = useForm<FormValues>({
-		resolver: zodResolver(userDetailSchema),
+		resolver: zodResolver(userDetailModalSchema),
 		defaultValues: {
 			name: "",
 			imageUrl: undefined,
@@ -111,7 +111,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 	const name = watch("name");
 	const tagline = watch("tagline");
 
-	const isFirstScreenValid = name.length >= 3 && tagline.length >= 5;
+	const isFirstScreenValid = name.length >= 3 && (tagline?.length ?? 0) >= 5;
 
 	const user = session?.user as User | undefined;
 	const username = user?.username;
@@ -135,10 +135,14 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 			case 0:
 				return (
 					<UserDetailScreen
-						setValue={setValue as unknown as UseFormSetValue<FieldValues>}
+						setValue={
+							setValue as unknown as UseFormSetValue<FieldValues>
+						}
 						control={control as unknown as Control<FieldValues>}
 						errors={errors as FieldErrors<FieldValues>}
-						touchedFields={touchedFields as Partial<Record<string, boolean>>}
+						touchedFields={
+							touchedFields as Partial<Record<string, boolean>>
+						}
 					/>
 				);
 			default:
@@ -151,7 +155,10 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 		const formData = { ...data, username: username };
 
 		try {
-			const response = await axios.post("/api/add-user-details", formData);
+			const response = await axios.post(
+				"/api/add-user-details",
+				formData
+			);
 			toast.success(response.data.message);
 			setShowUserDetailModal(false);
 			onSave();
@@ -197,12 +204,21 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 						</div>
 						<div className="p-3">
 							<Form {...form}>
-								<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+								<form
+									onSubmit={handleSubmit(onSubmit)}
+									className="space-y-6"
+								>
 									<motion.div
 										key={currentScreen}
-										initial={{ x: slideDirection * 50, opacity: 0 }}
+										initial={{
+											x: slideDirection * 50,
+											opacity: 0,
+										}}
 										animate={{ x: 0, opacity: 1 }}
-										exit={{ x: -slideDirection * 50, opacity: 0 }}
+										exit={{
+											x: -slideDirection * 50,
+											opacity: 0,
+										}}
 										transition={{ duration: 0.3 }}
 										className="h-[50vh]"
 									>
@@ -220,7 +236,8 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 												onClick={handlePrevious}
 												className="flex items-center text-sm"
 											>
-												<ArrowLeft className="mr-2 size-4" /> Previous
+												<ArrowLeft className="mr-2 size-4" />{" "}
+												Previous
 											</Button>
 										)}
 										{currentScreen < screens.length - 1 ? (
@@ -230,12 +247,16 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 												disabled={!isFirstScreenValid}
 												className="flex items-center text-sm ml-auto"
 											>
-												Next <ArrowRight className="ml-2 size-4" />
+												Next{" "}
+												<ArrowRight className="ml-2 size-4" />
 											</Button>
 										) : (
 											<Button
 												type="submit"
-												disabled={isLoading || !isFirstScreenValid}
+												disabled={
+													isLoading ||
+													!isFirstScreenValid
+												}
 												className="flex w-28 justify-center items- gap-2 text-sm hover:bg-zinc-900 transition-colors ml-auto"
 											>
 												{isLoading ? (

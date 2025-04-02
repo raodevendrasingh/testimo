@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config = {
-	darkMode: ["class"],
+	darkMode: "class",
 	content: [
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",
@@ -21,16 +21,18 @@ const config = {
 			screens: {
 				xs: "450px",
 			},
-			mono: [
-				"Consolas",
-				"ui-monospace",
-				"SFMono-Regular",
-				"Menlo",
-				"Monaco",
-				'"Liberation Mono"',
-				'"Courier New"',
-				"monospace",
-			],
+			fontFamily: {
+				mono: [
+					"Consolas",
+					"ui-monospace",
+					"SFMono-Regular",
+					"Menlo",
+					"Monaco",
+					'"Liberation Mono"',
+					'"Courier New"',
+					"monospace",
+				],
+			},
 			colors: {
 				border: "hsl(var(--border))",
 				input: "hsl(var(--input))",
