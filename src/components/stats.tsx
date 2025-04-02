@@ -17,6 +17,7 @@ export const Stats = () => {
 	}, [fetchTestimonials]);
 
 	const averageRating = () => {
+		if (testimonial.length === 0) return 0;
 		let ratingSum = 0;
 		for (const i of testimonial) {
 			ratingSum += i.rating;
