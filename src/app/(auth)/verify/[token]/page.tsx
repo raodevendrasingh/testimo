@@ -4,24 +4,14 @@ import { verifySchema } from "@/schemas/verifySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
-import { SubmitHandler, useForm } from "react-hook-form";
-import * as z from "zod";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import type * as z from "zod";
 
-import {
-	InputOTP,
-	InputOTPGroup,
-	InputOTPSlot,
-} from "@/components/ui/input-otp";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormMessage,
-} from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Loader } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 const VerificationPage = () => {
@@ -33,9 +23,7 @@ const VerificationPage = () => {
 		resolver: zodResolver(verifySchema),
 	});
 
-	const onSubmit: SubmitHandler<z.infer<typeof verifySchema>> = async (
-		data
-	) => {
+	const onSubmit: SubmitHandler<z.infer<typeof verifySchema>> = async (data) => {
 		try {
 			setIsVerifying(true);
 			const response = await axios.post("/api/verify-code", {
@@ -67,16 +55,10 @@ const VerificationPage = () => {
 							Verify your account
 						</h1>
 
-						<p className="mb-4">
-							Enter the six-digit verification code received in
-							your mail
-						</p>
+						<p className="mb-4">Enter the six-digit verification code received in your mail</p>
 					</div>
 					<Form {...form}>
-						<form
-							onSubmit={form.handleSubmit(onSubmit)}
-							className="w-2/3 mx-auto space-y-8"
-						>
+						<form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 mx-auto space-y-8">
 							<div className="flex justify-center">
 								<FormField
 									control={form.control}
@@ -84,29 +66,14 @@ const VerificationPage = () => {
 									render={({ field }) => (
 										<FormItem className="">
 											<FormControl>
-												<InputOTP
-													maxLength={6}
-													{...field}
-												>
+												<InputOTP maxLength={6} {...field}>
 													<InputOTPGroup>
-														<InputOTPSlot
-															index={0}
-														/>
-														<InputOTPSlot
-															index={1}
-														/>
-														<InputOTPSlot
-															index={2}
-														/>
-														<InputOTPSlot
-															index={3}
-														/>
-														<InputOTPSlot
-															index={4}
-														/>
-														<InputOTPSlot
-															index={5}
-														/>
+														<InputOTPSlot index={0} />
+														<InputOTPSlot index={1} />
+														<InputOTPSlot index={2} />
+														<InputOTPSlot index={3} />
+														<InputOTPSlot index={4} />
+														<InputOTPSlot index={5} />
 													</InputOTPGroup>
 												</InputOTP>
 											</FormControl>
@@ -115,15 +82,10 @@ const VerificationPage = () => {
 									)}
 								/>
 							</div>
-							<Button
-								type="submit"
-								disabled={isVerifying}
-								className="w-full"
-							>
+							<Button type="submit" disabled={isVerifying} className="w-full">
 								{isVerifying ? (
 									<>
-										Verifying{" "}
-										<Loader className="ml-2 size-4 animate-spin" />
+										Verifying <Loader className="ml-2 size-4 animate-spin" />
 									</>
 								) : (
 									"Verify"

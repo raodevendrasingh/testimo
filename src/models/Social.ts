@@ -1,4 +1,4 @@
-import { Schema, Document } from "mongoose";
+import { type Document, Schema } from "mongoose";
 
 export const urlMatcher = [
 	/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,

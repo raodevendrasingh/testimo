@@ -1,6 +1,6 @@
+import remonial_wordmark_dark from "@/assets/brand/remonial_wordmark_dark.png";
 import Image from "next/image";
 import Link from "next/link";
-import remonial_wordmark_dark from "@/assets/brand/remonial_wordmark_dark.png";
 
 export default async function AuthLayout({
 	children,

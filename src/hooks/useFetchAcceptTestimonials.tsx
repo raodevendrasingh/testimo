@@ -1,11 +1,10 @@
-import { useState, useCallback } from "react";
-import axios, { AxiosError } from "axios";
-import { ApiResponse } from "@/types/ApiResponse";
+import type { ApiResponse } from "@/types/ApiResponse";
+import axios, { type AxiosError } from "axios";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
 
 export const useFetchAcceptTestimonials = () => {
-	const [isAcceptingTestimonials, setIsAcceptingFeedback] =
-		useState<boolean>(false);
+	const [isAcceptingTestimonials, setIsAcceptingFeedback] = useState<boolean>(false);
 	const [isSwitchLoading, setIsSwitchLoading] = useState<boolean>(false);
 
 	const fetchAcceptTestimonial = useCallback(async () => {
@@ -16,9 +15,7 @@ export const useFetchAcceptTestimonials = () => {
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 			toast.error("Error", {
-				description:
-					axiosError.response?.data.message ||
-					"Failed to fetch testimonial settings",
+				description: axiosError.response?.data.message || "Failed to fetch testimonial settings",
 			});
 		} finally {
 			setIsSwitchLoading(false);
@@ -36,9 +33,7 @@ export const useFetchAcceptTestimonials = () => {
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 			toast.error("Error", {
-				description:
-					axiosError.response?.data.message ||
-					"Failed to update testimonial settings",
+				description: axiosError.response?.data.message || "Failed to update testimonial settings",
 			});
 		} finally {
 			setIsSwitchLoading(false);

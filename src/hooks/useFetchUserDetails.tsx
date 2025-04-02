@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import axios, { AxiosError } from "axios";
-import { ApiResponse } from "@/types/ApiResponse";
+import type { User } from "@/models/User";
+import type { ApiResponse } from "@/types/ApiResponse";
+import axios, { type AxiosError } from "axios";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
-import { User } from "@/models/User";
 
 export const useFetchUserDetail = () => {
 	const [userDetail, setUserDetail] = useState<User[]>([]);
 	const [isUserLoading, setIsUserLoading] = useState<boolean>(false);
 
-	const fetchUserData = useCallback(async (refresh: boolean = false) => {
+	const fetchUserData = useCallback(async (refresh = false) => {
 		setIsUserLoading(true);
 		try {
 			const response = await axios.get<ApiResponse>("/api/get-user-details");
@@ -18,8 +18,7 @@ export const useFetchUserDetail = () => {
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 			toast.error("Error", {
-				description:
-					axiosError.response?.data.message || "Failed to Fetch User Data",
+				description: axiosError.response?.data.message || "Failed to Fetch User Data",
 			});
 		} finally {
 			setIsUserLoading(false);

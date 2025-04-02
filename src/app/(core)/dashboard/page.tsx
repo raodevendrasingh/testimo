@@ -1,15 +1,15 @@
 "use client";
 
+import { useSidebar } from "@/context/SidebarContext";
 import { useState } from "react";
 import Sidebar from "../_components/Sidebar";
-import ProfilePage from "./profile/page";
-import TestimonialPage from "./testimonials/page";
-import ExportsPage from "./exports/page";
 import ArchivesPage from "./archives/page";
 import ComponentsPage from "./components/page";
 import CustomizePage from "./customize/page";
+import ExportsPage from "./exports/page";
 import InsightsPage from "./insights/page";
-import { useSidebar } from "@/context/SidebarContext";
+import ProfilePage from "./profile/page";
+import TestimonialPage from "./testimonials/page";
 
 const tabComponents = [
 	ProfilePage,

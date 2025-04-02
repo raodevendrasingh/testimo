@@ -1,5 +1,5 @@
-import { ApiResponse } from "@/types/ApiResponse";
-import axios, { AxiosError } from "axios";
+import type { ApiResponse } from "@/types/ApiResponse";
+import axios, { type AxiosError } from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -23,9 +23,7 @@ export const useActionUpdate = () => {
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 			toast.error("Error", {
-				description:
-					axiosError.response?.data.message ||
-					"Failed to update feedbak action!",
+				description: axiosError.response?.data.message || "Failed to update feedbak action!",
 			});
 		} finally {
 			setLoading(false);

@@ -1,7 +1,7 @@
-import { cn } from "@/lib/utils";
 import Marquee from "@/components/magicui/marquee";
-import { Stars } from "./ui/Stars";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { Stars } from "./ui/Stars";
 
 interface TestimonialCardProps {
 	displayName?: string;
@@ -54,7 +54,7 @@ const reviews = [
 		rating: 4,
 	},
 	{
-        displayName: "Emily Wong",
+		displayName: "Emily Wong",
 		content: "This has saved me so much time. Thank you!",
 		imageUrl: "https://i.pravatar.cc/150?img=23",
 		jobTitle: "Full Stack Developer",
@@ -103,7 +103,7 @@ const reviews = [
 		rating: 5,
 	},
 	{
-        displayName: "Mike Emanuel",
+		displayName: "Mike Emanuel",
 		content: "The content is engaging and informative. Well done!",
 		imageUrl: "https://i.pravatar.cc/150?img=51",
 		jobTitle: "Content Strategist",
@@ -135,29 +135,12 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 			<div className="flex items-center justify-center gap-4 mt-2">
 				{imageUrl && (
 					<div>
-						<Image
-							src={imageUrl}
-							alt="profile"
-							width={40}
-							height={40}
-							className="rounded-full"
-						/>
+						<Image src={imageUrl} alt="profile" width={40} height={40} className="rounded-full" />
 					</div>
 				)}
-				<div
-					className={cn(
-						"flex flex-col",
-						imageUrl ? "items-start" : "items-center"
-					)}
-				>
-					{displayName && (
-						<span className="text-base font-medium">{displayName}</span>
-					)}
-					{jobTitle && (
-						<span className="text-xs font-medium text-gray-600">
-							{jobTitle}
-						</span>
-					)}
+				<div className={cn("flex flex-col", imageUrl ? "items-start" : "items-center")}>
+					{displayName && <span className="text-base font-medium">{displayName}</span>}
+					{jobTitle && <span className="text-xs font-medium text-gray-600">{jobTitle}</span>}
 				</div>
 			</div>
 		</figure>
@@ -189,8 +172,7 @@ export function MarqueeSection() {
 				Create Your Own Stunning Testimonial Wall
 			</h2>
 			<p className="text-xl text-gray-400 mb-16 max-w-2xl text-center px-4">
-				Showcase your customer feedback with our beautiful, customizable
-				testimonial cards
+				Showcase your customer feedback with our beautiful, customizable testimonial cards
 			</p>
 			<Marquee pauseOnHover className="[--duration:35s] mb-4">
 				{firstRow.map((review) => (
@@ -202,9 +184,8 @@ export function MarqueeSection() {
 					<TestimonialCard key={review.content} {...review} />
 				))}
 			</Marquee>
-			<div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-linear-to-r from-[#0f0f0f]"></div>
-			<div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-linear-to-l from-[#0f0f0f]"></div>
-			
+			<div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-linear-to-r from-[#0f0f0f]" />
+			<div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-linear-to-l from-[#0f0f0f]" />
 		</div>
 	);
 }

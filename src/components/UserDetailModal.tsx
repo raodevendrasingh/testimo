@@ -1,25 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { toast } from "sonner";
-import { AnimatePresence, motion } from "framer-motion";
-import {
-	Control,
-	FieldErrors,
-	FieldValues,
-	useForm,
-	UseFormSetValue,
-} from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { userDetailModalSchema } from "@/schemas/userDetailSchema";
-import { ArrowLeft, ArrowRight, Loader, X } from "lucide-react";
-import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useSession } from "next-auth/react";
-import { User } from "next-auth";
-import { UserDetailScreen } from "./UserProfileForm";
+import { Form } from "@/components/ui/form";
 import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
+import { userDetailModalSchema } from "@/schemas/userDetailSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowLeft, ArrowRight, Loader, X } from "lucide-react";
+import type { User } from "next-auth";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import {
+	type Control,
+	type FieldErrors,
+	type FieldValues,
+	type UseFormSetValue,
+	useForm,
+} from "react-hook-form";
+import { toast } from "sonner";
+import { UserDetailScreen } from "./UserProfileForm";
 
 interface FormValues {
 	name: string;
@@ -135,14 +135,10 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 			case 0:
 				return (
 					<UserDetailScreen
-						setValue={
-							setValue as unknown as UseFormSetValue<FieldValues>
-						}
+						setValue={setValue as unknown as UseFormSetValue<FieldValues>}
 						control={control as unknown as Control<FieldValues>}
 						errors={errors as FieldErrors<FieldValues>}
-						touchedFields={
-							touchedFields as Partial<Record<string, boolean>>
-						}
+						touchedFields={touchedFields as Partial<Record<string, boolean>>}
 					/>
 				);
 			default:
@@ -155,10 +151,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 		const formData = { ...data, username: username };
 
 		try {
-			const response = await axios.post(
-				"/api/add-user-details",
-				formData
-			);
+			const response = await axios.post("/api/add-user-details", formData);
 			toast.success(response.data.message);
 			setShowUserDetailModal(false);
 			onSave();
@@ -194,6 +187,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 								{screens[currentScreen]}
 							</h3>
 							<button
+								type="button"
 								className="ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-hidden focus:outline-hidden"
 								onClick={() => setShowUserDetailModal(false)}
 							>
@@ -204,10 +198,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 						</div>
 						<div className="p-3">
 							<Form {...form}>
-								<form
-									onSubmit={handleSubmit(onSubmit)}
-									className="space-y-6"
-								>
+								<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 									<motion.div
 										key={currentScreen}
 										initial={{
@@ -223,9 +214,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 										className="h-[50vh]"
 									>
 										<div className="p-3">
-											<div className="flex flex-col gap-3">
-												{renderScreen()}
-											</div>
+											<div className="flex flex-col gap-3">{renderScreen()}</div>
 										</div>
 									</motion.div>
 
@@ -236,8 +225,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 												onClick={handlePrevious}
 												className="flex items-center text-sm"
 											>
-												<ArrowLeft className="mr-2 size-4" />{" "}
-												Previous
+												<ArrowLeft className="mr-2 size-4" /> Previous
 											</Button>
 										)}
 										{currentScreen < screens.length - 1 ? (
@@ -247,16 +235,12 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 												disabled={!isFirstScreenValid}
 												className="flex items-center text-sm ml-auto"
 											>
-												Next{" "}
-												<ArrowRight className="ml-2 size-4" />
+												Next <ArrowRight className="ml-2 size-4" />
 											</Button>
 										) : (
 											<Button
 												type="submit"
-												disabled={
-													isLoading ||
-													!isFirstScreenValid
-												}
+												disabled={isLoading || !isFirstScreenValid}
 												className="flex w-28 justify-center items- gap-2 text-sm hover:bg-zinc-900 transition-colors ml-auto"
 											>
 												{isLoading ? (

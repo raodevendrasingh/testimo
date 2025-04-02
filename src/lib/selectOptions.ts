@@ -1,10 +1,4 @@
-import {
-	Archive,
-	ArrowRightFromLine,
-	LucideIcon,
-	PartyPopper,
-	Trash2,
-} from "lucide-react";
+import { Archive, ArrowRightFromLine, type LucideIcon, PartyPopper, Trash2 } from "lucide-react";
 
 export type Stats = {
 	icon: LucideIcon;

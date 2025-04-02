@@ -1,7 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
 import { UserModel } from "@/models/User";
 import mongoose from "mongoose";
-import { getServerSession, User } from "next-auth";
+import { type User, getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 
 export async function GET(request: Request) {
@@ -17,7 +17,7 @@ export async function GET(request: Request) {
 				success: false,
 				message: "User is not logged in",
 			}),
-			{ status: 401 }
+			{ status: 401 },
 		);
 	}
 
@@ -46,7 +46,7 @@ export async function GET(request: Request) {
 					success: false,
 					message: "User does not exists!",
 				}),
-				{ status: 404 }
+				{ status: 404 },
 			);
 		}
 
@@ -56,7 +56,7 @@ export async function GET(request: Request) {
 				message: "User data fetched successfully!",
 				user: userData,
 			}),
-			{ status: 200 }
+			{ status: 200 },
 		);
 	} catch (error) {
 		// console.error("An Unexpected error occurred\n", error);
@@ -65,7 +65,7 @@ export async function GET(request: Request) {
 				success: false,
 				message: "Error Fetching User Data!",
 			}),
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }

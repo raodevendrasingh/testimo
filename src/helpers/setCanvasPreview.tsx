@@ -5,8 +5,13 @@ const setCanvasPreview = (
 		naturalHeight: number;
 		height: number;
 	}, // HTMLImageElement
-	canvas: { getContext: (arg0: string) => any; width: number; height: number }, // HTMLCanvasElement
-	crop: { width: number; height: number; x: number; y: number } // PixelCrop
+	canvas: {
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		getContext: (arg0: string) => any;
+		width: number;
+		height: number;
+	}, // HTMLCanvasElement
+	crop: { width: number; height: number; x: number; y: number }, // PixelCrop
 ) => {
 	const ctx = canvas.getContext("2d");
 	if (!ctx) {
@@ -42,7 +47,7 @@ const setCanvasPreview = (
 		0,
 		0,
 		image.naturalWidth,
-		image.naturalHeight
+		image.naturalHeight,
 	);
 
 	ctx.restore();

@@ -1,40 +1,28 @@
+import { Button } from "@/components/ui/button";
+import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
-	DialogHeader,
-	DialogTitle,
 	DialogDescription,
 	DialogFooter,
-	DialogClose,
+	DialogHeader,
+	DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-	Command,
-	CommandGroup,
-	CommandItem,
-	CommandList,
-} from "@/components/ui/command";
-import { ChevronDown } from "lucide-react";
-import { Framework, languages } from "@/lib/selectOptions";
-import { useState } from "react";
-import { CopyableTitle } from "@/utils/TestimonialComponents";
-import SyntaxHighlighter from "./SyntaxHighlighter";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { type Framework, languages } from "@/lib/selectOptions";
 import { StarBlock } from "@/utils/StarsCodeBlock";
+import { CopyableTitle } from "@/utils/TestimonialComponents";
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
+import SyntaxHighlighter from "./SyntaxHighlighter";
 
 type ExportStarDialogProps = {
 	isOpen: boolean;
 	onOpenChange: (open: boolean) => void;
 };
 
-export const ExportStarDialog = ({
-	isOpen,
-	onOpenChange,
-}: ExportStarDialogProps) => {
+export const ExportStarDialog = ({ isOpen, onOpenChange }: ExportStarDialogProps) => {
 	const [openLang, setOpenLang] = useState(false);
 	const [selectedLang, setSelectedLang] = useState<Framework | null>(null);
 
@@ -43,23 +31,18 @@ export const ExportStarDialog = ({
 			<DialogContent className="flex flex-col justify-start items-center h-[90%]">
 				<DialogHeader className="flex flex-col justify-start w-full">
 					<DialogTitle className="tracking-wider">Export Stars</DialogTitle>
-					<DialogDescription>
-						Paste the component in your code
-					</DialogDescription>
+					<DialogDescription>Paste the component in your code</DialogDescription>
 				</DialogHeader>
 
 				<div className="flex items-center justify-center w-full h-full">
 					<div className="w-full h-full rounded-lg overflow-x-hidden">
 						<div className="w-full h-80">
 							<div className="flex items-center justify-between">
-								<CopyableTitle
-									title="Stars Component"
-									code={StarBlock}
-									blockName="stars"
-								/>
+								<CopyableTitle title="Stars Component" code={StarBlock} blockName="stars" />
 								<Popover open={openLang} onOpenChange={setOpenLang}>
 									<PopoverTrigger asChild>
 										<button
+											type="button"
 											disabled
 											className="w-28 rounded-lg font-mono mb-1 text-sm border border-gray-300 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
 										>
@@ -72,9 +55,7 @@ export const ExportStarDialog = ({
 												</span>
 											) : (
 												<span className="flex items-center justify-center font-mono gap-1">
-													<span className="w-[75%] font-mono font-medium">
-														react
-													</span>
+													<span className="w-[75%] font-mono font-medium">react</span>
 													<span className="w-[25%]">
 														<ChevronDown className="size-4" />
 													</span>
@@ -82,12 +63,7 @@ export const ExportStarDialog = ({
 											)}
 										</button>
 									</PopoverTrigger>
-									<PopoverContent
-										className="p-0"
-										width="96px"
-										side="bottom"
-										align="center"
-									>
+									<PopoverContent className="p-0" width="96px" side="bottom" align="center">
 										<Command>
 											<CommandList className="font-mono">
 												<CommandGroup>
@@ -98,9 +74,7 @@ export const ExportStarDialog = ({
 															className=""
 															onSelect={(value) => {
 																const selectedLang =
-																	languages.find(
-																		(lang) => lang.value === value
-																	) || null;
+																	languages.find((lang) => lang.value === value) || null;
 																setSelectedLang(selectedLang);
 																setOpenLang(false);
 															}}

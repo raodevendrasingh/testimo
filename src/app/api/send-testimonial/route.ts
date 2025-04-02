@@ -1,12 +1,11 @@
 import dbConnect from "@/lib/dbConnect";
+import type { Testimonial } from "@/models/Testimonial";
 import { UserModel } from "@/models/User";
-import { Testimonial } from "@/models/Testimonial";
 
 export async function POST(request: Request) {
 	await dbConnect();
 
-	const { username, action, content, rating, name, jobTitle, imageUrl } =
-		await request.json();
+	const { username, action, content, rating, name, jobTitle, imageUrl } = await request.json();
 
 	try {
 		const user = await UserModel.findOne({ username });
@@ -16,7 +15,7 @@ export async function POST(request: Request) {
 					success: false,
 					message: "User not found!",
 				},
-				{ status: 404 }
+				{ status: 404 },
 			);
 		}
 
@@ -26,17 +25,17 @@ export async function POST(request: Request) {
 					success: false,
 					message: "User is not accepting testimonials currently!",
 				},
-				{ status: 403 }
+				{ status: 403 },
 			);
 		}
 
-		if (user.testimonial.length == user.monthlyTestimonialCount) {
+		if (user.testimonial.length === user.monthlyTestimonialCount) {
 			return Response.json(
 				{
 					success: false,
 					message: "User cannot accept testimonials currently!",
 				},
-				{ status: 403 }
+				{ status: 403 },
 			);
 		}
 
@@ -58,7 +57,7 @@ export async function POST(request: Request) {
 				message: "Testimonial is sent successfully!",
 				testimonial: newTestimonial,
 			},
-			{ status: 200 }
+			{ status: 200 },
 		);
 	} catch (error) {
 		// console.error("Error sending testimonial\n", error);
@@ -67,7 +66,7 @@ export async function POST(request: Request) {
 				success: false,
 				message: "Error sending testimonial. Try Again!",
 			},
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }

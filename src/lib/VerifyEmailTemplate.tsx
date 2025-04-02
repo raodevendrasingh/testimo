@@ -48,8 +48,7 @@ export default function VerifyEmailTemplate({
 						</Heading>
 
 						<Text className="text-center text-gray-600 text-base leading-relaxed my-3">
-							If you are not automatically redirected, use the
-							below link for verification:
+							If you are not automatically redirected, use the below link for verification:
 						</Text>
 
 						<Section className="text-center my-3">
@@ -64,16 +63,13 @@ export default function VerifyEmailTemplate({
 						{/* Footer */}
 						<Section className="mt-12 pt-8 bg-slate-50 border-t border-gray-200">
 							<Text className="text-gray-500 text-sm text-center leading-relaxed">
-								© {new Date().getFullYear()} Remonial. All
-								rights reserved.
+								© {new Date().getFullYear()} Remonial. All rights reserved.
 								<br />
 								<br />
-								This email was sent to {email}. If you didn't
-								request this code, you can safely ignore this
-								email.
+								This email was sent to {email}. If you didn't request this code, you can safely
+								ignore this email.
 								<br />
-								This email was auto generated, please do not
-								reply at this address.
+								This email was auto generated, please do not reply at this address.
 							</Text>
 						</Section>
 					</Container>

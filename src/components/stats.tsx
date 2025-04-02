@@ -1,30 +1,16 @@
 "use client";
 
-import {
-	ChartPie,
-	Clock,
-	Coins,
-	Loader,
-	MessageSquareQuote,
-	RefreshCcw,
-	Star,
-} from "lucide-react";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { ChartPie, Clock, Coins, Loader, MessageSquareQuote, RefreshCcw, Star } from "lucide-react";
 
-import { INITIAL_TESTIMONIAL_COUNT } from "@/lib/constants";
 import { useFetchTestimonials } from "@/hooks/useFetchTestimonials";
-import { useEffect } from "react";
+import { INITIAL_TESTIMONIAL_COUNT } from "@/lib/constants";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export const Stats = () => {
 	const router = useRouter();
-	const { testimonial, isLoading, fetchTestimonials } =
-		useFetchTestimonials();
+	const { testimonial, isLoading, fetchTestimonials } = useFetchTestimonials();
 
 	useEffect(() => {
 		fetchTestimonials();
@@ -32,9 +18,11 @@ export const Stats = () => {
 
 	const averageRating = () => {
 		let ratingSum = 0;
-		testimonial.map((i) => (ratingSum += i.rating));
+		for (const i of testimonial) {
+			ratingSum += i.rating;
+		}
 		const avgRating = ratingSum / testimonial.length;
-		return avgRating | 0;
+		return Math.floor(avgRating);
 	};
 
 	const recentTestimonials = () => {
@@ -43,12 +31,12 @@ export const Stats = () => {
 		const oneWeekAgo = new Date(currentDate);
 		oneWeekAgo.setDate(currentDate.getDate() - 7);
 
-		testimonial.forEach((d) => {
+		for (const d of testimonial) {
 			const testimonialDate = new Date(d.createdAt);
 			if (testimonialDate >= oneWeekAgo) {
 				recentTest++;
 			}
-		});
+		}
 		return recentTest;
 	};
 
@@ -63,14 +51,16 @@ export const Stats = () => {
 					<ChartPie className="size-5 text-gray-600" />
 					Stats
 				</h2>
-				<span className="mb-4" onClick={handleRefreshStats}>
+				<span
+					className="mb-4"
+					onClick={handleRefreshStats}
+					onKeyUp={handleRefreshStats}
+					onKeyDown={handleRefreshStats}
+				>
 					<TooltipProvider>
 						<Tooltip>
 							<TooltipTrigger>
-								<RefreshCcw
-									size={20}
-									className="text-gray-700"
-								/>
+								<RefreshCcw size={20} className="text-gray-700" />
 							</TooltipTrigger>
 							<TooltipContent>
 								<p>Refresh Stats</p>
@@ -92,57 +82,37 @@ export const Stats = () => {
 							)}
 						</span>
 					</div>
-					<h3 className="text-sm font-medium text-gray-600">
-						Credits Remaining
-					</h3>
+					<h3 className="text-sm font-medium text-gray-600">Credits Remaining</h3>
 				</div>
 				{/* testimonials received */}
 				<div className="bg-gray-50 p-4 rounded-lg">
 					<div className="flex items-center justify-between mb-2">
 						<MessageSquareQuote className="size-8 text-indigo-400" />
 						<span className="text-2xl font-bold text-gray-800">
-							{isLoading ? (
-								<Loader className="animate-spin text-gray-300" />
-							) : (
-								testimonial.length
-							)}
+							{isLoading ? <Loader className="animate-spin text-gray-300" /> : testimonial.length}
 						</span>
 					</div>
-					<h3 className="text-sm font-medium text-gray-600">
-						Testimonials Received
-					</h3>
+					<h3 className="text-sm font-medium text-gray-600">Testimonials Received</h3>
 				</div>
 				{/* average rating */}
 				<div className="bg-gray-50 p-4 rounded-lg">
 					<div className="flex items-center justify-between mb-2">
 						<Star className="size-8 text-yellow-400" />
 						<span className="text-2xl font-bold text-gray-800">
-							{isLoading ? (
-								<Loader className="animate-spin text-gray-300" />
-							) : (
-								averageRating()
-							)}
+							{isLoading ? <Loader className="animate-spin text-gray-300" /> : averageRating()}
 						</span>
 					</div>
-					<h3 className="text-sm font-medium text-gray-600">
-						Average Rating
-					</h3>
+					<h3 className="text-sm font-medium text-gray-600">Average Rating</h3>
 				</div>
 				{/* latest count */}
 				<div className="bg-gray-50 p-4 rounded-lg">
 					<div className="flex items-center justify-between mb-2">
 						<Clock className="size-8 text-blue-500" />
 						<span className="text-2xl font-bold text-gray-800">
-							{isLoading ? (
-								<Loader className="animate-spin text-gray-300" />
-							) : (
-								recentTestimonials()
-							)}
+							{isLoading ? <Loader className="animate-spin text-gray-300" /> : recentTestimonials()}
 						</span>
 					</div>
-					<h3 className="text-sm font-medium text-gray-600">
-						Received in Past Week
-					</h3>
+					<h3 className="text-sm font-medium text-gray-600">Received in Past Week</h3>
 				</div>
 			</div>
 		</div>

@@ -1,28 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Upload } from "lucide-react";
-import {
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
+import emptyUser from "@/assets/placeholder/emptyUser.png";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-	Control,
-	FieldErrors,
-	UseFormSetValue,
-	FieldValues,
-} from "react-hook-form";
-import { useSession } from "next-auth/react";
+import { Textarea } from "@/components/ui/textarea";
 import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
+import { Upload } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import type { Control, FieldErrors, FieldValues, UseFormSetValue } from "react-hook-form";
 import { useLocalStorage } from "usehooks-ts";
 import { ImageCropper } from "./ImageCropper";
-import emptyUser from "@/assets/placeholder/emptyUser.png";
 
 interface UserDetailScreenProps {
 	control: Control<FieldValues>;
@@ -39,9 +28,10 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 }) => {
 	const { data: session } = useSession();
 
-	const [value, setCroppedValue, removeValue] = useLocalStorage<
-		string | ArrayBuffer | null
-	>("croppedImage", "");
+	const [value, setCroppedValue, removeValue] = useLocalStorage<string | ArrayBuffer | null>(
+		"croppedImage",
+		"",
+	);
 	const [croppedImage, setCroppedImage] = useState<string | null>(null);
 	const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 	const inputRef = useRef<HTMLInputElement | null>(null);
@@ -109,10 +99,7 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 					/>
 				) : uploadedImage ? (
 					<>
-						<ImageCropper
-							imageSrc={uploadedImage}
-							onCropComplete={handleCrop}
-						/>
+						<ImageCropper imageSrc={uploadedImage} onCropComplete={handleCrop} />
 						<Image
 							src={uploadedImage}
 							width={70}
@@ -154,11 +141,7 @@ export const UserDetailScreen: React.FC<UserDetailScreenProps> = ({
 					<FormItem>
 						<FormLabel>Name</FormLabel>
 						<FormControl>
-							<Input
-								{...field}
-								placeholder="Your Name / Business Name"
-								maxLength={32}
-							/>
+							<Input {...field} placeholder="Your Name / Business Name" maxLength={32} />
 						</FormControl>
 						{touchedFields.name && errors.name && <FormMessage />}
 					</FormItem>

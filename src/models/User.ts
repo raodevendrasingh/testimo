@@ -1,12 +1,12 @@
-import mongoose, { Schema, Document } from "mongoose";
-import { Socials, SocialSchema, urlMatcher } from "./Social";
-import { Testimonial, TestimonialSchema } from "./Testimonial";
+import mongoose, { Schema, type Document } from "mongoose";
+import { SocialSchema, type Socials, urlMatcher } from "./Social";
+import { type Testimonial, TestimonialSchema } from "./Testimonial";
 
 export interface User extends Document {
 	username?: string;
 	name?: string;
-	imageUrl?: String;
-	tagline?: String;
+	imageUrl?: string;
+	tagline?: string;
 	email: string;
 	password: string | null;
 	oauthProvider: string | null;
@@ -57,10 +57,7 @@ const UserSchema: Schema<User> = new Schema({
 		type: String,
 		required: [true, "Email is required"],
 		unique: true,
-		match: [
-			/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-			"Enter a valid email",
-		],
+		match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Enter a valid email"],
 	},
 	password: {
 		type: String,
@@ -135,5 +132,4 @@ const UserSchema: Schema<User> = new Schema({
 });
 
 export const UserModel =
-	(mongoose.models.User as mongoose.Model<User>) ||
-	mongoose.model<User>("User", UserSchema);
+	(mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("User", UserSchema);

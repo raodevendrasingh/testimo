@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 					success: false,
 					message: "Token is missing",
 				},
-				{ status: 400 }
+				{ status: 400 },
 			);
 		}
 
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 					success: false,
 					message: "Invalid token",
 				},
-				{ status: 400 }
+				{ status: 400 },
 			);
 		}
 
@@ -41,26 +41,25 @@ export async function POST(request: Request) {
 					success: true,
 					message: "User verified successfully",
 				},
-				{ status: 200 }
+				{ status: 200 },
 			);
-		} else if (!isCodeValid) {
+		}
+		if (!isCodeValid) {
 			return Response.json(
 				{
 					success: false,
 					message: "Incorrect verification code",
 				},
-				{ status: 400 }
-			);
-		} else {
-			return Response.json(
-				{
-					success: false,
-					message:
-						"Verification code is expired. Please signup again to receive a new code!",
-				},
-				{ status: 400 }
+				{ status: 400 },
 			);
 		}
+		return Response.json(
+			{
+				success: false,
+				message: "Verification code is expired. Please signup again to receive a new code!",
+			},
+			{ status: 400 },
+		);
 	} catch (error) {
 		// console.error("Error verifying code!\n", error);
 		return Response.json(
@@ -68,7 +67,7 @@ export async function POST(request: Request) {
 				success: false,
 				message: "Error verifying code",
 			},
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }

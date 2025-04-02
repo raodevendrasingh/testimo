@@ -21,4 +21,4 @@ export const timesAgo = (date: string): string => {
 	}
 
 	return "just now";
-}
+};

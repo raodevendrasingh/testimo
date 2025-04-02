@@ -1,17 +1,12 @@
-"use client";;
-import Link from "next/link";
-import { signOut } from "next-auth/react";
-import { LogOutIcon } from "lucide-react";
-import { useSidebar } from "@/context/SidebarContext";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
+"use client";
 import remonial_wordmark_dark from "@/assets/brand/remonial_wordmark_dark.png";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useSidebar } from "@/context/SidebarContext";
+import { LogOutIcon } from "lucide-react";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 
 import type { JSX } from "react";
 
@@ -24,6 +19,7 @@ export const HomeNav = (): JSX.Element => {
 				<div className="flex items-center justify-between">
 					<div className="flex gap-2 items-center">
 						<button
+							type="button"
 							className={`relative block size-10 self-center lg:hidden
                             ${
 															isSidebarOpen
@@ -39,15 +35,15 @@ export const HomeNav = (): JSX.Element => {
 								<span
 									aria-hidden="true"
 									className="absolute block h-0.5 w-9/12 -translate-y-2 transform rounded-full bg-zinc-900 transition-all duration-300"
-								></span>
+								/>
 								<span
 									aria-hidden="true"
 									className="absolute block h-0.5 w-6 transform rounded-full bg-zinc-900 transition duration-300"
-								></span>
+								/>
 								<span
 									aria-hidden="true"
 									className="absolute block h-0.5 w-1/2 origin-top-left translate-y-2 transform rounded-full bg-zinc-900 transition-all duration-300"
-								></span>
+								/>
 							</div>
 						</button>
 						<Link href="/">

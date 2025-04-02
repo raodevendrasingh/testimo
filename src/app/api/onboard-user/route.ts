@@ -1,8 +1,8 @@
 import dbConnect from "@/lib/dbConnect";
+import type { Testimonial } from "@/models/Testimonial";
 import { UserModel } from "@/models/User";
-import { getServerSession, User } from "next-auth";
+import { type User, getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
-import { Testimonial } from "@/models/Testimonial";
 
 interface UpdateUserData {
 	username: string;
@@ -25,14 +25,13 @@ export async function POST(request: Request) {
 				success: false,
 				message: "User is not logged in",
 			},
-			{ status: 401 }
+			{ status: 401 },
 		);
 	}
 
 	const userId = user._id;
 
-	const { username, name, imageUrl, tagline }: UpdateUserData =
-		await request.json();
+	const { username, name, imageUrl, tagline }: UpdateUserData = await request.json();
 
 	try {
 		const updatedFields: Partial<UpdateUserData> = {
@@ -45,7 +44,7 @@ export async function POST(request: Request) {
 		const updatedUser = await UserModel.findOneAndUpdate(
 			{ _id: userId },
 			{ $set: updatedFields },
-			{ new: true }
+			{ new: true },
 		);
 
 		if (!updatedUser) {
@@ -54,7 +53,7 @@ export async function POST(request: Request) {
 					success: false,
 					message: "Error updating user details!",
 				},
-				{ status: 404 }
+				{ status: 404 },
 			);
 		}
 		const exampleTestimonial1 = {
@@ -80,12 +79,8 @@ export async function POST(request: Request) {
 			createdAt: new Date(),
 		};
 
-		updatedUser.testimonial.push(
-			exampleTestimonial1 as unknown as Testimonial
-		);
-		updatedUser.testimonial.push(
-			exampleTestimonial2 as unknown as Testimonial
-		);
+		updatedUser.testimonial.push(exampleTestimonial1 as unknown as Testimonial);
+		updatedUser.testimonial.push(exampleTestimonial2 as unknown as Testimonial);
 
 		await updatedUser.save();
 
@@ -94,7 +89,7 @@ export async function POST(request: Request) {
 				success: true,
 				message: "User details updated successfully!",
 			}),
-			{ status: 200 }
+			{ status: 200 },
 		);
 	} catch (error) {
 		console.error("Error updating user details\n", error);
@@ -103,7 +98,7 @@ export async function POST(request: Request) {
 				success: false,
 				message: "Error updating user details!",
 			},
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }

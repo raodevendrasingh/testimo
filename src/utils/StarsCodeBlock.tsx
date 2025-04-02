@@ -39,16 +39,15 @@ export const StarsCodeBlock = () => {
 			<div
 				className="flex items-start justify-start p-2 h-32 w-44 bg-slate-50 rounded-md border cursor-pointer"
 				onClick={() => setIsStarDialogOpen(true)}
+				onKeyUp={(e) => e.key === "Enter" && setIsStarDialogOpen(true)}
+				onKeyDown={(e) => e.key === "Enter" && setIsStarDialogOpen(true)}
 			>
 				<div className="flex flex-col justify-evenly gap-2 pt-1 pb-2 w-full h-full">
 					<div className="flex gap-2 text-lg">Stars</div>
 					<Stars rating={4} />
 				</div>
 			</div>
-			<ExportStarDialog
-				isOpen={isStarDialogOpen}
-				onOpenChange={setIsStarDialogOpen}
-			/>
+			<ExportStarDialog isOpen={isStarDialogOpen} onOpenChange={setIsStarDialogOpen} />
 		</>
 	);
 };

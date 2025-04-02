@@ -1,11 +1,11 @@
 "use client";
 
-import { Testimonial } from "@/models/Testimonial";
 import { Stars } from "@/components/ui/Stars";
+import type { Testimonial } from "@/models/Testimonial";
 import SyntaxHighlighter from "@/utils/SyntaxHighlighter";
 import { Clipboard, ClipboardCheck } from "lucide-react";
-import { useState, type JSX } from "react";
 import Image from "next/image";
+import { type JSX, useState } from "react";
 
 export const CopyableTitle = ({
 	title,
@@ -27,7 +27,7 @@ export const CopyableTitle = ({
 	return (
 		<div className="flex items-center justify-start gap-2 w-full">
 			<span className="text-lg font-medium font-sans p-1">{title}</span>
-			<button onClick={copyToClipboard} className="pt-0.5">
+			<button type="button" onClick={copyToClipboard} className="pt-0.5">
 				{copied ? (
 					<ClipboardCheck className="size-4 text-green-500" />
 				) : (
@@ -48,9 +48,7 @@ export const TestimonialCard = ({
 			<span className="text-yellow-300 text-base flex">
 				<Stars rating={testimonial.rating} />
 			</span>
-			<div className="flex h-full flex-col text-center text-sm grow">
-				{testimonial.content}
-			</div>
+			<div className="flex h-full flex-col text-center text-sm grow">{testimonial.content}</div>
 			<div className="flex items-center justify-center gap-4 ">
 				{testimonial.imageUrl && (
 					<div>
@@ -64,13 +62,9 @@ export const TestimonialCard = ({
 					</div>
 				)}
 				<div className="flex flex-col items-start">
-					{testimonial.name && (
-						<span className="text-base font-medium">{testimonial.name}</span>
-					)}
+					{testimonial.name && <span className="text-base font-medium">{testimonial.name}</span>}
 					{testimonial.jobTitle && (
-						<span className="text-xs font-medium text-gray-600">
-							{testimonial.jobTitle}
-						</span>
+						<span className="text-xs font-medium text-gray-600">{testimonial.jobTitle}</span>
 					)}
 				</div>
 			</div>
@@ -147,11 +141,7 @@ export default TestimonialCard;`;
 			<CopyableTitle title="Usage" code={UsageBlock} blockName="usage" />
 			<SyntaxHighlighter language="jsx" code={UsageBlock} />
 
-			<CopyableTitle
-				title="Component"
-				code={ComponentBlock}
-				blockName="component"
-			/>
+			<CopyableTitle title="Component" code={ComponentBlock} blockName="component" />
 			<SyntaxHighlighter language="jsx" code={ComponentBlock} />
 		</div>
 	);

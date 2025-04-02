@@ -1,17 +1,18 @@
 "use client";
 
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useState, type JSX } from "react";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import * as z from "zod";
-import axios, { AxiosError } from "axios";
-import { signUpSchema } from "@/schemas/signUpSchema";
 import { GoogleAuthButton } from "@/components/GoogleAuthButton";
 import { Separator } from "@/components/ui/separator";
-import { ApiResponse } from "@/types/ApiResponse";
+import { signUpSchema } from "@/schemas/signUpSchema";
+import type { ApiResponse } from "@/types/ApiResponse";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios, { type AxiosError } from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { type JSX, useState } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import type * as z from "zod";
 
+import { Button } from "@/components/ui/button";
 import {
 	Form,
 	FormControl,
@@ -21,7 +22,6 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
 import { toast } from "sonner";
 
@@ -38,23 +38,16 @@ const SignUpPage = (): JSX.Element => {
 		},
 	});
 
-	const onSubmit: SubmitHandler<z.infer<typeof signUpSchema>> = async (
-		data
-	) => {
+	const onSubmit: SubmitHandler<z.infer<typeof signUpSchema>> = async (data) => {
 		setIsSubmitting(true);
 		try {
-			const response = await axios.post<ApiResponse>(
-				"/api/sign-up",
-				data
-			);
+			const response = await axios.post<ApiResponse>("/api/sign-up", data);
 			toast.success("Success", { description: response.data.message });
 			router.replace(`/verify/${response.data.token}`);
 		} catch (error) {
 			console.error("Signup Failed: ", error);
 			const axiosError = error as AxiosError<ApiResponse>;
-			let errorMsg =
-				axiosError.response?.data.message ||
-				"An unknown error occurred";
+			const errorMsg = axiosError.response?.data.message || "An unknown error occurred";
 			toast.error("Sign Up Failed", { description: errorMsg });
 		} finally {
 			form.reset();
@@ -75,16 +68,11 @@ const SignUpPage = (): JSX.Element => {
 					<GoogleAuthButton />
 					<div className="flex items-center justify-center px-5">
 						<Separator className="w-1/2" />
-						<p className="text-center text-sm text-gray-500 mx-4">
-							or
-						</p>
+						<p className="text-center text-sm text-gray-500 mx-4">or</p>
 						<Separator className="w-1/2" />
 					</div>
 					<Form {...form}>
-						<form
-							onSubmit={form.handleSubmit(onSubmit)}
-							className="space-y-4"
-						>
+						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 							<FormField
 								name="email"
 								control={form.control}
@@ -92,10 +80,7 @@ const SignUpPage = (): JSX.Element => {
 									<FormItem>
 										<FormLabel>Email</FormLabel>
 										<FormControl>
-											<Input
-												placeholder="Email"
-												{...field}
-											/>
+											<Input placeholder="Email" {...field} />
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -108,25 +93,16 @@ const SignUpPage = (): JSX.Element => {
 									<FormItem>
 										<FormLabel>Password</FormLabel>
 										<FormControl>
-											<Input
-												type="password"
-												placeholder="Password"
-												{...field}
-											/>
+											<Input type="password" placeholder="Password" {...field} />
 										</FormControl>
 										<FormMessage />
 									</FormItem>
 								)}
 							/>
-							<Button
-								type="submit"
-								disabled={isSubmitting}
-								className="w-full rounded-lg"
-							>
+							<Button type="submit" disabled={isSubmitting} className="w-full rounded-lg">
 								{isSubmitting ? (
 									<>
-										Please wait{" "}
-										<Loader className="ml-2 size-4 animate-spin" />
+										Please wait <Loader className="ml-2 size-4 animate-spin" />
 									</>
 								) : (
 									"Sign Up"
@@ -137,10 +113,7 @@ const SignUpPage = (): JSX.Element => {
 					<div className="text-center mt-4 text-base">
 						<p>
 							Already have an account?{" "}
-							<Link
-								href={"/sign-in"}
-								className="text-blue-600 hover:text-blue-800"
-							>
+							<Link href={"/sign-in"} className="text-blue-600 hover:text-blue-800">
 								Sign In
 							</Link>
 						</p>

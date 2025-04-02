@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, type JSX } from "react";
 import Link from "next/link";
+import React, { useState, type JSX } from "react";
 
 import remonial_wordmark_light from "@/assets/brand/remonial_wordmark_light.png";
 import Image from "next/image";
@@ -40,6 +40,7 @@ export const Navbar = (): JSX.Element => {
 
 					{/* mobile trigger */}
 					<button
+						type="button"
 						className={`relative order-10 block h-10 w-10 self-center md:hidden
                             ${
 															isMobileMenuOpen
@@ -55,15 +56,15 @@ export const Navbar = (): JSX.Element => {
 							<span
 								aria-hidden="true"
 								className="absolute block h-0.5 w-9/12 -translate-y-2 transform rounded-full bg-zinc-100 transition-all duration-300"
-							></span>
+							/>
 							<span
 								aria-hidden="true"
 								className="absolute block h-0.5 w-6 transform rounded-full bg-zinc-100 transition duration-300"
-							></span>
+							/>
 							<span
 								aria-hidden="true"
 								className="absolute block h-0.5 w-1/2 origin-top-left translate-y-2 transform rounded-full bg-zinc-100 transition-all duration-300"
-							></span>
+							/>
 						</div>
 					</button>
 				</div>

@@ -1,13 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import axios, { AxiosError } from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { ArrowRight, Loader, Send, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Rating } from "react-simple-star-rating";
-import FancyText from "@carefully-coded/react-text-gradient";
 import {
 	Form,
 	FormControl,
@@ -16,28 +9,35 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
-import * as z from "zod";
-import { ApiResponse } from "@/types/ApiResponse";
+import { feedbackSchema } from "@/schemas/feedbackSchema";
+import type { ApiResponse } from "@/types/ApiResponse";
+import FancyText from "@carefully-coded/react-text-gradient";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios, { type AxiosError } from "axios";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, Loader, Send, Upload } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { feedbackSchema } from "@/schemas/feedbackSchema";
-import { AnimatePresence, motion } from "framer-motion";
-import { Input } from "@/components/ui/input";
+import { useEffect, useRef, useState } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { Rating } from "react-simple-star-rating";
+import { toast } from "sonner";
+import type * as z from "zod";
 
+import userImage from "@/assets/placeholder/emptyUser.png";
 import heartIcon from "@/assets/svgicons/heart-svgrepo-com.png";
 import starIcon from "@/assets/svgicons/star-svgrepo-com.png";
-import userImage from "@/assets/placeholder/emptyUser.png";
-import Image from "next/image";
-import { CldImage, CldUploadWidget } from "next-cloudinary";
 import type { ConfettiRef } from "@/components/magicui/confetti";
 import Confetti from "@/components/magicui/confetti";
+import { CldImage, CldUploadWidget } from "next-cloudinary";
+import Image from "next/image";
 
 import remonial_wordmark_dark from "@/assets/brand/remonial_wordmark_dark.png";
 import { ImageCropper } from "@/components/ImageCropper";
-import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 import { uploadToCloudinary } from "@/lib/UploadToCloudinary";
+import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 
 const screens = [
 	{ title: "Write a Testimonial", image: starIcon },
@@ -49,13 +49,8 @@ export default function SendTestimonial() {
 	const [currentScreen, setCurrentScreen] = useState(0);
 	const [slideDirection, setSlideDirection] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
-	const croppedImage = useReadLocalStorage<string | ArrayBuffer | null>(
-		"croppedImage"
-	);
-	const [, , removeCroppedValue] = useLocalStorage<string>(
-		"croppedImage",
-		"null"
-	);
+	const croppedImage = useReadLocalStorage<string | ArrayBuffer | null>("croppedImage");
+	const [, , removeCroppedValue] = useLocalStorage<string>("croppedImage", "null");
 
 	const form = useForm<z.infer<typeof feedbackSchema>>({
 		resolver: zodResolver(feedbackSchema),
@@ -98,9 +93,7 @@ export default function SendTestimonial() {
 	const params = useParams<{ username: string }>();
 	const username = params.username;
 
-	const onSubmit: SubmitHandler<z.infer<typeof feedbackSchema>> = async (
-		data
-	) => {
+	const onSubmit: SubmitHandler<z.infer<typeof feedbackSchema>> = async (data) => {
 		setIsLoading(true);
 		try {
 			let cloudinaryImageUrl = "";
@@ -115,18 +108,14 @@ export default function SendTestimonial() {
 				action: "default",
 			};
 
-			const response = await axios.post<ApiResponse>(
-				"/api/send-testimonial",
-				feedbackData
-			);
+			const response = await axios.post<ApiResponse>("/api/send-testimonial", feedbackData);
 			toast.success(response.data.message);
 			setCurrentScreen(2);
 			removeCroppedValue();
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 			toast.error("Error", {
-				description:
-					axiosError.response?.data.message ?? "Failed to send message",
+				description: axiosError.response?.data.message ?? "Failed to send message",
 			});
 		} finally {
 			setIsLoading(false);
@@ -163,11 +152,7 @@ export default function SendTestimonial() {
 					<div className="w-[70%] sm:w-2/4 max-w-md mx-auto border rounded-xl bg-white shadow-sm">
 						<div className="flex items-center gap-5 rounded-t p-3 border-b">
 							<span>
-								<Image
-									src={screens[currentScreen].image}
-									alt="screen-logo"
-									width={25}
-								/>
+								<Image src={screens[currentScreen].image} alt="screen-logo" width={25} />
 							</span>
 							<span className="text-2xl font-semibold text-gray-800 mt-1">
 								{screens[currentScreen].title}
@@ -178,16 +163,20 @@ export default function SendTestimonial() {
 								<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 									<motion.div
 										key={currentScreen}
-										initial={{ x: slideDirection * 50, opacity: 0 }}
+										initial={{
+											x: slideDirection * 50,
+											opacity: 0,
+										}}
 										animate={{ x: 0, opacity: 1 }}
-										exit={{ x: -slideDirection * 50, opacity: 0 }}
+										exit={{
+											x: -slideDirection * 50,
+											opacity: 0,
+										}}
 										transition={{ duration: 0.3 }}
 										className="h-[50vh]"
 									>
 										<div className="p-3">
-											<div className="flex flex-col gap-3">
-												{renderScreen()}
-											</div>
+											<div className="flex flex-col gap-3">{renderScreen()}</div>
 										</div>
 									</motion.div>
 
@@ -230,9 +219,7 @@ export default function SendTestimonial() {
 
 				{/* signup card */}
 				<div className="absolute bottom-2 right-2 shadow-sm text-center border rounded-lg p-3 w-52 bg-white">
-					<div className="mb-4 text-sm font-medium">
-						Want Your Own Testimonial Board ?
-					</div>
+					<div className="mb-4 text-sm font-medium">Want Your Own Testimonial Board ?</div>
 					<Link href={"/sign-up"}>
 						<Button className="w-full">Sign Up</Button>
 					</Link>
@@ -243,7 +230,9 @@ export default function SendTestimonial() {
 }
 
 const TestimonialForm: React.FC<{
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	control: any;
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	errors: any;
 }> = ({ control, errors }) => {
 	const [bio, setBio] = useState("");
@@ -264,13 +253,7 @@ const TestimonialForm: React.FC<{
 										onClick={(rate: number) => {
 											field.onChange(rate);
 										}}
-										fillColorArray={[
-											"#f14f45",
-											"#f16c45",
-											"#f18845",
-											"#f1b345",
-											"#f1d050",
-										]}
+										fillColorArray={["#f14f45", "#f16c45", "#f18845", "#f1b345", "#f1d050"]}
 										initialValue={field.value}
 										transition
 										size={40}
@@ -330,13 +313,12 @@ interface CloudinaryUploadWidgetResults {
 }
 
 const DetailForm: React.FC<{
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	control: any;
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	setValue: any;
 }> = ({ control, setValue }) => {
-	const [, setCroppedValue] = useLocalStorage<string | ArrayBuffer | null>(
-		"croppedImage",
-		""
-	);
+	const [, setCroppedValue] = useLocalStorage<string | ArrayBuffer | null>("croppedImage", "");
 	const [croppedImage, setCroppedImage] = useState<string | null>(null);
 	const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 	const inputRef = useRef<HTMLInputElement | null>(null);
@@ -401,10 +383,7 @@ const DetailForm: React.FC<{
 					/>
 				) : uploadedImage ? (
 					<>
-						<ImageCropper
-							imageSrc={uploadedImage}
-							onCropComplete={handleCrop}
-						/>
+						<ImageCropper imageSrc={uploadedImage} onCropComplete={handleCrop} />
 						<Image
 							src={uploadedImage}
 							width={70}
@@ -460,7 +439,7 @@ const DetailForm: React.FC<{
 	);
 };
 
-const ThankYouScreen: React.FC<{}> = () => {
+const ThankYouScreen: React.FC = () => {
 	const confettiRef = useRef<ConfettiRef>(null);
 	return (
 		<div className="relative flex select-none w-full flex-col items-center justify-center overflow-hidden">

@@ -1,7 +1,7 @@
-import { getServerSession, User } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/options";
 import dbConnect from "@/lib/dbConnect";
 import { UserModel } from "@/models/User";
+import { type User, getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/options";
 
 export async function POST(request: Request) {
 	await dbConnect();
@@ -16,11 +16,11 @@ export async function POST(request: Request) {
 				success: false,
 				message: "User is not logged in",
 			},
-			{ status: 401 }
+			{ status: 401 },
 		);
 	}
 
-    const userId = user._id;
+	const userId = user._id;
 
 	const { username } = await request.json();
 
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 		const updatedUser = await UserModel.findByIdAndUpdate(
 			userId,
 			{ username: username },
-			{ new: true }
+			{ new: true },
 		);
 
 		if (!updatedUser) {
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 					success: false,
 					message: "Failed to update username!",
 				},
-				{ status: 401 }
+				{ status: 401 },
 			);
 		}
 
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
 				success: true,
 				message: "Username updated successfully!",
 			},
-			{ status: 200 }
+			{ status: 200 },
 		);
 	} catch (error) {
 		console.error("Error updating username: \n", error);
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
 				success: false,
 				message: "Error updating username. Try Again!",
 			},
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }

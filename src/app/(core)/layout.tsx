@@ -1,7 +1,7 @@
 "use client";
 
-import { ReactNode } from "react";
 import { HomeNav } from "@/app/(core)/_components/HomeNav";
+import type { ReactNode } from "react";
 
 import { SidebarProvider } from "@/context/SidebarContext";
 

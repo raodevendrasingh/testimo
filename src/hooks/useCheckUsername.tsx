@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import axios, { AxiosError } from "axios";
+import type { ApiResponse } from "@/types/ApiResponse";
+import axios, { type AxiosError } from "axios";
+import { useEffect, useState } from "react";
 import { useDebounceCallback } from "usehooks-ts";
-import { ApiResponse } from "@/types/ApiResponse";
 
-export const useCheckUsername = (initialUsername: string = "") => {
+export const useCheckUsername = (initialUsername = "") => {
 	const [username, setUsername] = useState<string>(initialUsername);
 	const [usernameMsg, setUsernameMsg] = useState<string>("");
 	const [isCheckingUsername, setIsCheckingUsername] = useState<boolean>(false);
@@ -22,9 +22,7 @@ export const useCheckUsername = (initialUsername: string = "") => {
 					setUsernameMsg(response.data.message);
 				} catch (error) {
 					const axiosError = error as AxiosError<ApiResponse>;
-					setUsernameMsg(
-						axiosError.response?.data.message ?? "Error checking username"
-					);
+					setUsernameMsg(axiosError.response?.data.message ?? "Error checking username");
 				} finally {
 					setIsCheckingUsername(false);
 				}

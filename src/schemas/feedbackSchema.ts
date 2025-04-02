@@ -17,5 +17,5 @@ export const feedbackSchema = z.object({
 		.max(50, { message: "Job Title must not exceed 50 characters" })
 		.optional(),
 	imageUrl: z.string().optional(),
-	action: z.string().default("default"),
+	action: z.string(),
 });

@@ -1,33 +1,24 @@
+import type { Testimonial } from "@/models/Testimonial";
+import type { ApiResponse } from "@/types/ApiResponse";
 import axios from "axios";
-import { Testimonial } from "@/models/Testimonial";
-import { ApiResponse } from "@/types/ApiResponse";
 
+import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import {
-	Command,
-	CommandGroup,
-	CommandItem,
-	CommandList,
-} from "@/components/ui/command";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
 
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { capitalize } from "@/helpers/CapitalizeFirstChar";
 import { timesAgo } from "@/helpers/ConvertTimeStamp";
 import { useActionUpdate } from "@/hooks/useActionUpdate";
+import { useState } from "react";
 import { toast } from "sonner";
-import { capitalize } from "@/helpers/CapitalizeFirstChar";
 
 import emptyUser from "@/assets/placeholder/emptyUser.png";
 import Image from "next/image";
 
 import { Stars } from "@/components/ui/Stars";
 
-import { Status, statuses } from "@/lib/selectOptions";
+import { type Status, statuses } from "@/lib/selectOptions";
 import { DeleteDialog } from "@/utils/DeleteDialogBox";
 import { ExportDialog } from "@/utils/ExportCodeDialog";
 
@@ -36,10 +27,7 @@ type TestimonialCardProps = {
 	onTestimonialDelete: (feedbackId: string) => void;
 };
 
-export const TestimonialCard = ({
-	testimonial,
-	onTestimonialDelete,
-}: TestimonialCardProps) => {
+export const TestimonialCard = ({ testimonial, onTestimonialDelete }: TestimonialCardProps) => {
 	const [open, setOpen] = useState(false);
 	const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
 	const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
@@ -49,7 +37,7 @@ export const TestimonialCard = ({
 	const handleDeleteConfirm = async () => {
 		try {
 			const response = await axios.delete<ApiResponse>(
-				`/api/delete-testimonial/${testimonial._id}`
+				`/api/delete-testimonial/${testimonial._id}`,
 			);
 			toast.success(response.data.message);
 			onTestimonialDelete(testimonial._id as string);
@@ -62,9 +50,7 @@ export const TestimonialCard = ({
 	};
 
 	const handleActionSelect = async (value: string) => {
-		setSelectedStatus(
-			statuses.find((status) => status.value === value) || null
-		);
+		setSelectedStatus(statuses.find((status) => status.value === value) || null);
 		setOpen(false);
 
 		if (value === "discarded") {
@@ -77,9 +63,7 @@ export const TestimonialCard = ({
 		}
 	};
 
-	const matchingStatus = statuses.find(
-		(status) => status.value === testimonial.action
-	);
+	const matchingStatus = statuses.find((status) => status.value === testimonial.action);
 
 	return (
 		<>
@@ -89,7 +73,7 @@ export const TestimonialCard = ({
 					{
 						"bg-red-50": testimonial.action === "default",
 						"bg-zinc-50": testimonial.action !== "default",
-					}
+					},
 				)}
 			>
 				{/* display picture */}
@@ -103,13 +87,7 @@ export const TestimonialCard = ({
 							className="rounded-lg"
 						/>
 					) : (
-						<Image
-							src={emptyUser}
-							alt="pfp"
-							width={80}
-							height={80}
-							className="rounded-lg"
-						/>
+						<Image src={emptyUser} alt="pfp" width={80} height={80} className="rounded-lg" />
 					)}
 				</div>
 				<div className="flex flex-col-reverse xs:flex-row gap-2 w-full">
@@ -121,9 +99,7 @@ export const TestimonialCard = ({
 									{testimonial.name ||
 										(testimonial.jobTitle && (
 											<div className="flex flex-col justify-center items-center xs:items-start xs:justify-startxs:items-start xs:justify-start ">
-												<span className="text-base font-semibold">
-													{testimonial.name}
-												</span>
+												<span className="text-base font-semibold">{testimonial.name}</span>
 												<span className="text-xs font-medium text-gray-600">
 													{testimonial.jobTitle}
 												</span>
@@ -134,9 +110,7 @@ export const TestimonialCard = ({
 								</div>
 								<div>
 									<span className="text-xs font-light text-gray-500">
-										{timesAgo(
-											testimonial.createdAt.toString()
-										)}
+										{timesAgo(testimonial.createdAt.toString())}
 									</span>
 								</div>
 							</div>
@@ -149,32 +123,20 @@ export const TestimonialCard = ({
 					<div className="flex grow justify-center items-start sm:items-center w-64 mx-auto xs:w-[30%] sm:w-[20%] p-1 md:mt-0">
 						<Popover open={open} onOpenChange={setOpen}>
 							<PopoverTrigger asChild>
-								<Button
-									variant="outline"
-									size="sm"
-									className="w-full md:w-[150px] justify-center"
-								>
+								<Button variant="outline" size="sm" className="w-full md:w-[150px] justify-center">
 									{selectedStatus ? (
 										<>
 											<selectedStatus.icon className="mr-2 h-4 w-4 shrink-0" />
-											{selectedStatus.label +
-												(selectedStatus.label.endsWith(
-													"e"
-												)
-													? "d"
-													: "ed")}
+											{selectedStatus.label + (selectedStatus.label.endsWith("e") ? "d" : "ed")}
 										</>
 									) : (
 										<>
-											{testimonial.action ===
-											"default" ? (
+											{testimonial.action === "default" ? (
 												"Select Action"
 											) : matchingStatus ? (
 												<>
 													<matchingStatus.icon className="mr-2 h-4 w-4 shrink-0" />
-													{capitalize(
-														matchingStatus.value
-													)}
+													{capitalize(matchingStatus.value)}
 												</>
 											) : (
 												capitalize(testimonial.action)
@@ -183,11 +145,7 @@ export const TestimonialCard = ({
 									)}
 								</Button>
 							</PopoverTrigger>
-							<PopoverContent
-								className="p-0"
-								width="144px"
-								align="start"
-							>
+							<PopoverContent className="p-0" width="144px" align="start">
 								<Command>
 									<CommandList>
 										<CommandGroup>
@@ -196,17 +154,12 @@ export const TestimonialCard = ({
 													key={status.value}
 													value={status.value}
 													className="text-sm"
-													onSelect={
-														handleActionSelect
-													}
+													onSelect={handleActionSelect}
 												>
 													<status.icon
 														className={cn(
 															"mr-2 h-4 w-4",
-															status.value ===
-																selectedStatus?.value
-																? "opacity-100"
-																: "opacity-60"
+															status.value === selectedStatus?.value ? "opacity-100" : "opacity-60",
 														)}
 													/>
 													{status.label}

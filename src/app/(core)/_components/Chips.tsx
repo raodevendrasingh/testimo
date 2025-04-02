@@ -10,6 +10,7 @@ interface ChipProps {
 export const Chip = ({ index, text, selected, setSelected }: ChipProps) => {
 	return (
 		<button
+			type="button"
 			onClick={() => setSelected(index)}
 			className={`${
 				selected
@@ -23,7 +24,7 @@ export const Chip = ({ index, text, selected, setSelected }: ChipProps) => {
 					layoutId="pill-tab"
 					transition={{ type: "spring", duration: 0.5 }}
 					className="absolute inset-0 z-0 bg-linear-to-r from-slate-700 to-zinc-700 rounded-md"
-				></motion.span>
+				/>
 			)}
 		</button>
 	);

@@ -1,11 +1,11 @@
-import { Testimonial } from "@/models/Testimonial";
-import { User } from "@/models/User";
+import type { Testimonial } from "@/models/Testimonial";
+import type { User } from "@/models/User";
 
 export interface ApiResponse {
-    user?: Array<User>,
-    success: boolean,
-    message: string,
-    token?: string,
-    isAcceptingTestimonials?: boolean,
-    testimonial?: Array<Testimonial>
+	user?: User[];
+	success: boolean;
+	message: string;
+	token?: string;
+	isAcceptingTestimonials?: boolean;
+	testimonial?: Testimonial[];
 }

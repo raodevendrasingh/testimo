@@ -1,7 +1,7 @@
-import { getServerSession, User } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/options";
 import dbConnect from "@/lib/dbConnect";
 import { UserModel } from "@/models/User";
+import { type User, getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/options";
 
 export async function POST(request: Request) {
 	await dbConnect();
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 				success: false,
 				message: "User is not logged in",
 			},
-			{ status: 401 }
+			{ status: 401 },
 		);
 	}
 
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 		const updatedUser = await UserModel.findOneAndUpdate(
 			{ _id: userId, "testimonial._id": feedbackId },
 			{ $set: { "testimonial.$.action": action } },
-			{ new: true }
+			{ new: true },
 		);
 
 		if (!updatedUser) {
@@ -37,11 +37,12 @@ export async function POST(request: Request) {
 					success: false,
 					message: "User or testimonial not found",
 				},
-				{ status: 404 }
+				{ status: 404 },
 			);
 		}
 		const updatedFeedback = updatedUser.testimonial.find(
-			(fb: any) => fb._id.toString() === feedbackId
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			(fb: any) => fb._id.toString() === feedbackId,
 		);
 
 		return Response.json(
@@ -50,7 +51,7 @@ export async function POST(request: Request) {
 				message: `Testimonial ${action}!`,
 				updatedFeedback,
 			},
-			{ status: 200 }
+			{ status: 200 },
 		);
 	} catch (error) {
 		// console.error("Failed to update testimonial action!\n", error);
@@ -59,7 +60,7 @@ export async function POST(request: Request) {
 				success: false,
 				message: "Failed to update testimonial action!",
 			},
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }

@@ -1,7 +1,7 @@
-import { getServerSession, User } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/options";
 import dbConnect from "@/lib/dbConnect";
 import { UserModel } from "@/models/User";
+import { type User, getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/options";
 
 export async function POST(request: Request) {
 	await dbConnect();
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 				success: false,
 				message: "User is not logged in",
 			},
-			{ status: 401 }
+			{ status: 401 },
 		);
 	}
 
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 		const updatedUser = await UserModel.findByIdAndUpdate(
 			userId,
 			{ isAcceptingTestimonials: acceptFeedback },
-			{ new: true }
+			{ new: true },
 		);
 		if (!updatedUser) {
 			return Response.json(
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 					success: false,
 					message: "Failed to update status to accept testimonial!",
 				},
-				{ status: 401 }
+				{ status: 401 },
 			);
 		}
 
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
 				message: "Updated user status to accept testimonial!",
 				updatedUser,
 			},
-			{ status: 200 }
+			{ status: 200 },
 		);
 	} catch (error) {
 		// console.error("Failed to update status to accept testimonial!\n", error);
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
 				success: false,
 				message: "Failed to update status to accept testimonial!",
 			},
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }
@@ -73,7 +73,7 @@ export async function GET(request: Request) {
 				success: false,
 				message: "User is not logged in",
 			},
-			{ status: 401 }
+			{ status: 401 },
 		);
 	}
 
@@ -88,7 +88,7 @@ export async function GET(request: Request) {
 					success: false,
 					message: "User not found!",
 				},
-				{ status: 404 }
+				{ status: 404 },
 			);
 		}
 
@@ -97,7 +97,7 @@ export async function GET(request: Request) {
 				success: true,
 				isAcceptingTestimonials: fetchedUser.isAcceptingTestimonials,
 			},
-			{ status: 200 }
+			{ status: 200 },
 		);
 	} catch (error) {
 		console.error("Failed to fetch status to accept testimonial!\n", error);
@@ -106,7 +106,7 @@ export async function GET(request: Request) {
 				success: false,
 				message: "Failed to fetch testimonial acceptance status.",
 			},
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }

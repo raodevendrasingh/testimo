@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import AuthProvider from "@/context/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import AuthProvider from "@/context/AuthProvider";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,10 +24,7 @@ export const metadata: Metadata = {
 			{ url: "/android-chrome-light-512x512.png", sizes: "512x512" },
 			{ url: "/android-chrome-dark-512x512.png", sizes: "512x512" },
 		],
-		apple: [
-			{ url: "/apple-touch-icon-light.png" },
-			{ url: "/apple-touch-icon-dark.png" },
-		],
+		apple: [{ url: "/apple-touch-icon-light.png" }, { url: "/apple-touch-icon-dark.png" }],
 	},
 };
 

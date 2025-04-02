@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import hljs from "highlight.js";
+import { useEffect } from "react";
 import "highlight.js/styles/atom-one-dark.css";
 
 interface SyntaxHighlighterProps {
@@ -9,10 +9,7 @@ interface SyntaxHighlighterProps {
 	code: string;
 }
 
-export default function SyntaxHighlighter({
-	language,
-	code,
-}: SyntaxHighlighterProps) {
+export default function SyntaxHighlighter({ language, code }: SyntaxHighlighterProps) {
 	useEffect(() => {
 		hljs.highlightAll();
 	}, []);

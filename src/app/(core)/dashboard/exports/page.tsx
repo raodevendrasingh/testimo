@@ -1,13 +1,12 @@
 "use client";
 
 import { TestimonialCard } from "@/app/(core)/_components/TestimonialCard";
+import { TestimonialSkeleton } from "@/components/TestimonialSkeleton";
 import { useFetchTestimonials } from "@/hooks/useFetchTestimonials";
 import { useEffect } from "react";
-import { TestimonialSkeleton } from "@/components/TestimonialSkeleton";
 
 const ExportsPage = () => {
-	const { testimonial, setTestimonial, isLoading, fetchTestimonials } =
-		useFetchTestimonials();
+	const { testimonial, setTestimonial, isLoading, fetchTestimonials } = useFetchTestimonials();
 
 	useEffect(() => {
 		fetchTestimonials();
@@ -17,9 +16,7 @@ const ExportsPage = () => {
 		setTestimonial(testimonial.filter((message) => message._id !== testimonialId));
 	};
 
-	const exportedTestimonials = testimonial.filter(
-		(message) => message.action === "exported"
-	);
+	const exportedTestimonials = testimonial.filter((message) => message.action === "exported");
 
 	return (
 		<div className="w-full mx-auto">
@@ -42,9 +39,7 @@ const ExportsPage = () => {
 							))
 						) : (
 							<div className="py-5 border w-full text-center rounded-lg">
-								<span className="font-medium text-gray-500 ">
-									No Exported Items
-								</span>
+								<span className="font-medium text-gray-500 ">No Exported Items</span>
 							</div>
 						)}
 					</div>

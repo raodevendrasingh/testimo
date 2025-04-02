@@ -1,4 +1,4 @@
-import { Schema, Document } from "mongoose";
+import { type Document, Schema } from "mongoose";
 
 export interface Testimonial extends Document {
 	action: string;

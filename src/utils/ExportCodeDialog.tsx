@@ -1,30 +1,21 @@
+import { Button } from "@/components/ui/button";
+import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
-	DialogHeader,
-	DialogTitle,
 	DialogDescription,
 	DialogFooter,
-	DialogClose,
+	DialogHeader,
+	DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-	Command,
-	CommandGroup,
-	CommandItem,
-	CommandList,
-} from "@/components/ui/command";
+import { type Framework, languages } from "@/lib/selectOptions";
+import type { Testimonial } from "@/models/Testimonial";
+import { CardToCode, TestimonialCard } from "@/utils/TestimonialComponents";
 import { ChevronDown, Code, Eye } from "lucide-react";
-import { Framework, languages } from "@/lib/selectOptions";
-import { Testimonial } from "@/models/Testimonial";
 import { useState } from "react";
-import { TestimonialCard, CardToCode } from "@/utils/TestimonialComponents";
 
 type ExportDialogProps = {
 	isOpen: boolean;
@@ -32,11 +23,7 @@ type ExportDialogProps = {
 	testimonial: Testimonial;
 };
 
-export const ExportDialog = ({
-	isOpen,
-	onOpenChange,
-	testimonial,
-}: ExportDialogProps) => {
+export const ExportDialog = ({ isOpen, onOpenChange, testimonial }: ExportDialogProps) => {
 	const [openLang, setOpenLang] = useState(false);
 	const [selectedLang, setSelectedLang] = useState<Framework | null>(null);
 
@@ -44,12 +31,8 @@ export const ExportDialog = ({
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
 			<DialogContent className="flex flex-col justify-start items-center h-[90%]">
 				<DialogHeader className="flex flex-col justify-start w-full">
-					<DialogTitle className="tracking-wider">
-						Export Testimonial
-					</DialogTitle>
-					<DialogDescription>
-						Paste the component in your code
-					</DialogDescription>
+					<DialogTitle className="tracking-wider">Export Testimonial</DialogTitle>
+					<DialogDescription>Paste the component in your code</DialogDescription>
 				</DialogHeader>
 				<Tabs
 					defaultValue="preview"
@@ -57,22 +40,17 @@ export const ExportDialog = ({
 				>
 					<div className="flex justify-between items-center gap-2 w-full">
 						<TabsList className="flex justify-start rounded-lg">
-							<TabsTrigger
-								value="preview"
-								className="flex items-center gap-2 w-28 rounded-lg"
-							>
+							<TabsTrigger value="preview" className="flex items-center gap-2 w-28 rounded-lg">
 								<Eye className="size-4" /> Preview
 							</TabsTrigger>
-							<TabsTrigger
-								value="code"
-								className="flex items-center gap-2 w-28 rounded-lg"
-							>
+							<TabsTrigger value="code" className="flex items-center gap-2 w-28 rounded-lg">
 								<Code className="size-4" /> Code
 							</TabsTrigger>
 						</TabsList>
 						<Popover open={openLang} onOpenChange={setOpenLang}>
 							<PopoverTrigger asChild>
 								<button
+									type="button"
 									disabled
 									className="w-24 rounded-lg text-sm border py-2 disabled:opacity-50 disabled:cursor-not-allowed"
 								>
@@ -85,9 +63,7 @@ export const ExportDialog = ({
 										</span>
 									) : (
 										<span className="flex items-center justify-center gap-1">
-											<span className="w-[70%] font-mono font-medium">
-												react
-											</span>
+											<span className="w-[70%] font-mono font-medium">react</span>
 											<span className="w-[30%]">
 												<ChevronDown className="size-4" />
 											</span>
@@ -95,12 +71,7 @@ export const ExportDialog = ({
 									)}
 								</button>
 							</PopoverTrigger>
-							<PopoverContent
-								className="p-0"
-								width="96px"
-								side="bottom"
-								align="center"
-							>
+							<PopoverContent className="p-0" width="96px" side="bottom" align="center">
 								<Command>
 									<CommandList className="">
 										<CommandGroup>
@@ -111,8 +82,7 @@ export const ExportDialog = ({
 													className=""
 													onSelect={(value) => {
 														const selectedLang =
-															languages.find((lang) => lang.value === value) ||
-															null;
+															languages.find((lang) => lang.value === value) || null;
 														setSelectedLang(selectedLang);
 														setOpenLang(false);
 													}}
@@ -132,13 +102,8 @@ export const ExportDialog = ({
 								{TestimonialCard({ testimonial: testimonial })}
 							</div>
 						</TabsContent>
-						<TabsContent
-							value="code"
-							className="w-full h-full rounded-lg overflow-x-hidden"
-						>
-							<div className="w-full h-80">
-								{CardToCode({ testimonial: testimonial })}
-							</div>
+						<TabsContent value="code" className="w-full h-full rounded-lg overflow-x-hidden">
+							<div className="w-full h-80">{CardToCode({ testimonial: testimonial })}</div>
 						</TabsContent>
 					</div>
 				</Tabs>

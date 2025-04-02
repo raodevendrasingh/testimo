@@ -1,8 +1,6 @@
-import React from "react";
+import type React from "react";
 
-const PulseRingLoader: React.FC<{ className?: string }> = ({
-	className = "",
-}) => {
+const PulseRingLoader: React.FC<{ className?: string }> = ({ className = "" }) => {
 	return (
 		<svg
 			width="80"
@@ -11,6 +9,7 @@ const PulseRingLoader: React.FC<{ className?: string }> = ({
 			xmlns="http://www.w3.org/2000/svg"
 			className={className}
 		>
+			<title>ring</title>
 			<style>
 				{`
           .spinner_Uvk8 {

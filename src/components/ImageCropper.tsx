@@ -1,10 +1,5 @@
-import { useState, useRef } from "react";
-import ReactCrop, {
-	Crop,
-	PixelCrop,
-	centerCrop,
-	makeAspectCrop,
-} from "react-image-crop";
+import { useRef, useState } from "react";
+import ReactCrop, { type Crop, type PixelCrop, centerCrop, makeAspectCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import setCanvasPreview from "@/helpers/setCanvasPreview";
 import { CropIcon } from "lucide-react";
@@ -18,10 +13,7 @@ interface ImageCropperProps {
 const ASPECT_RATIO = 1;
 const MIN_DIMENSION = 150;
 
-export const ImageCropper: React.FC<ImageCropperProps> = ({
-	imageSrc,
-	onCropComplete,
-}) => {
+export const ImageCropper: React.FC<ImageCropperProps> = ({ imageSrc, onCropComplete }) => {
 	const imgRef = useRef<HTMLImageElement>(null);
 	const previewCanvasRef = useRef<HTMLCanvasElement>(null);
 	const [crop, setCrop] = useState<Crop>();
@@ -38,7 +30,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
 			},
 			ASPECT_RATIO,
 			width,
-			height
+			height,
 		);
 		const centeredCrop = centerCrop(crop, width, height);
 		setCrop(centeredCrop);
@@ -64,19 +56,20 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
 				<Image
 					ref={imgRef}
 					src={imageSrc || ""}
-                    width={320}
-                    height={320}
+					width={320}
+					height={320}
 					alt="Crop me"
 					onLoad={onImageLoad}
-                    className="rounded"
+					className="rounded"
 				/>
 			</ReactCrop>
 			<button
+				type="button"
 				className="flex items-center justify-center gap-2 w-full mt-4 bg-slate-800 text-white font-semibold border rounded-lg text-sm px-4 py-2 shadow-sm hover:shadow-xl outline-hidden focus:outline-hidden ease-linear transition-all duration-150"
 				onClick={handleCropComplete}
 			>
-				Crop 
-                <CropIcon/>
+				Crop
+				<CropIcon />
 			</button>
 			<canvas ref={previewCanvasRef} style={{ display: "none" }} />
 		</div>

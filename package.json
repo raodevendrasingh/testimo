@@ -3,11 +3,13 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "next dev --turbopack",
+		"dev": "npm run format && next dev --turbopack",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint",
-		"email": "email dev --dir src/lib"
+		"email": "email dev --dir src/lib",
+		"format": "biome format --write .",
+		"lint": "biome lint .",
+		"check": "biome check --write ."
 	},
 	"dependencies": {
 		"@carefully-coded/react-text-gradient": "^1.0.6",
@@ -32,7 +34,6 @@
 		"cloudinary": "^2.6.0",
 		"clsx": "^2.1.1",
 		"cmdk": "1.1.1",
-		"eslint": "^9.23.0",
 		"framer-motion": "^12.6.3",
 		"highlight.js": "^11.11.1",
 		"input-otp": "^1.4.2",
@@ -58,20 +59,17 @@
 		"zod": "^3.24.2"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
 		"@tailwindcss/postcss": "^4.1.0",
 		"@types/node": "22.13.17",
 		"@types/react": "19.0.12",
 		"@types/react-dom": "19.0.4",
-		"eslint-config-next": "15.2.4",
 		"postcss": "^8.5.3",
 		"react-email": "4.0.3",
 		"tailwindcss": "^4.1.0",
 		"typescript": "^5.8.2"
 	},
 	"pnpm": {
-		"onlyBuiltDependencies": [
-			"@vercel/speed-insights",
-			"esbuild"
-		]
+		"onlyBuiltDependencies": ["@vercel/speed-insights", "esbuild"]
 	}
 }

@@ -1,15 +1,15 @@
-import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import bcrypt from "bcryptjs";
-import dbConnect from "@/lib/dbConnect";
-import { UserModel } from "@/models/User";
 import {
-	getExpiryDate,
-	getResetDate,
 	INITIAL_TESTIMONIAL_COUNT,
 	INITIAL_TIER,
+	getExpiryDate,
+	getResetDate,
 } from "@/lib/constants";
+import dbConnect from "@/lib/dbConnect";
+import { UserModel } from "@/models/User";
+import bcrypt from "bcryptjs";
+import type { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
@@ -23,14 +23,12 @@ export const authOptions: NextAuthOptions = {
 				email: { label: "Email", type: "text" },
 				password: { label: "Password", type: "password" },
 			},
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			async authorize(credentials: any): Promise<any> {
 				await dbConnect();
 				try {
 					const user = await UserModel.findOne({
-						$or: [
-							{ email: credentials.identifier },
-							{ username: credentials.identifier },
-						],
+						$or: [{ email: credentials.identifier }, { username: credentials.identifier }],
 					});
 					if (!user) {
 						throw new Error("No user found with this email");
@@ -43,13 +41,13 @@ export const authOptions: NextAuthOptions = {
 					}
 					const isPasswordCorrect = await bcrypt.compare(
 						credentials.password,
-						user.password as string
+						user.password as string,
 					);
 					if (isPasswordCorrect) {
 						return user;
-					} else {
-						throw new Error("Incorrect password");
 					}
+					throw new Error("Incorrect password");
+					// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 				} catch (err: any) {
 					throw new Error(err);
 				}
@@ -104,8 +102,7 @@ export const authOptions: NextAuthOptions = {
 				session.user.oauthProvider = (token.oauthProvider as string) || null;
 				session.user.subscriptionTier = token.subscriptionTier;
 				session.user.monthlyTestimonialCount = token.monthlyTestimonialCount;
-				session.user.monthlyTestimonialResetDate =
-					token.monthlyTestimonialResetDate;
+				session.user.monthlyTestimonialResetDate = token.monthlyTestimonialResetDate;
 			}
 			return session;
 		},

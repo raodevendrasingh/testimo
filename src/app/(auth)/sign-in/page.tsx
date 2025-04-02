@@ -1,11 +1,7 @@
 "use client";
 
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useState, type JSX } from "react";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import * as z from "zod";
+import { GoogleAuthButton } from "@/components/GoogleAuthButton";
+import { Button } from "@/components/ui/button";
 import {
 	Form,
 	FormControl,
@@ -15,13 +11,17 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Loader } from "lucide-react";
-import { signInSchema } from "@/schemas/signInSchema";
-import { signIn } from "next-auth/react";
-import { toast } from "sonner";
-import { GoogleAuthButton } from "@/components/GoogleAuthButton";
 import { Separator } from "@/components/ui/separator";
+import { signInSchema } from "@/schemas/signInSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader } from "lucide-react";
+import { signIn } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { type JSX, useState } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import type * as z from "zod";
 
 const SignInPage = (): JSX.Element => {
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -31,9 +31,7 @@ const SignInPage = (): JSX.Element => {
 		resolver: zodResolver(signInSchema),
 	});
 
-	const onSubmit: SubmitHandler<z.infer<typeof signInSchema>> = async (
-		data
-	) => {
+	const onSubmit: SubmitHandler<z.infer<typeof signInSchema>> = async (data) => {
 		setIsSubmitting(true);
 		try {
 			const result = await signIn("credentials", {
@@ -81,16 +79,11 @@ const SignInPage = (): JSX.Element => {
 					<GoogleAuthButton />
 					<div className="flex items-center justify-center px-5">
 						<Separator className="w-1/2" />
-						<p className="text-center text-sm text-gray-500 mx-4">
-							or
-						</p>
+						<p className="text-center text-sm text-gray-500 mx-4">or</p>
 						<Separator className="w-1/2" />
 					</div>
 					<Form {...form}>
-						<form
-							onSubmit={form.handleSubmit(onSubmit)}
-							className="space-y-4"
-						>
+						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 							<FormField
 								name="identifier"
 								control={form.control}
@@ -98,10 +91,7 @@ const SignInPage = (): JSX.Element => {
 									<FormItem>
 										<FormLabel>Email / Username</FormLabel>
 										<FormControl>
-											<Input
-												placeholder="Email / Username"
-												{...field}
-											/>
+											<Input placeholder="Email / Username" {...field} />
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -114,25 +104,16 @@ const SignInPage = (): JSX.Element => {
 									<FormItem>
 										<FormLabel>Password</FormLabel>
 										<FormControl>
-											<Input
-												type="password"
-												placeholder="Password"
-												{...field}
-											/>
+											<Input type="password" placeholder="Password" {...field} />
 										</FormControl>
 										<FormMessage />
 									</FormItem>
 								)}
 							/>
-							<Button
-								type="submit"
-								disabled={isSubmitting}
-								className="w-full"
-							>
+							<Button type="submit" disabled={isSubmitting} className="w-full">
 								{isSubmitting ? (
 									<>
-										Please wait{" "}
-										<Loader className="ml-2 size-4 animate-spin" />
+										Please wait <Loader className="ml-2 size-4 animate-spin" />
 									</>
 								) : (
 									"Sign In"
@@ -143,10 +124,7 @@ const SignInPage = (): JSX.Element => {
 					<div className="text-center mt-4">
 						<p>
 							Don&apos;t have an account?{" "}
-							<Link
-								href={"/sign-up"}
-								className="text-blue-600 hover:text-blue-800"
-							>
+							<Link href={"/sign-up"} className="text-blue-600 hover:text-blue-800">
 								Sign Up
 							</Link>
 						</p>

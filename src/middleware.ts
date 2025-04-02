@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { type NextRequest, NextResponse } from "next/server";
 export { default } from "next-auth/middleware";
 
 export const config = {

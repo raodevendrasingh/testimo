@@ -3,9 +3,7 @@ import axios from "axios";
 const cloudName = "dniezlcfy";
 const uploadPreset = "pkyec5sk";
 
-export const uploadToCloudinary = async (
-	imageData: string
-): Promise<string> => {
+export const uploadToCloudinary = async (imageData: string): Promise<string> => {
 	const formData = new FormData();
 	formData.append("file", imageData);
 	formData.append("upload_preset", uploadPreset);
@@ -13,7 +11,7 @@ export const uploadToCloudinary = async (
 	try {
 		const response = await axios.post(
 			`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-			formData
+			formData,
 		);
 		return response.data.url;
 	} catch (error) {

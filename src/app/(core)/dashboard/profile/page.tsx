@@ -1,10 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { User } from "next-auth";
-import { useSession } from "next-auth/react";
 import {
 	ArrowUpRight,
 	ClipboardList,
@@ -13,19 +8,24 @@ import {
 	RotateCw,
 	SlidersHorizontal,
 } from "lucide-react";
+import type { User } from "next-auth";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
 import emptyLogo from "@/assets/placeholder/emptyLogo.png";
-import { useFetchTestimonials } from "@/hooks/useFetchTestimonials";
-import { useFetchAcceptTestimonials } from "@/hooks/useFetchAcceptTestimonials";
-import { copyToClipboard } from "@/helpers/CopytoClipboard";
-import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
-import { ExtractDomain } from "@/helpers/ExtractDomainName";
-import PulseRingLoader from "@/components/ui/PulseRingLoader";
-import { ProfileSkeleton } from "@/components/ProfileSkeleton";
 import { OnboardingModal } from "@/components/OnboardingModal";
+import { ProfileSkeleton } from "@/components/ProfileSkeleton";
 import { Stats } from "@/components/stats";
+import PulseRingLoader from "@/components/ui/PulseRingLoader";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { copyToClipboard } from "@/helpers/CopytoClipboard";
+import { ExtractDomain } from "@/helpers/ExtractDomainName";
+import { useFetchAcceptTestimonials } from "@/hooks/useFetchAcceptTestimonials";
+import { useFetchTestimonials } from "@/hooks/useFetchTestimonials";
+import { useFetchUserDetail } from "@/hooks/useFetchUserDetails";
 
 const ProfilePage = () => {
 	const { data: session } = useSession();
@@ -33,8 +33,7 @@ const ProfilePage = () => {
 	const [username, setUsername] = useState<string>("");
 	const [showLoginMessage, setShowLoginMessage] = useState(false);
 	const [isFetchingUser, setIsFetchingUser] = useState(true);
-	const [showOnboardingModal, setShowOnboardingModal] =
-		useState<boolean>(false);
+	const [showOnboardingModal, setShowOnboardingModal] = useState<boolean>(false);
 	const [isInitialFetch, setIsInitialFetch] = useState(true);
 
 	const [refresh, setRefresh] = useState(false);
@@ -45,14 +44,9 @@ const ProfilePage = () => {
 
 	const user = session?.user as User;
 
-	const { testimonial, isLoading, fetchTestimonials } =
-		useFetchTestimonials();
-	const {
-		isAcceptingTestimonials,
-		isSwitchLoading,
-		fetchAcceptTestimonial,
-		handleSwitchChange,
-	} = useFetchAcceptTestimonials();
+	const { testimonial, isLoading, fetchTestimonials } = useFetchTestimonials();
+	const { isAcceptingTestimonials, isSwitchLoading, fetchAcceptTestimonial, handleSwitchChange } =
+		useFetchAcceptTestimonials();
 
 	const { userDetail, isUserLoading, fetchUserData } = useFetchUserDetail();
 
@@ -93,9 +87,8 @@ const ProfilePage = () => {
 			}, 10000);
 
 			return () => clearTimeout(timer);
-		} else {
-			setIsFetchingUser(false);
 		}
+		setIsFetchingUser(false);
 	}, [session]);
 
 	if (isFetchingUser) {
@@ -110,10 +103,7 @@ const ProfilePage = () => {
 		return (
 			<div className="flex items-center justify-center h-[80vh] w-full gap-3 p-3">
 				<a href="/dashboard">
-					<Button
-						className="flex items-center justify-center gap-2"
-						variant="outline"
-					>
+					<Button className="flex items-center justify-center gap-2" variant="outline">
 						<span className="text-base font-medium">Reload</span>
 						<RotateCw className="size-4" />
 					</Button>
@@ -125,10 +115,7 @@ const ProfilePage = () => {
 	return (
 		<div className="w-full mx-auto">
 			{showOnboardingModal && (
-				<OnboardingModal
-					setShowOnboardingModal={setShowOnboardingModal}
-					onSave={handleRefresh}
-				/>
+				<OnboardingModal setShowOnboardingModal={setShowOnboardingModal} onSave={handleRefresh} />
 			)}
 			<div className="max-w-5xl mx-auto mt-4 px-3">
 				{/* Profile Header */}
@@ -145,22 +132,15 @@ const ProfilePage = () => {
 											<div className="size-28 rounded-lg">
 												{userDetail[0].imageUrl ? (
 													<Image
-														src={
-															userDetail[0]
-																.imageUrl as string
-														}
+														src={userDetail[0].imageUrl as string}
 														alt="user-profile"
 														width={120}
 														height={120}
 														priority={true}
 														className="rounded-lg"
 														onError={(e) => {
-															console.error(
-																"Image failed to load:",
-																e
-															);
-															e.currentTarget.src =
-																"@/assets/placeholder/emptyLogo.png";
+															console.error("Image failed to load:", e);
+															e.currentTarget.src = "@/assets/placeholder/emptyLogo.png";
 														}}
 													/>
 												) : (
@@ -183,36 +163,25 @@ const ProfilePage = () => {
 											</div>
 											<div className="flex justify-center w-full sm:justify-start text-center sm:text-left">
 												{userDetail[0].tagline || (
-													<div className=" text-blue-500 text-sm">
-														+ Add Tagline
-													</div>
+													<div className=" text-blue-500 text-sm">+ Add Tagline</div>
 												)}
 											</div>
 											<div className="flex items-center justify-center sm:justify-start w-full gap-2">
 												<Link
-													href={
-														userDetail[0]
-															.companysite || "#"
-													}
+													href={userDetail[0].companysite || "#"}
 													target="_blank"
 													rel="noopener noreferrer"
 												>
 													<div className="inline-flex justify-center items-center sm:justify-start gap-2 px-3 py-0.5 rounded-full border bg-white">
-														{userDetail[0]
-															.companysite ? (
+														{userDetail[0].companysite ? (
 															<>
 																<span className="text-sm">
-																	{ExtractDomain(
-																		userDetail[0]
-																			.companysite
-																	)}
+																	{ExtractDomain(userDetail[0].companysite)}
 																</span>
 																<ArrowUpRight className="size-5 text-gray-700" />
 															</>
 														) : (
-															<span className="text-blue-500 text-sm">
-																+ Website
-															</span>
+															<span className="text-blue-500 text-sm">+ Website</span>
 														)}
 													</div>
 												</Link>
@@ -230,20 +199,14 @@ const ProfilePage = () => {
 					<div className="flex items-start mb-4">
 						<div className="flex items-center gap-2">
 							<SlidersHorizontal className="w-5 h-5 text-gray-700" />
-							<h2 className="text-lg font-semibold text-gray-800">
-								Controls
-							</h2>
+							<h2 className="text-lg font-semibold text-gray-800">Controls</h2>
 						</div>
 					</div>
 					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						<div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
 							<div>
-								<p className="text-sm font-medium text-gray-700">
-									Accept Testimonials
-								</p>
-								<p className="text-xs text-gray-500">
-									Allow others to leave feedback
-								</p>
+								<p className="text-sm font-medium text-gray-700">Accept Testimonials</p>
+								<p className="text-xs text-gray-500">Allow others to leave feedback</p>
 							</div>
 							<Switch
 								checked={isAcceptingTestimonials}
@@ -261,12 +224,8 @@ const ProfilePage = () => {
 							className="flex items-center justify-between p-3 h-auto"
 						>
 							<div className="flex flex-col items-start">
-								<p className="text-sm font-medium text-gray-700">
-									Refresh Data
-								</p>
-								<p className="text-xs text-gray-500">
-									Update testimonials
-								</p>
+								<p className="text-sm font-medium text-gray-700">Refresh Data</p>
+								<p className="text-xs text-gray-500">Update testimonials</p>
 							</div>
 							{isLoading ? (
 								<Loader className="w-4 h-4 text-gray-600 animate-spin" />
@@ -280,12 +239,8 @@ const ProfilePage = () => {
 							className="flex items-center justify-between p-3 h-auto"
 						>
 							<div className="flex flex-col items-start">
-								<p className="text-sm font-medium text-gray-700">
-									Share Profile
-								</p>
-								<p className="text-xs text-gray-500 truncate max-w-[180px]">
-									{profileUrl}
-								</p>
+								<p className="text-sm font-medium text-gray-700">Share Profile</p>
+								<p className="text-xs text-gray-500 truncate max-w-[180px]">{profileUrl}</p>
 							</div>
 							<ClipboardList className="w-4 h-4 text-gray-600 shrink-0" />
 						</Button>

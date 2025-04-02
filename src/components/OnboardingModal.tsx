@@ -1,29 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import axios from "axios";
-import { toast } from "sonner";
-import { AnimatePresence, motion } from "framer-motion";
-import {
-	Control,
-	FieldErrors,
-	FieldValues,
-	useForm,
-	UseFormSetValue,
-} from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { userDetailSchema } from "@/schemas/userDetailSchema";
-import { ArrowRight, Loader } from "lucide-react";
-import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { UserDetailScreen } from "@/components/UserProfileForm";
-import { UsernameScreen } from "./UsernameScreen";
-import Image from "next/image";
 import iconLogo from "@/assets/brand/remonial_icon_dark.png";
-import { useSession } from "next-auth/react";
-import clsx from "clsx";
+import { UserDetailScreen } from "@/components/UserProfileForm";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
 import { uploadToCloudinary } from "@/lib/UploadToCloudinary";
+import { userDetailSchema } from "@/schemas/userDetailSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, Loader } from "lucide-react";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { useState } from "react";
+import {
+	type Control,
+	type FieldErrors,
+	type FieldValues,
+	type UseFormSetValue,
+	useForm,
+} from "react-hook-form";
+import { toast } from "sonner";
 import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
+import { UsernameScreen } from "./UsernameScreen";
 
 interface FormValues {
 	username: string;
@@ -49,13 +49,8 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 	const [currentScreen, setCurrentScreen] = useState(0);
 	const [slideDirection, setSlideDirection] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
-	const croppedImage = useReadLocalStorage<string | ArrayBuffer | null>(
-		"croppedImage"
-	);
-	const [, , removeCroppedValue] = useLocalStorage<string>(
-		"croppedImage",
-		"null"
-	);
+	const croppedImage = useReadLocalStorage<string | ArrayBuffer | null>("croppedImage");
+	const [, , removeCroppedValue] = useLocalStorage<string>("croppedImage", "null");
 
 	const { data: session } = useSession();
 
@@ -101,22 +96,14 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 	const renderScreen = () => {
 		switch (currentScreen) {
 			case 0:
-				return (
-					<UsernameScreen
-						control={control as unknown as Control<FieldValues>}
-					/>
-				);
+				return <UsernameScreen control={control as unknown as Control<FieldValues>} />;
 			case 1:
 				return (
 					<UserDetailScreen
-						setValue={
-							setValue as unknown as UseFormSetValue<FieldValues>
-						}
+						setValue={setValue as unknown as UseFormSetValue<FieldValues>}
 						control={control as unknown as Control<FieldValues>}
 						errors={errors as FieldErrors<FieldValues>}
-						touchedFields={
-							touchedFields as Partial<Record<string, boolean>>
-						}
+						touchedFields={touchedFields as Partial<Record<string, boolean>>}
 					/>
 				);
 			default:
@@ -130,9 +117,7 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 		try {
 			let cloudinaryImageUrl = "";
 			if (croppedImage) {
-				cloudinaryImageUrl = await uploadToCloudinary(
-					croppedImage as string
-				);
+				cloudinaryImageUrl = await uploadToCloudinary(croppedImage as string);
 			}
 
 			const formData = {
@@ -145,7 +130,7 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 			onSave();
 			setShowOnboardingModal(false);
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 			toast.error("Error updating user details");
 		} finally {
 			setIsLoading(false);
@@ -171,15 +156,8 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 						<div className="flex flex-col items-center justify-center select-none rounded-t p-3 pb-1">
 							{currentScreen === 0 ? (
 								<div className="flex flex-col items-center justify-center pt-5">
-									<Image
-										src={iconLogo}
-										alt="Remonial"
-										width={60}
-										height={60}
-									/>
-									<h1 className="text-2xl font-semibold text-gray-800 mt-1">
-										Welcome to Remonial
-									</h1>
+									<Image src={iconLogo} alt="Remonial" width={60} height={60} />
+									<h1 className="text-2xl font-semibold text-gray-800 mt-1">Welcome to Remonial</h1>
 								</div>
 							) : (
 								<div className="" />
@@ -190,10 +168,7 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 						</div>
 						<div className="p-3">
 							<Form {...form}>
-								<form
-									onSubmit={handleSubmit(onSubmit)}
-									className="space-y-6"
-								>
+								<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 									<motion.div
 										key={currentScreen}
 										initial={{
@@ -212,9 +187,7 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 										})}
 									>
 										<div className="p-3">
-											<div className="flex flex-col gap-3">
-												{renderScreen()}
-											</div>
+											<div className="flex flex-col gap-3">{renderScreen()}</div>
 										</div>
 									</motion.div>
 
@@ -226,16 +199,12 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 												disabled={!isFirstScreenValid}
 												className="flex w-full justify-center items-center gap-2 text-sm"
 											>
-												Next{" "}
-												<ArrowRight className=" size-4" />
+												Next <ArrowRight className=" size-4" />
 											</Button>
 										) : (
 											<Button
 												type="submit"
-												disabled={
-													isLoading ||
-													!isSecondScreenValid
-												}
+												disabled={isLoading || !isSecondScreenValid}
 												className="flex w-full justify-center items-center gap-2 text-sm"
 											>
 												{isLoading ? (
