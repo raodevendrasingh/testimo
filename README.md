@@ -44,7 +44,7 @@ Make sure you have following software installed in your system:
 
 First, we need to clone the repository
 ```
-https://github.com/raodevendrasingh/remonial-app.git
+https://github.com/raodevendrasingh/remonial.git
 ```
 
 Install all required dependencies in an isolated environment
