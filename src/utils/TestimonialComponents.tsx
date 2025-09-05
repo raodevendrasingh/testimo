@@ -38,11 +38,7 @@ export const CopyableTitle = ({
 	);
 };
 
-export const TestimonialCard = ({
-	testimonial,
-}: {
-	testimonial: Testimonial;
-}) => {
+export const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
 	return (
 		<div className="border rounded-lg select-none p-5 flex flex-col items-center justify-center gap-2 w-[320px]">
 			<span className="text-yellow-300 text-base flex">
@@ -72,11 +68,7 @@ export const TestimonialCard = ({
 	);
 };
 
-export const CardToCode = ({
-	testimonial,
-}: {
-	testimonial: Testimonial;
-}): JSX.Element => {
+export const CardToCode = ({ testimonial }: { testimonial: Testimonial }): JSX.Element => {
 	const ComponentBlock = `// import the stars component from your preferred path
 import { Stars } from "@/components/ui/Stars";
 
