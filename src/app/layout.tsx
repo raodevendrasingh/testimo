@@ -9,7 +9,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "Remonial",
+	title: "Testimo",
 	description: "Collecting Testimonials and Endorsements made easy",
 	icons: {
 		icon: [

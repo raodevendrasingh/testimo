@@ -35,7 +35,7 @@ export default function VerifyEmailTemplate({
 						{/* Logo Section */}
 						<Section className="mb-5">
 							<Text className="text-4xl font-bold text-center text-black tracking-tight">
-								Remonial
+								Testimo
 							</Text>
 						</Section>
 
@@ -63,7 +63,7 @@ export default function VerifyEmailTemplate({
 						{/* Footer */}
 						<Section className="mt-12 pt-8 bg-slate-50 border-t border-gray-200">
 							<Text className="text-gray-500 text-sm text-center leading-relaxed">
-								© {new Date().getFullYear()} Remonial. All rights reserved.
+								© {new Date().getFullYear()} Testimo. All rights reserved.
 								<br />
 								<br />
 								This email was sent to {email}. If you didn't request this code, you can safely

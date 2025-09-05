@@ -1,4 +1,4 @@
-import remonial_wordmark_light from "@/assets/brand/remonial_wordmark_light.png";
+import testimo_wordmark_light from "@/assets/brand/testimo_wordmark_light.png";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -9,8 +9,8 @@ const Footer = () => {
 				<div className="flex flex-col md:flex-row justify-between items-center">
 					<div className=" text-center md:text-left mb-4 md:mb-0">
 						<Image
-							src={remonial_wordmark_light}
-							alt="remonials"
+							src={testimo_wordmark_light}
+							alt="testimo"
 							width={180}
 							height={100}
 							className="aspect-auto"
@@ -24,9 +24,7 @@ const Footer = () => {
 						<Link href="#" className="hover:text-blue-300 transition-colors duration-300">
 							Features
 						</Link>
-						<Link href="#" className="hover:text-blue-300 transition-colors duration-300">
-							Pricing
-						</Link>
+
 						<Link href="#" className="hover:text-blue-300 transition-colors duration-300">
 							Contact
 						</Link>
@@ -34,7 +32,7 @@ const Footer = () => {
 				</div>
 				<div className="mt-8 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
 					<p className="text-sm text-gray-400">
-						&copy; {new Date().getFullYear()} Remonials. All rights reserved.
+						&copy; {new Date().getFullYear()} Testimo. All rights reserved.
 					</p>
 					<div className="flex space-x-4 mt-4 md:mt-0">
 						<Link

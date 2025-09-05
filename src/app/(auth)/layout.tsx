@@ -1,4 +1,4 @@
-import remonial_wordmark_dark from "@/assets/brand/remonial_wordmark_dark.png";
+import testimo_wordmark_dark from "@/assets/brand/testimo_wordmark_dark.png";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -9,12 +9,11 @@ export default async function AuthLayout({
 }) {
 	return (
 		<div className="flex flex-col min-h-screen">
-			{/* navbar */}
 			<nav className="absolute z-20 top-0 h-16 flex items-center justify-start px-12 bg-transparent">
 				<Link href="/">
 					<Image
-						src={remonial_wordmark_dark}
-						alt="remonials"
+						src={testimo_wordmark_dark}
+						alt="testimo"
 						width={200}
 						height={100}
 						className="aspect-auto pt-3"

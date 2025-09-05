@@ -29,7 +29,7 @@ export const UsernameScreen: React.FC<{
 				<div className="flex flex-col items-center w-full">
 					<div className="flex items-center justify-center w-full">
 						<span className="select-none px-2.5 py-2 border-l border-y border-gray-300 rounded-l-lg text-base bg-gray-50 text-gray-700">
-							remonial.live/
+							testimo.cc/
 						</span>
 						<FormField
 							control={control}

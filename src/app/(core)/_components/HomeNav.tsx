@@ -1,5 +1,5 @@
 "use client";
-import remonial_wordmark_dark from "@/assets/brand/remonial_wordmark_dark.png";
+import testimo_wordmark_dark from "@/assets/brand/testimo_wordmark_dark.png";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSidebar } from "@/context/SidebarContext";
@@ -48,8 +48,8 @@ export const HomeNav = (): JSX.Element => {
 						</button>
 						<Link href="/">
 							<Image
-								src={remonial_wordmark_dark}
-								alt="remonials"
+								src={testimo_wordmark_dark}
+								alt="testimo"
 								width={180}
 								height={40}
 								priority

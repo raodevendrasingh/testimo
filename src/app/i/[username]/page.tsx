@@ -34,7 +34,7 @@ import Confetti from "@/components/magicui/confetti";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 
-import remonial_wordmark_dark from "@/assets/brand/remonial_wordmark_dark.png";
+import testimo_wordmark_dark from "@/assets/brand/testimo_wordmark_dark.png";
 import { ImageCropper } from "@/components/ImageCropper";
 import { uploadToCloudinary } from "@/lib/UploadToCloudinary";
 import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
@@ -136,8 +136,8 @@ export default function SendTestimonial() {
 				<nav className="sticky top-0 w-full flex items-center justify-start gap-2 px-12 pt-2">
 					<Link href="/">
 						<Image
-							src={remonial_wordmark_dark}
-							alt="remonials"
+							src={testimo_wordmark_dark}
+							alt="testimo"
 							width={180}
 							height={40}
 							className="aspect-auto"

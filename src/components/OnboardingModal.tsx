@@ -1,6 +1,6 @@
 "use client";
 
-import iconLogo from "@/assets/brand/remonial_icon_dark.png";
+import iconLogo from "@/assets/brand/testimo_icon_dark.png";
 import { UserDetailScreen } from "@/components/UserProfileForm";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -156,8 +156,8 @@ export const OnboardingModal: React.FC<UserOnboardingModalProps> = ({
 						<div className="flex flex-col items-center justify-center select-none rounded-t p-3 pb-1">
 							{currentScreen === 0 ? (
 								<div className="flex flex-col items-center justify-center pt-5">
-									<Image src={iconLogo} alt="Remonial" width={60} height={60} />
-									<h1 className="text-2xl font-semibold text-gray-800 mt-1">Welcome to Remonial</h1>
+									<Image src={iconLogo} alt="Testimo" width={60} height={60} />
+									<h1 className="text-2xl font-semibold text-gray-800 mt-1">Welcome to Testimo</h1>
 								</div>
 							) : (
 								<div className="" />

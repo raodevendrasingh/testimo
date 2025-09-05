@@ -1,6 +1,6 @@
-# Remonial
+# Testimo
 
-Remonial is a testimonial collection platform that allows businesses to gather customer feedback effortlessly. Businesses can share unique testimonial links, and customers can submit reviews with ratings, optional details like name, image, and job title, helping businesses build trust and credibility.
+Testimo is a testimonial collection platform that allows businesses to gather customer feedback effortlessly. Businesses can share unique testimonial links, and customers can submit reviews with ratings, optional details like name, image, and job title, helping businesses build trust and credibility.
 
 ---
 
@@ -44,16 +44,16 @@ Make sure you have following software installed in your system:
 
 First, we need to clone the repository
 ```
-https://github.com/raodevendrasingh/remonial.git
+https://github.com/raodevendrasingh/testimo.git
 ```
 
 Install all required dependencies in an isolated environment
 
 ```
-cd remonial
+cd testimo
 pnpm install
 ```
-Copy the `.env.sample` as `.env` in `remonial` folder
+Copy the `.env.sample` as `.env` in `testimo` folder
 ```
 cp .env.sample .env
 ```
@@ -61,7 +61,7 @@ cp .env.sample .env
 ## Running the local server
 
 ```
-cd remonial
+cd testimo
 pnpm dev
 ```
 The App should be available on http://localhost:3000/

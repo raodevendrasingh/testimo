@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React, { useState, type JSX } from "react";
 
-import remonial_wordmark_light from "@/assets/brand/remonial_wordmark_light.png";
+import testimo_wordmark_light from "@/assets/brand/testimo_wordmark_light.png";
 import Image from "next/image";
 
 export const Navbar = (): JSX.Element => {
@@ -15,8 +15,8 @@ export const Navbar = (): JSX.Element => {
 				<div className="flex items-center justify-between">
 					<Link href="/" className="flex items-center space-x-2">
 						<Image
-							src={remonial_wordmark_light}
-							alt="remonials"
+							src={testimo_wordmark_light}
+							alt="testimo"
 							width={180}
 							height={100}
 							className="aspect-auto"
